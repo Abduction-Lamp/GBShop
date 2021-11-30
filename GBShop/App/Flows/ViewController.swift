@@ -10,12 +10,21 @@ import UIKit
 class ViewController: UIViewController {
 
     private let requestFactory = RequestFactory()
+    private let user: Profile = Profile(id: 1,
+                                        login: "Somebody",
+                                        password: "Somebody",
+                                        email: "Somebody@Somebody.ry",
+                                        gender: "m",
+                                        creditCard: "4000-1234-5678-0001",
+                                        bio: "Все будет хорошо!")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        login(userName: "Somebody", password: "mypassword")
         logout(userName: "Somebody")
+        register(user: user)
+        change(user: user)
     }
 
 
@@ -34,6 +43,30 @@ class ViewController: UIViewController {
     private func logout(userName: String) {
         let auth = requestFactory.makeAuthRequestFatory()
         auth.logout(userName: userName) { response in
+            switch response.result {
+            case .success(let result):
+                print(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func register(user: Profile) {
+        let profile = requestFactory.makeUserRequestFactory()
+        profile.change(user: user) { response in
+            switch response.result {
+            case .success(let result):
+                print(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func change(user: Profile) {
+        let profile = requestFactory.makeUserRequestFactory()
+        profile.register(user: user) { response in
             switch response.result {
             case .success(let result):
                 print(result)

@@ -36,7 +36,6 @@ extension Auth: AuthRequestFactory {
         let requestModel = Logout(baseUrl: baseUrl, login: userName)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
-    
 }
 
 extension Auth {

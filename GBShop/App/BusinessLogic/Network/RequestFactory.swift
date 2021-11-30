@@ -30,5 +30,8 @@ class RequestFactory {
         return Auth(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }
     
-    
+    func makeUserRequestFactory() -> ProfileUserRequestFactory {
+        let errorParser = makeErrorParser()
+        return ProfileUserRequest(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
+    }
 }
