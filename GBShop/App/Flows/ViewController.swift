@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        login(userName: "Somebody", password: "mypassword")
+        login(userName: "Somebody", password: "mypassword")
         logout(userName: "Somebody")
         register(user: user, password: "mypassword")
         change(user: user, password: "mypassword")
