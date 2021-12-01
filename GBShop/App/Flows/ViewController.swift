@@ -12,7 +12,6 @@ class ViewController: UIViewController {
     private let requestFactory = RequestFactory()
     private let user: Profile = Profile(id: 1,
                                         login: "Somebody",
-                                        password: "Somebody",
                                         email: "Somebody@Somebody.ry",
                                         gender: "m",
                                         creditCard: "4000-1234-5678-0001",
@@ -23,11 +22,11 @@ class ViewController: UIViewController {
         
 //        login(userName: "Somebody", password: "mypassword")
         logout(userName: "Somebody")
-        register(user: user)
-        change(user: user)
+        register(user: user, password: "mypassword")
+        change(user: user, password: "mypassword")
     }
 
-
+ 
     private func login(userName: String, password: String) {
         let auth = requestFactory.makeAuthRequestFatory()
         auth.login(userName: userName, password: password) { response in
@@ -52,9 +51,9 @@ class ViewController: UIViewController {
         }
     }
     
-    private func register(user: Profile) {
+    private func register(user: Profile, password: String) {
         let profile = requestFactory.makeUserRequestFactory()
-        profile.change(user: user) { response in
+        profile.change(user: user, password: password) { response in
             switch response.result {
             case .success(let result):
                 print(result)
@@ -64,9 +63,9 @@ class ViewController: UIViewController {
         }
     }
     
-    private func change(user: Profile) {
+    private func change(user: Profile, password: String) {
         let profile = requestFactory.makeUserRequestFactory()
-        profile.register(user: user) { response in
+        profile.register(user: user, password: password) { response in
             switch response.result {
             case .success(let result):
                 print(result)

@@ -27,14 +27,14 @@ class ProfileUserRequest: AbstractRequestFactory {
 
 extension ProfileUserRequest: ProfileUserRequestFactory {
     
-    func register(user: Profile, completionHandler: @escaping (AFDataResponse<RegisterResult>) -> Void) {
+    func register(user: Profile, password: String, completionHandler: @escaping (AFDataResponse<RegisterResult>) -> Void) {
         let path = "registerUser.json"
-        let requestModel = Request(baseUrl: baseUrl, path: path, user: user)
+        let requestModel = Request(baseUrl: baseUrl, path: path, user: user, password: password)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
-    func change(user: Profile, completionHandler: @escaping (AFDataResponse<ChangeUserResult>) -> Void) {
+    func change(user: Profile, password: String, completionHandler: @escaping (AFDataResponse<ChangeUserResult>) -> Void) {
         let path = "changeUserData.json"
-        let requestModel = Request(baseUrl: baseUrl, path: path, user: user)
+        let requestModel = Request(baseUrl: baseUrl, path: path, user: user, password: password)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
 }
@@ -46,11 +46,12 @@ extension ProfileUserRequest {
         let method: HTTPMethod = .get
         let path: String
         let user: Profile
+        let password: String
         var parameters: Parameters? {
             return [
                 "id_user" : user.id,
                 "username" : user.login,
-                "password" : user.password,
+                "password" : password,
                 "email" : user.email,
                 "gender": user.gender,
                 "credit_card" : user.creditCard,

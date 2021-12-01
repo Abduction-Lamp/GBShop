@@ -10,7 +10,6 @@ import Foundation
 struct Profile: Codable {
     let id: Int
     let login: String
-    let password: String
     let email: String
     let gender: String
     let creditCard: String
@@ -19,7 +18,6 @@ struct Profile: Codable {
     enum CodingKeys: String, CodingKey {
         case id = "id_user"
         case login = "username"
-        case password = "password"
         case email = "email"
         case gender = "gender"
         case creditCard = "credit_card"
