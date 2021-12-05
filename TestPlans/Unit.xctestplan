@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "6AE24523-E5B4-4A31-A3D2-238187B0A8EE",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:GBShop.xcodeproj",
+        "identifier" : "4E2256A727526867008E52F8",
+        "name" : "GBShopTests"
+      }
+    }
+  ],
+  "version" : 1
+}
