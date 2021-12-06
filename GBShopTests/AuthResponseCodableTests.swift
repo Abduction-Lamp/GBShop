@@ -12,9 +12,13 @@ import Alamofire
 class AuthResponseCodableTests: XCTestCase {
 
     let authRequest = RequestFactory().makeAuthRequestFatory()
-    let expressionLoginResultStub: LoginResult = LoginResult(result: 1,
-                                                             user: User(id: 123, login: "geekbrains", name: "John", lastname: "Doe"))
+    
     let expressionLogoutResultStub: LogoutResult = LogoutResult(result: 1)
+    let expressionLoginResultStub: LoginResult = LoginResult(result: 1,
+                                                             user: User(id: 123,
+                                                                        login: "geekbrains",
+                                                                        name: "John",
+                                                                        lastname: "Doe"))
 
     let expectation = XCTestExpectation(description: "Download https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/")
     

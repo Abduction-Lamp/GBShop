@@ -13,15 +13,15 @@ import Alamofire
 @testable import GBShop
 
 class ProductResponseCodableTests: XCTestCase {
-
-    let resultStub: [Product] = [
+    
+    let productRequest = RequestFactory().makeProductRequestFactory()
+    
+    let expressionCatalogStub: [Product] = [
         Product(id: 123, name: "Ноутбук", price: 45600, description: nil),
         Product(id: 456, name: "Мышка", price: 1000, description: nil)
     ]
     let expressionProductStub: GetGoodByIdResult = GetGoodByIdResult(result: 1, name: "Ноутбук", price: 45600, description: "Мощный игровой ноутбук")
-    
-    let productRequest = RequestFactory().makeProductRequestFactory()
-    
+
     let expectation = XCTestExpectation(description: "Download https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/")
     
     
@@ -33,12 +33,12 @@ class ProductResponseCodableTests: XCTestCase {
         productRequest.getCatalog(id: 1, page: 1) { result in
             switch result.result {
             case .success(let catalog):
-                if catalog.count == self.resultStub.count {
+                if catalog.count == self.expressionCatalogStub.count {
                     for i in 0 ..< catalog.count {
-                        XCTAssertEqual(catalog[i].id, self.resultStub[i].id)
-                        XCTAssertEqual(catalog[i].name, self.resultStub[i].name)
-                        XCTAssertEqual(catalog[i].price, self.resultStub[i].price)
-                        XCTAssertEqual(catalog[i].description, self.resultStub[i].description)
+                        XCTAssertEqual(catalog[i].id, self.expressionCatalogStub[i].id)
+                        XCTAssertEqual(catalog[i].name, self.expressionCatalogStub[i].name)
+                        XCTAssertEqual(catalog[i].price, self.expressionCatalogStub[i].price)
+                        XCTAssertEqual(catalog[i].description, self.expressionCatalogStub[i].description)
                     }
                 } else {
                     XCTFail("catalogs don't match in count")

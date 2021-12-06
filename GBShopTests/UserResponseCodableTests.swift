@@ -11,6 +11,8 @@ import Alamofire
 
 class UserResponseCodableTests: XCTestCase {
 
+    let userDataRequest = RequestFactory().makeUserRequestFactory()
+    
     let userStub: Profile = Profile(id: 123,
                                     login: "Somebody",
                                     email: "some@some.ru",
@@ -20,8 +22,6 @@ class UserResponseCodableTests: XCTestCase {
     let expressionChangeUserResultStub: ChangeUserResult = ChangeUserResult(result: 1)
     let expressionRegisterResultStub: RegisterResult = RegisterResult(result: 1, userMessage: "Регистрация прошла успешно!")
 
-    let userDataRequest = RequestFactory().makeUserRequestFactory()
-    
     let expectation = XCTestExpectation(description: "Download https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/")
     
     
