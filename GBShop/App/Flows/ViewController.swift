@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         login(userName: "Somebody", password: "mypassword")
-        logout(userName: "Somebody")
+        logout(userID: 123)
         register(user: user, password: "mypassword")
         change(user: user, password: "mypassword")
     }
@@ -39,9 +39,9 @@ class ViewController: UIViewController {
         }
     }
     
-    private func logout(userName: String) {
+    private func logout(userID: Int) {
         let auth = requestFactory.makeAuthRequestFatory()
-        auth.logout(userName: userName) { response in
+        auth.logout(userID: userID) { response in
             switch response.result {
             case .success(let result):
                 print(result)
