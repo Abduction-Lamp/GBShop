@@ -25,15 +25,43 @@ class ProductRequest: AbstractRequestFactory {
 }
 
 extension ProductRequest: ProductRequestFactory {
+    
     func getCatalog(id: Int, page: Int, completionHandler: @escaping (AFDataResponse<[Product]>) -> Void) {
-        
+        let requestModel = Catalog(baseUrl: baseUrl, id: id, page: page)
+        self.request(request: requestModel, completionHandler: completionHandler)
     }
     
     func getGoodById(id: Int, completionHandler: @escaping (AFDataResponse<GetGoodByIdResult>) -> Void) {
-        
+        let requestModel = GoodById(baseUrl: baseUrl, id: id)
+        self.request(request: requestModel, completionHandler: completionHandler)
     }
 }
 
 extension ProductRequest {
     
+    struct Catalog: RequestRouter {
+        let baseUrl: URL
+        let method: HTTPMethod = .get
+        let path: String = "catalogData.json"
+        let id: Int
+        let page: Int
+        var parameters: Parameters? {
+            return [
+                "id_category": id,
+                "page_numbe" : page
+            ]
+        }
+    }
+    
+    struct GoodById: RequestRouter {
+        let baseUrl: URL
+        let method: HTTPMethod = .get
+        let path: String = "getGoodById.json"
+        let id: Int
+        var parameters: Parameters? {
+            return [
+                "id_product": id
+            ]
+        }
+    }
 }

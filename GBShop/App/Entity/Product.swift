@@ -14,7 +14,7 @@ struct Product: Codable {
     let description: String?
     
     enum CodingKeys: String, CodingKey {
-        case id = "id_product "
+        case id = "id_product"
         case name = "product_name"
         case price
         case description = "product_description"
