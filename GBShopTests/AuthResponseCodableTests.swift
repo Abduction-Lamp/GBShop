@@ -19,15 +19,12 @@ class AuthResponseCodableTests: XCTestCase {
     override func tearDownWithError() throws {}
 
     
-    
-    // MARK: - Tests Success Response
+    // MARK: - Login
     //
-    
-    // MARK: LOGIN
     let requestLoginLogin: String = "Username"
     let requestLoginPassword: String = "UserPassword"
     let expressionLoginResponseSuccess = LoginResponse(result: 1,
-                                                       message: "Иван, добро пожаловать!\n",
+                                                       message: "Иван, добро пожаловать!",
                                                        user: User(id: 1,
                                                                   login: "Username",
                                                                   firstName: "Иван",
@@ -36,12 +33,14 @@ class AuthResponseCodableTests: XCTestCase {
                                                                   gender: "m",
                                                                   creditCard: "1000-2000-3000-4000"),
                                                        token: "ED86EE70-124E-46DD-876B-4A4441F74575")
-    
+
     func testLoginResponseSuccess() throws {
         auth.login(login: requestLoginLogin, password: requestLoginPassword) { response in
             switch response.result {
             case .success(let result):
                 XCTAssertEqual(result.result,           self.expressionLoginResponseSuccess.result)
+                XCTAssertEqual(result.message,          self.expressionLoginResponseSuccess.message)
+                XCTAssertEqual(result.token,            self.expressionLoginResponseSuccess.token)
                 XCTAssertEqual(result.user?.id,         self.expressionLoginResponseSuccess.user?.id)
                 XCTAssertEqual(result.user?.login,      self.expressionLoginResponseSuccess.user?.login)
                 XCTAssertEqual(result.user?.firstName,  self.expressionLoginResponseSuccess.user?.firstName)
@@ -50,7 +49,7 @@ class AuthResponseCodableTests: XCTestCase {
                 XCTAssertEqual(result.user?.gender,     self.expressionLoginResponseSuccess.user?.gender)
                 XCTAssertEqual(result.user?.login,      self.expressionLoginResponseSuccess.user?.login)
                 XCTAssertEqual(result.user?.creditCard, self.expressionLoginResponseSuccess.user?.creditCard)
-                XCTAssertEqual(result.token,            self.expressionLoginResponseSuccess.token)
+
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
@@ -58,9 +57,30 @@ class AuthResponseCodableTests: XCTestCase {
         }
         wait(for: [self.expectation], timeout: 10.0)
     }
-    
 
-    // MARK: LOGOUT
+    
+    let expressionLoginResponseFailure = LoginResponse(result: 0, message: "Неверный логин или пароль", user: nil, token: nil)
+
+    func testLoginResponseFailure() throws {
+        auth.login(login: "login", password: "password") { response in
+            switch response.result {
+            case .success(let result):
+                XCTAssertEqual(result.result,  self.expressionLoginResponseFailure.result)
+                XCTAssertEqual(result.message, self.expressionLoginResponseFailure.message)
+                XCTAssertEqual(result.token,   self.expressionLoginResponseFailure.token)
+                XCTAssertEqual(result.user,    self.expressionLoginResponseFailure.user)
+                
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [self.expectation], timeout: 10.0)
+    }
+
+
+    // MARK: - Logout
+    //
     let requestLogoutID: Int = 2
     let requestLogoutToken: String = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
     let expressionLogoutResponseSuccess: LogoutResponse = LogoutResponse(result: 1, message: "Маша, вы успешно вышли из системы")
@@ -71,6 +91,7 @@ class AuthResponseCodableTests: XCTestCase {
             case .success(let result):
                 XCTAssertEqual(result.result, self.expressionLogoutResponseSuccess.result)
                 XCTAssertEqual(result.message, self.expressionLogoutResponseSuccess.message)
+                
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
@@ -80,6 +101,22 @@ class AuthResponseCodableTests: XCTestCase {
     }
     
     
-    // MARK: - Tests Failure Response
-    //
+    let fakeID = 0
+    let fakeToken = "token"
+    let expressionLogoutResponseFailure: LogoutResponse = LogoutResponse(result: 0, message: "Пользователь с ID = 0 не найден или Token устарел")
+    
+    func testLogoutResponseFailure() throws {
+        auth.logout(id: fakeID, token: fakeToken) { response in
+            switch response.result {
+            case .success(let result):
+                XCTAssertEqual(result.result, self.expressionLogoutResponseFailure.result)
+                XCTAssertEqual(result.message, self.expressionLogoutResponseFailure.message)
+                
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [self.expectation], timeout: 10.0)
+    }
 }

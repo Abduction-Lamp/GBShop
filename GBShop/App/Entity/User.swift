@@ -26,3 +26,17 @@ struct User: Codable {
         case creditCard = "credit_card"
     }
 }
+
+
+extension User: Equatable {
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return  lhs.id == rhs.id &&
+                lhs.login == rhs.login &&
+                lhs.firstName == rhs.firstName &&
+                lhs.lastName == rhs.lastName &&
+                lhs.email == rhs.email &&
+                lhs.gender == rhs.gender &&
+                lhs.creditCard == rhs.creditCard
+    }
+}
