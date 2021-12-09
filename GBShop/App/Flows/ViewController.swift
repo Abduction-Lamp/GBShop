@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     private let request = RequestFactory()
-
+//    private let user =
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,10 +56,11 @@ extension ViewController {
     }
     
     private func register(user: User, password: String) {
-        let profile = request.makeUserRequestFactory()
-        profile.change(user: user, password: password) { response in
+        let userRequest = request.makeUserRequestFactory()
+        userRequest.register(user: user, password: password) { response in
             switch response.result {
             case .success(let result):
+                print("--- USER REGISTER RESULT: ---")
                 print(result)
             case .failure(let error):
                 print(error.localizedDescription)
@@ -67,11 +68,12 @@ extension ViewController {
         }
     }
     
-    private func change(user: User, password: String) {
-        let profile = request.makeUserRequestFactory()
-        profile.register(user: user, password: password) { response in
+    private func change(user: User, token: String) {
+        let userRequest = request.makeUserRequestFactory()
+        userRequest.change(user: user, token: token) { response in
             switch response.result {
             case .success(let result):
+                print("--- USER DATA CHANGE RESULT: ---")
                 print(result)
             case .failure(let error):
                 print(error.localizedDescription)

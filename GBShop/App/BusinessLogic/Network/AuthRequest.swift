@@ -1,5 +1,5 @@
 //
-//  Auth.swift
+//  AuthRequest.swift
 //  GBShop
 //
 //  Created by Владимир on 30.11.2021.
@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-class Auth: AbstractRequestFactory {
+class AuthRequest: AbstractRequestFactory {
     let errorParser: AbstractErrorParser
     let sessionManager: Session
     let queue: DispatchQueue
@@ -23,7 +23,7 @@ class Auth: AbstractRequestFactory {
     }
 }
 
-extension Auth: AuthRequestFactory {
+extension AuthRequest: AuthRequestFactory {
     
     func login(login: String,
                password: String,
@@ -38,7 +38,7 @@ extension Auth: AuthRequestFactory {
     }
 }
 
-extension Auth {
+extension AuthRequest {
     
     struct Login: RequestRouter {
         let baseUrl: URL
