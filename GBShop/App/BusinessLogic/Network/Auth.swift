@@ -12,7 +12,7 @@ class Auth: AbstractRequestFactory {
     let errorParser: AbstractErrorParser
     let sessionManager: Session
     let queue: DispatchQueue
-    let baseUrl = URL(string: "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/")!
+    let baseUrl = URL(string: "https://salty-springs-77873.herokuapp.com/")!
     
     init(errorParser: AbstractErrorParser,
          sessionManager: Session,
@@ -27,13 +27,13 @@ extension Auth: AuthRequestFactory {
     
     func login(userName: String,
                password: String,
-               completionHandler: @escaping(AFDataResponse<LoginResult>) -> Void) {
+               completionHandler: @escaping(AFDataResponse<LoginResponse>) -> Void) {
         let requestModel = Login(baseUrl: baseUrl, login: userName, password: password)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
     
-    func logout(userID: Int, completionHandler: @escaping (AFDataResponse<LogoutResult>) -> Void) {
-        let requestModel = Logout(baseUrl: baseUrl, userID: userID)
+    func logout(userID: Int, token: String, completionHandler: @escaping (AFDataResponse<LogoutResponse>) -> Void) {
+        let requestModel = Logout(baseUrl: baseUrl, userID: userID, token: token)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
 }
@@ -42,13 +42,13 @@ extension Auth {
     
     struct Login: RequestRouter {
         let baseUrl: URL
-        let method: HTTPMethod = .get
-        let path: String = "login.json"
+        let method: HTTPMethod = .post
+        let path: String = "login"
         let login: String
         let password: String
         var parameters: Parameters? {
             return [
-                "username": login,
+                "login": login,
                 "password": password
             ]
         }
@@ -56,12 +56,14 @@ extension Auth {
     
     struct Logout: RequestRouter {
         let baseUrl: URL
-        let method: HTTPMethod = .get
-        let path: String = "logout.json"
+        let method: HTTPMethod = .post
+        let path: String = "logout"
         let userID: Int
+        let token: String
         var parameters: Parameters? {
             return [
-                "id_user": userID
+                "id": userID,
+                "token": token
             ]
         }
     }

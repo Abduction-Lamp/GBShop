@@ -9,6 +9,6 @@ import Foundation
 import Alamofire
 
 protocol ProfileUserRequestFactory {
-    func register(user: Profile, password: String, completionHandler: @escaping (AFDataResponse<RegisterResult>) -> Void)
-    func change(user: Profile, password: String, completionHandler: @escaping (AFDataResponse<ChangeUserResult>) -> Void)
+    func register(user: User, password: String, completionHandler: @escaping (AFDataResponse<RegisterResult>) -> Void)
+    func change(user: User, password: String, completionHandler: @escaping (AFDataResponse<ChangeUserResult>) -> Void)
 }

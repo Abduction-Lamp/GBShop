@@ -10,22 +10,16 @@ import UIKit
 class ViewController: UIViewController {
 
     private let requestFactory = RequestFactory()
-    private let user: Profile = Profile(id: 1,
-                                        login: "Somebody",
-                                        email: "Somebody@Somebody.ry",
-                                        gender: "m",
-                                        creditCard: "4000-1234-5678-0001",
-                                        bio: "Все будет хорошо!")
-    
+    private let user: User = User(id: 1, login: "ssa", firstName: "sadsd", lastName: "sdasd", email: "asdasd", gender: "asdasd", creditCard: "asdasd")
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        login(userName: "Somebody", password: "mypassword")
-//        logout(userID: 123)
+        login(userName: "Somebody", password: "mypassword")
+        logout(userID: 123, token: "sdsd")
 //        register(user: user, password: "mypassword")
 //        change(user: user, password: "mypassword")
-        getCatalog(id: 1, page: 1)
-        getGoodById(id: 123)
+//        getCatalog(id: 1, page: 1)
+//        getGoodById(id: 123)
     }
 }
 
@@ -46,9 +40,9 @@ extension ViewController {
         }
     }
     
-    private func logout(userID: Int) {
+    private func logout(userID: Int, token: String) {
         let auth = requestFactory.makeAuthRequestFatory()
-        auth.logout(userID: userID) { response in
+        auth.logout(userID: userID, token: token) { response in
             switch response.result {
             case .success(let result):
                 print(result)
@@ -58,7 +52,7 @@ extension ViewController {
         }
     }
     
-    private func register(user: Profile, password: String) {
+    private func register(user: User, password: String) {
         let profile = requestFactory.makeUserRequestFactory()
         profile.change(user: user, password: password) { response in
             switch response.result {
@@ -70,7 +64,7 @@ extension ViewController {
         }
     }
     
-    private func change(user: Profile, password: String) {
+    private func change(user: User, password: String) {
         let profile = requestFactory.makeUserRequestFactory()
         profile.register(user: user, password: password) { response in
             switch response.result {
