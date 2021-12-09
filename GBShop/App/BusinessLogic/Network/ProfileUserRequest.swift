@@ -50,13 +50,13 @@ extension ProfileUserRequest {
         let password: String
         var parameters: Parameters? {
             return [
-                "id_user" : user.id,
-                "username" : user.login,
-                "password" : password,
-                "email" : user.email,
+                "id_user": user.id,
+                "username": user.login,
+                "password": password,
+                "email": user.email,
                 "gender": user.gender,
-                "credit_card" : user.creditCard,
-                "bio" : user.bio
+                "credit_card": user.creditCard,
+                "bio": user.bio
             ]
         }
     }

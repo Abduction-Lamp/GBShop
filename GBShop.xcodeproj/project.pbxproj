@@ -231,7 +231,7 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		4E859D5627567A9000A7F2F1 /* ResultResponses */ = {
+		4E859D5627567A9000A7F2F1 /* Responses */ = {
 			isa = PBXGroup;
 			children = (
 				4E859D422756669900A7F2F1 /* LoginResult.swift */,
@@ -240,7 +240,7 @@
 				4E859D5727567B3C00A7F2F1 /* ChangeUserResult.swift */,
 				4E901BDD275E35D700E6160F /* GetGoodByIdResult.swift */,
 			);
-			path = ResultResponses;
+			path = Responses;
 			sourceTree = "<group>";
 		};
 		4E901BD3275CD8B800E6160F /* TestPlans */ = {
@@ -302,7 +302,7 @@
 		4E985A03275276680009538C /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				4E859D5627567A9000A7F2F1 /* ResultResponses */,
+				4E859D5627567A9000A7F2F1 /* Responses */,
 				4E859D44275666C100A7F2F1 /* User.swift */,
 				4E859D5B2756AEE700A7F2F1 /* Profile.swift */,
 				4E901BDB275E2D9700E6160F /* Product.swift */,
