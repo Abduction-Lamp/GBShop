@@ -9,13 +9,14 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    private let requestFactory = RequestFactory()
-    private let user: User = User(id: 1, login: "ssa", firstName: "sadsd", lastName: "sdasd", email: "asdasd", gender: "asdasd", creditCard: "asdasd")
+    private let request = RequestFactory()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        login(login: "Somebody", password: "mypassword")
-        logout(id: 123, token: "sdsd")
+        login(login: "Username", password: "UserPassword")
+        logout(id: 1, token: "ED86EE70-124E-46DD-876B-4A4441F74575")
 //        register(user: user, password: "mypassword")
 //        change(user: user, password: "mypassword")
 //        getCatalog(id: 1, page: 1)
@@ -29,16 +30,12 @@ class ViewController: UIViewController {
 extension ViewController {
     
     private func login(login: String, password: String) {
-        let auth = requestFactory.makeAuthRequestFatory()
+        let auth = request.makeAuthRequestFatory()
         auth.login(login: login, password: password) { response in
             switch response.result {
             case .success(let result):
                 print("--- LOGIN RESULT: ---")
-                print("result: \(result.result)")
-                print("message: \(result.message)")
-                print("token: \(result.token)")
-                print("user: \(result.user)")
-                print("\n")
+                print(result.description)
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -46,11 +43,12 @@ extension ViewController {
     }
     
     private func logout(id: Int, token: String) {
-        let auth = requestFactory.makeAuthRequestFatory()
+        let auth = request.makeAuthRequestFatory()
         auth.logout(id: id, token: token) { response in
             switch response.result {
             case .success(let result):
-                print(result)
+                print("--- LOGOUT RESULT: ---")
+                print(result.description)
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -58,7 +56,7 @@ extension ViewController {
     }
     
     private func register(user: User, password: String) {
-        let profile = requestFactory.makeUserRequestFactory()
+        let profile = request.makeUserRequestFactory()
         profile.change(user: user, password: password) { response in
             switch response.result {
             case .success(let result):
@@ -70,7 +68,7 @@ extension ViewController {
     }
     
     private func change(user: User, password: String) {
-        let profile = requestFactory.makeUserRequestFactory()
+        let profile = request.makeUserRequestFactory()
         profile.register(user: user, password: password) { response in
             switch response.result {
             case .success(let result):
@@ -82,7 +80,7 @@ extension ViewController {
     }
     
     private func getCatalog(id: Int, page: Int) {
-        let list = requestFactory.makeProductRequestFactory()
+        let list = request.makeProductRequestFactory()
         list.getCatalog(id: id, page: page) { response in
             switch response.result {
             case .success(let catalog):
@@ -94,7 +92,7 @@ extension ViewController {
     }
     
     private func getGoodById(id: Int) {
-        let list = requestFactory.makeProductRequestFactory()
+        let list = request.makeProductRequestFactory()
         list.getGoodById(id: id) { response in
             switch response.result {
             case .success(let product):
