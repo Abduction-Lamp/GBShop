@@ -25,15 +25,15 @@ class Auth: AbstractRequestFactory {
 
 extension Auth: AuthRequestFactory {
     
-    func login(userName: String,
+    func login(login: String,
                password: String,
                completionHandler: @escaping(AFDataResponse<LoginResponse>) -> Void) {
-        let requestModel = Login(baseUrl: baseUrl, login: userName, password: password)
+        let requestModel = Login(baseUrl: baseUrl, login: login, password: password)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
     
-    func logout(userID: Int, token: String, completionHandler: @escaping (AFDataResponse<LogoutResponse>) -> Void) {
-        let requestModel = Logout(baseUrl: baseUrl, userID: userID, token: token)
+    func logout(id: Int, token: String, completionHandler: @escaping (AFDataResponse<LogoutResponse>) -> Void) {
+        let requestModel = Logout(baseUrl: baseUrl, id: id, token: token)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
 }
@@ -58,11 +58,11 @@ extension Auth {
         let baseUrl: URL
         let method: HTTPMethod = .post
         let path: String = "logout"
-        let userID: Int
+        let id: Int
         let token: String
         var parameters: Parameters? {
             return [
-                "id": userID,
+                "id": id,
                 "token": token
             ]
         }

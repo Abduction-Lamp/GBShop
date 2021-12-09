@@ -14,8 +14,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        login(userName: "Somebody", password: "mypassword")
-        logout(userID: 123, token: "sdsd")
+        login(login: "Somebody", password: "mypassword")
+        logout(id: 123, token: "sdsd")
 //        register(user: user, password: "mypassword")
 //        change(user: user, password: "mypassword")
 //        getCatalog(id: 1, page: 1)
@@ -28,21 +28,26 @@ class ViewController: UIViewController {
 //
 extension ViewController {
     
-    private func login(userName: String, password: String) {
+    private func login(login: String, password: String) {
         let auth = requestFactory.makeAuthRequestFatory()
-        auth.login(userName: userName, password: password) { response in
+        auth.login(login: login, password: password) { response in
             switch response.result {
-            case .success(let login):
-                print(login)
+            case .success(let result):
+                print("--- LOGIN RESULT: ---")
+                print("result: \(result.result)")
+                print("message: \(result.message)")
+                print("token: \(result.token)")
+                print("user: \(result.user)")
+                print("\n")
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
-    private func logout(userID: Int, token: String) {
+    private func logout(id: Int, token: String) {
         let auth = requestFactory.makeAuthRequestFatory()
-        auth.logout(userID: userID, token: token) { response in
+        auth.logout(id: id, token: token) { response in
             switch response.result {
             case .success(let result):
                 print(result)
