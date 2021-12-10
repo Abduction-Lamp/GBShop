@@ -12,8 +12,8 @@ class ProductRequest: AbstractRequestFactory {
     var errorParser: AbstractErrorParser
     var sessionManager: Session
     var queue: DispatchQueue
-    
-    let baseUrl = URL(string: "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/")!
+    let baseUrl = URL(string: "https://salty-springs-77873.herokuapp.com/")!
+
     
     init(errorParser: AbstractErrorParser,
          sessionManager: Session,
@@ -26,12 +26,12 @@ class ProductRequest: AbstractRequestFactory {
 
 extension ProductRequest: ProductRequestFactory {
     
-    func getCatalog(id: Int, page: Int, completionHandler: @escaping (AFDataResponse<[Product]>) -> Void) {
+    func getCatalog(id: Int, page: Int, completionHandler: @escaping (AFDataResponse<CatalogResponse>) -> Void) {
         let requestModel = Catalog(baseUrl: baseUrl, id: id, page: page)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
     
-    func getGoodById(id: Int, completionHandler: @escaping (AFDataResponse<GetGoodByIdResult>) -> Void) {
+    func getProduct(id: Int, completionHandler: @escaping (AFDataResponse<ProductResponse>) -> Void) {
         let requestModel = GoodById(baseUrl: baseUrl, id: id)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
@@ -42,26 +42,25 @@ extension ProductRequest {
     struct Catalog: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .get
-        let path: String = "catalogData.json"
-        let id: Int
-        let page: Int
-        var parameters: Parameters? {
-            return [
-                "id_category": id,
-                "page_numbe" : page
-            ]
+        var path: String = "catalog"
+        var parameters: Parameters? = nil
+        
+        init(baseUrl: URL, id: Int, page: Int) {
+            self.baseUrl = baseUrl
+            self.path += "/\(id)/\(page)"
+            print(path)
         }
     }
     
     struct GoodById: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .get
-        let path: String = "getGoodById.json"
-        let id: Int
-        var parameters: Parameters? {
-            return [
-                "id_product": id
-            ]
+        var path: String = "product"
+        var parameters: Parameters? = nil
+        
+        init(baseUrl: URL, id: Int) {
+            self.baseUrl = baseUrl
+            self.path += "/\(id)"
         }
     }
 }

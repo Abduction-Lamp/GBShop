@@ -36,8 +36,8 @@ class ViewController: UIViewController {
         logout(id: 1, token: "ED86EE70-124E-46DD-876B-4A4441F74575")
         register(user: user, password: "mypassword")
         change(user: userChangeData, token: tokenForChange)
-//        getCatalog(id: 1, page: 1)
-//        getGoodById(id: 123)
+        getProduct(id: 1)
+        getCatalog(id: 1, page: 1)
     }
 }
 
@@ -99,23 +99,23 @@ extension ViewController {
     }
     
     private func getCatalog(id: Int, page: Int) {
-        let list = request.makeProductRequestFactory()
-        list.getCatalog(id: id, page: page) { response in
+        let catalog = request.makeProductRequestFactory()
+        catalog.getCatalog(id: id, page: page) { response in
             switch response.result {
-            case .success(let catalog):
-                print(catalog)
+            case .success(let result):
+                print(result)
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
-    private func getGoodById(id: Int) {
-        let list = request.makeProductRequestFactory()
-        list.getGoodById(id: id) { response in
+    private func getProduct(id: Int) {
+        let product = request.makeProductRequestFactory()
+        product.getProduct(id: id) { response in
             switch response.result {
-            case .success(let product):
-                print(product)
+            case .success(let result):
+                print(result)
             case .failure(let error):
                 print(error.localizedDescription)
             }

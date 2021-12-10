@@ -35,5 +35,4 @@ struct UserDataChangeResponse: Codable {
         }
         return output
     }
-
 }
