@@ -10,15 +10,32 @@ import UIKit
 class ViewController: UIViewController {
 
     private let request = RequestFactory()
-//    private let user =
+    private let user = User(id: 3,
+                            login: "King",
+                            firstName: "Дима",
+                            lastName: "Сидоров",
+                            email: "sidorov@mail.ru",
+                            gender: "m",
+                            creditCard: "9876-5432-1000-0000")
+    
+    let userChangeData = User(id: 2,
+                              login: "Queen",
+                              firstName: "Маша",
+                              lastName: "Петрова",
+                              email: "petrova@mail.ru",
+                              gender: "w",
+                              creditCard: "5555-6666-7777-8888")
+    let tokenForChange = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         login(login: "Username", password: "UserPassword")
         logout(id: 1, token: "ED86EE70-124E-46DD-876B-4A4441F74575")
-//        register(user: user, password: "mypassword")
-//        change(user: user, password: "mypassword")
+        register(user: user, password: "mypassword")
+        change(user: userChangeData, token: tokenForChange)
 //        getCatalog(id: 1, page: 1)
 //        getGoodById(id: 123)
     }
@@ -61,7 +78,7 @@ extension ViewController {
             switch response.result {
             case .success(let result):
                 print("--- USER REGISTER RESULT: ---")
-                print(result)
+                print(result.description)
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -74,7 +91,7 @@ extension ViewController {
             switch response.result {
             case .success(let result):
                 print("--- USER DATA CHANGE RESULT: ---")
-                print(result)
+                print(result.description)
             case .failure(let error):
                 print(error.localizedDescription)
             }
