@@ -27,7 +27,7 @@ class ProductResponseCodableTests: XCTestCase {
     // MARK: - Product
     //
     let expressionProductStub: ProductResponse = ProductResponse (result: 1,
-                                                                  message: "success",
+                                                                  message: "Success",
                                                                   product: Product(id: 1,
                                                                                    name: "MacBook Pro",
                                                                                    category: "Ноутбук",
@@ -51,9 +51,30 @@ class ProductResponseCodableTests: XCTestCase {
         wait(for: [self.expectation], timeout: 10.0)
     }
     
+    func testProductResponseFailure() throws {
+        let expression = ProductResponse(result: 0, message: "Failure", product: nil)
+        
+        request.getProduct(id: 7) { response in
+            switch response.result {
+            case .success(let product):
+                XCTAssertEqual(product.result, expression.result)
+                XCTAssertEqual(product.message, expression.message)
+                XCTAssertEqual(product.product, expression.product)
+
+            case .failure(let error):
+                print(error)
+                XCTFail(error.localizedDescription)
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [self.expectation], timeout: 10.0)
+    }
     
+    
+    // MARK: - Catalog
+    //
     let expressionCatalogStub: CatalogResponse = CatalogResponse(result: 1,
-                                                                 message: "success",
+                                                                 message: "Цисло товаров = 3",
                                                                  catalog: [
                                                                     Product(id: 3,
                                                                             name: "PlayStation 5",
@@ -88,6 +109,23 @@ class ProductResponseCodableTests: XCTestCase {
                     XCTFail("Размер каталогов не совпадают [\(catalog.catalog?.count ?? 0) != \(self.expressionCatalogStub.catalog?.count ?? 0)]")
                 }
 
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [self.expectation], timeout: 10.0)
+    }
+    
+    func testCatalogResponseFailure() throws {
+        let expression: CatalogResponse = CatalogResponse(result: 0, message: "Каталог пуст", catalog: nil)
+    
+        request.getCatalog(id: 11, page: 1) { response in
+            switch response.result {
+            case .success(let catalog):
+                XCTAssertEqual(catalog.result, expression.result)
+                XCTAssertEqual(catalog.message, expression.message)
+                XCTAssertEqual(catalog.catalog, expression.catalog)
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
