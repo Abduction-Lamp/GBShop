@@ -18,6 +18,7 @@ struct LogoutResponse: Codable {
         return  """
                 result:  \(result)
                 message: \(message)
+                
                 """
     }
 }

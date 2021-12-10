@@ -14,8 +14,8 @@ struct CatalogResponse: Codable {
     
     var description: String {
         var output = """
-                     result:    \(result)
-                     message:   \(message)
+                     result:   \(result)
+                     message:  \(message)
                      
                      """
         if let catalog = self.catalog {

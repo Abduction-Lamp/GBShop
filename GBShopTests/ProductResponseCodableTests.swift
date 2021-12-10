@@ -43,6 +43,7 @@ class ProductResponseCodableTests: XCTestCase {
                 XCTAssertEqual(product.product, self.expressionProductStub.product)
 
             case .failure(let error):
+                print(error)
                 XCTFail(error.localizedDescription)
             }
             self.expectation.fulfill()
@@ -72,12 +73,20 @@ class ProductResponseCodableTests: XCTestCase {
                                                                  ])
 
     func testCatalogResponseSuccess() throws {
-        request.getCatalog(id: 1, page: 1) { response in
+        request.getCatalog(id: 2, page: 1) { response in
             switch response.result {
             case .success(let catalog):
                 XCTAssertEqual(catalog.result, self.expressionCatalogStub.result)
                 XCTAssertEqual(catalog.message, self.expressionCatalogStub.message)
-                XCTAssertEqual(catalog.catalog, self.expressionCatalogStub.catalog)
+                if let resultCatalog = catalog.catalog,
+                   let expressionCatalog = self.expressionCatalogStub.catalog,
+                   resultCatalog.count == expressionCatalog.count {
+                    for index in 0 ..< resultCatalog.count {
+                        XCTAssertEqual(resultCatalog[index], expressionCatalog[index])
+                    }
+                } else {
+                    XCTFail("Размер каталогов не совпадают [\(catalog.catalog?.count ?? 0) != \(self.expressionCatalogStub.catalog?.count ?? 0)]")
+                }
 
             case .failure(let error):
                 XCTFail(error.localizedDescription)

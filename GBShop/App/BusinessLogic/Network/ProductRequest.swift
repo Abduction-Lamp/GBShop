@@ -32,7 +32,7 @@ extension ProductRequest: ProductRequestFactory {
     }
     
     func getProduct(id: Int, completionHandler: @escaping (AFDataResponse<ProductResponse>) -> Void) {
-        let requestModel = GoodById(baseUrl: baseUrl, id: id)
+        let requestModel = ProductItem(baseUrl: baseUrl, id: id)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
 }
@@ -47,12 +47,11 @@ extension ProductRequest {
         
         init(baseUrl: URL, id: Int, page: Int) {
             self.baseUrl = baseUrl
-            self.path += "/\(id)/\(page)"
-            print(path)
+            self.path += "/\(id)/\(page)/"
         }
     }
     
-    struct GoodById: RequestRouter {
+    struct ProductItem: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .get
         var path: String = "product"
@@ -60,7 +59,7 @@ extension ProductRequest {
         
         init(baseUrl: URL, id: Int) {
             self.baseUrl = baseUrl
-            self.path += "/\(id)"
+            self.path += "/\(id)/"
         }
     }
 }

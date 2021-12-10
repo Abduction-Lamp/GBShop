@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         register(user: user, password: "mypassword")
         change(user: userChangeData, token: tokenForChange)
         getProduct(id: 1)
-        getCatalog(id: 1, page: 1)
+        getCatalog(id: 2, page: 1)
     }
 }
 
@@ -103,7 +103,8 @@ extension ViewController {
         catalog.getCatalog(id: id, page: page) { response in
             switch response.result {
             case .success(let result):
-                print(result)
+                print("--- CATALOG ID=\(id) RESULT: ---")
+                print(result.description)
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -115,7 +116,8 @@ extension ViewController {
         product.getProduct(id: id) { response in
             switch response.result {
             case .success(let result):
-                print(result)
+                print("--- PRODUCT RESULT: ---")
+                print(result.description)
             case .failure(let error):
                 print(error.localizedDescription)
             }

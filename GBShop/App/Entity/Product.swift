@@ -13,14 +13,6 @@ struct Product: Codable {
     let category: String
     let price: Double
     let description: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "id_product"
-        case name = "product_name"
-        case category
-        case price
-        case description = "product_description"
-    }
 }
 
 extension Product: Equatable {
