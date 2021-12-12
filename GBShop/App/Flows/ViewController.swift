@@ -38,6 +38,8 @@ class ViewController: UIViewController {
         change(user: userChangeData, token: tokenForChange)
         getProduct(id: 1)
         getCatalog(id: 2, page: 1)
+        reviewByProduct(id: 1)
+        reviewByUser(id: 2)
     }
 }
 
@@ -117,6 +119,32 @@ extension ViewController {
             switch response.result {
             case .success(let result):
                 print("--- PRODUCT RESULT: ---")
+                print(result.description)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func reviewByProduct(id: Int) {
+        let review = request.makeReviewRequestFactory()
+        review.reviewByProduct(id: id) { response in
+            switch response.result {
+            case .success(let result):
+                print("--- REVIEW BY PRODUCT RESULT: ---")
+                print(result.description)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func reviewByUser(id: Int) {
+        let review = request.makeReviewRequestFactory()
+        review.reviewByUser(id: id) { response in
+            switch response.result {
+            case .success(let result):
+                print("--- REVIEW BY USER RESULT: ---")
                 print(result.description)
             case .failure(let error):
                 print(error.localizedDescription)
