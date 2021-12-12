@@ -11,4 +11,6 @@ import Alamofire
 protocol ReviewRequestFactory {
     func reviewByProduct(id: Int, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void)
     func reviewByUser(id: Int, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void)
+    func reviewAdd(review: Review, token: String, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void)
+    func reviewDelete(reviewId: Int, userId: Int, token: String, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void)
 }

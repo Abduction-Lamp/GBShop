@@ -10,9 +10,9 @@ import Foundation
 struct Review: Codable {
     let id:          Int
     let productId:   Int
-    let productName: String
+    let productName: String?
     let userId:      Int
-    let userLogin:   String
+    let userLogin:   String?
     let comment:     String?
     let assessment:  Int
     let date:        TimeInterval
