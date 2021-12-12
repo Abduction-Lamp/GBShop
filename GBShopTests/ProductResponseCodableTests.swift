@@ -27,13 +27,13 @@ class ProductResponseCodableTests: XCTestCase {
     // MARK: - Product
     //
     func testProductResponseSuccess() throws {
-        let expression = ProductResponse (result: 1,
-                                          message: "Success",
-                                          product: Product(id: 1,
-                                                           name: "MacBook Pro",
-                                                           category: "Ноутбук",
-                                                           price: 250_000,
-                                                           description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ"))
+        let expression = ProductResponse(result: 1,
+                                         message: "Success",
+                                         product: Product(id: 1,
+                                                          name: "MacBook Pro",
+                                                          category: "Ноутбук",
+                                                          price: 250_000,
+                                                          description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ"))
         request.getProduct(id: 1) { response in
             switch response.result {
             case .success(let product):
@@ -116,7 +116,7 @@ class ProductResponseCodableTests: XCTestCase {
     }
     
     func testCatalogResponseFailure() throws {
-        let expression: CatalogResponse = CatalogResponse(result: 0, message: "Каталог пуст", catalog: nil)
+        let expression = CatalogResponse(result: 0, message: "Каталог пуст", catalog: nil)
     
         request.getCatalog(id: 11, page: 1) { response in
             switch response.result {

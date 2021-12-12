@@ -28,3 +28,18 @@ struct Review: Codable {
         case date
     }
 }
+
+
+extension Review: Equatable {
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return  lhs.id == rhs.id &&
+                lhs.productId == rhs.productId &&
+                lhs.productName == rhs.productName &&
+                lhs.userId == rhs.userId &&
+                lhs.userLogin == rhs.userLogin &&
+                lhs.comment == rhs.comment &&
+                lhs.assessment == rhs.assessment &&
+                lhs.date == rhs.date
+    }
+}
