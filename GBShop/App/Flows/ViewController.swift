@@ -42,7 +42,7 @@ class ViewController: UIViewController {
 }
 
 
-//  MARK: - Network Service
+//  MARK: - Working with network
 //
 extension ViewController {
     
