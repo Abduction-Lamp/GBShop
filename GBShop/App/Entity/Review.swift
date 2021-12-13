@@ -8,15 +8,15 @@
 import Foundation
 
 struct Review: Codable {
-    let id:          Int
-    let productId:   Int
+    let id: Int
+    let productId: Int
     let productName: String?
-    let userId:      Int
-    let userLogin:   String?
-    let comment:     String?
-    let assessment:  Int
-    let date:        TimeInterval
-    
+    let userId: Int
+    let userLogin: String?
+    let comment: String?
+    let assessment: Int
+    let date: TimeInterval
+
     enum CodingKeys: String, CodingKey {
         case id
         case productId = "product_id"
@@ -29,9 +29,8 @@ struct Review: Codable {
     }
 }
 
-
 extension Review: Equatable {
-    
+
     static func == (lhs: Self, rhs: Self) -> Bool {
         return  lhs.id == rhs.id &&
                 lhs.productId == rhs.productId &&

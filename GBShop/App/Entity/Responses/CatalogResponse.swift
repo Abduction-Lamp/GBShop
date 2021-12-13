@@ -11,12 +11,11 @@ struct CatalogResponse: Codable {
     let result: Int
     let message: String
     let catalog: [Product]?
-    
+
     var description: String {
         var output = """
                      result:   \(result)
-                     message:  \(message)
-                     
+                     message:  \(message)\n
                      """
         if let catalog = self.catalog {
             catalog.forEach { item in
@@ -25,8 +24,7 @@ struct CatalogResponse: Codable {
                                     name:        \(item.name)
                                     category:    \(item.category)
                                     price:       \(item.price)
-                                    description: \(item.description ?? "")
-                          
+                                    description: \(item.description ?? "")\n
                           """
             }
         }

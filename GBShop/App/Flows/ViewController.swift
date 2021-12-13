@@ -40,14 +40,12 @@ class ViewController: UIViewController {
                                    comment: "test",
                                    assessment: 5,
                                    date: Date().timeIntervalSince1970)
-    
-    
-    
+
     // MARK: - Lifecycle
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         login(login: "Username", password: "UserPassword")
         logout(id: 1, token: tokenToId1)
         register(user: newUser, password: "mypassword")
@@ -61,8 +59,7 @@ class ViewController: UIViewController {
     }
 }
 
-
-//  MARK: - Working with network
+// MARK: - Working with network
 //
 extension ViewController {
     
@@ -77,7 +74,7 @@ extension ViewController {
             }
         }
     }
-    
+
     private func logout(id: Int, token: String) {
         let auth = request.makeAuthRequestFatory()
         auth.logout(id: id, token: token) { response in
@@ -89,7 +86,7 @@ extension ViewController {
             }
         }
     }
-    
+
     private func register(user: User, password: String) {
         let userRequest = request.makeUserRequestFactory()
         userRequest.register(user: user, password: password) { response in
@@ -113,7 +110,7 @@ extension ViewController {
             }
         }
     }
-    
+
     private func getCatalog(id: Int, page: Int) {
         let catalog = request.makeProductRequestFactory()
         catalog.getCatalog(id: id, page: page) { response in
@@ -125,7 +122,7 @@ extension ViewController {
             }
         }
     }
-    
+
     private func getProduct(id: Int) {
         let product = request.makeProductRequestFactory()
         product.getProduct(id: id) { response in
@@ -137,7 +134,7 @@ extension ViewController {
             }
         }
     }
-    
+
     private func reviewByProduct(id: Int) {
         let review = request.makeReviewRequestFactory()
         review.reviewByProduct(id: id) { response in
@@ -149,7 +146,7 @@ extension ViewController {
             }
         }
     }
-    
+
     private func reviewByUser(id: Int) {
         let review = request.makeReviewRequestFactory()
         review.reviewByUser(id: id) { response in
@@ -161,7 +158,7 @@ extension ViewController {
             }
         }
     }
-    
+
     private func reviewAdd(_ new: Review, token: String) {
         let review = request.makeReviewRequestFactory()
         review.reviewAdd(review: new, token: token) { response in
@@ -173,7 +170,7 @@ extension ViewController {
             }
         }
     }
-    
+
     private func reviewDelete(id: Int, userId: Int, token: String) {
         let review = request.makeReviewRequestFactory()
         review.reviewDelete(reviewId: id, userId: userId, token: token) { response in

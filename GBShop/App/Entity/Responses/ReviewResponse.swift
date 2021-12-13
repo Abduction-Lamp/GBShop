@@ -11,12 +11,11 @@ struct ReviewResponse: Codable {
     let result: Int
     let message: String
     let review: [Review]?
-    
+
     var description: String {
         var output = """
                      result:   \(result)
-                     message:  \(message)
-                     
+                     message:  \(message)\n
                      """
         if let review = self.review {
             let format = DateFormatter()
@@ -34,8 +33,7 @@ struct ReviewResponse: Codable {
                                     user login:   \(item.userLogin ?? "nil")
                                     comment:      \(item.comment ?? "")
                                     assessment:   \(item.assessment)
-                                    date:         \(format.string(from: date))
-                          
+                                    date:         \(format.string(from: date))\n
                           """
             }
         }

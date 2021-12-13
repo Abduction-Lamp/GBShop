@@ -11,12 +11,11 @@ struct ProductResponse: Codable {
     let result: Int
     let message: String
     let product: Product?
-    
+
     var description: String {
         var output = """
                      result:   \(result)
-                     message:  \(message)
-                     
+                     message:  \(message)\n
                      """
         if let product = self.product {
             output += """
@@ -24,8 +23,7 @@ struct ProductResponse: Codable {
                                 name:        \(product.name)
                                 category:    \(product.category)
                                 price:       \(product.price)
-                                description: \(product.description ?? "")
-                      
+                                description: \(product.description ?? "")\n
                       """
         }
         return output

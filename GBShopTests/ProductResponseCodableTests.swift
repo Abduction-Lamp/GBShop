@@ -6,34 +6,32 @@
 //
 
 import Foundation
-
-
 import XCTest
 import Alamofire
 @testable import GBShop
 
 class ProductResponseCodableTests: XCTestCase {
-    
+
     let request = RequestFactory().makeProductRequestFactory()
     let expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
 
-    
-    
     override func setUpWithError() throws {}
     override func tearDownWithError() throws {}
+}
 
+// MARK: - Product
+//
+extension ProductResponseCodableTests {
     
-    
-    // MARK: - Product
-    //
     func testProductResponseSuccess() throws {
-        let expression = ProductResponse(result: 1,
-                                         message: "Success",
-                                         product: Product(id: 1,
-                                                          name: "MacBook Pro",
-                                                          category: "Ноутбук",
-                                                          price: 250_000,
-                                                          description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ"))
+        let expression =
+        ProductResponse(result: 1,
+                        message: "Success",
+                        product: Product(id: 1,
+                                         name: "MacBook Pro",
+                                         category: "Ноутбук",
+                                         price: 250_000,
+                                         description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ"))
         request.getProduct(id: 1) { response in
             switch response.result {
             case .success(let product):
@@ -49,10 +47,10 @@ class ProductResponseCodableTests: XCTestCase {
         }
         wait(for: [self.expectation], timeout: 10.0)
     }
-    
+
     func testProductResponseFailure() throws {
         let expression = ProductResponse(result: 0, message: "Failure", product: nil)
-        
+
         request.getProduct(id: 7) { response in
             switch response.result {
             case .success(let product):
@@ -68,10 +66,12 @@ class ProductResponseCodableTests: XCTestCase {
         }
         wait(for: [self.expectation], timeout: 10.0)
     }
+}
+
+// MARK: - Catalog
+//
+extension ProductResponseCodableTests {
     
-    
-    // MARK: - Catalog
-    //
     func testCatalogResponseSuccess() throws {
         let expression = CatalogResponse(result: 1,
                                          message: "Цисло товаров = 3",
@@ -114,10 +114,10 @@ class ProductResponseCodableTests: XCTestCase {
         }
         wait(for: [self.expectation], timeout: 10.0)
     }
-    
+
     func testCatalogResponseFailure() throws {
         let expression = CatalogResponse(result: 0, message: "Каталог пуст", catalog: nil)
-    
+
         request.getCatalog(id: 11, page: 1) { response in
             switch response.result {
             case .success(let catalog):

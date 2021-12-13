@@ -6,8 +6,6 @@
 //
 
 import Foundation
-
-import Foundation
 import Alamofire
 
 class ReviewRequest: AbstractRequestFactory {
@@ -26,54 +24,61 @@ class ReviewRequest: AbstractRequestFactory {
 }
 
 extension ReviewRequest: ReviewRequestFactory {
-    
-    func reviewByProduct(id: Int, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
+
+    func reviewByProduct(id: Int,
+                         completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
         let requestModel = ReviewByProduct(baseUrl: baseUrl, id: id)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
     
-    func reviewByUser(id: Int, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
+    func reviewByUser(id: Int,
+                      completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
         let requestModel = ReviewByUser(baseUrl: baseUrl, id: id)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
-    
-    func reviewAdd(review: Review, token: String, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
+
+    func reviewAdd(review: Review,
+                   token: String,
+                   completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
         let requestModel = ReviewAdd(baseUrl: baseUrl, review: review, token: token)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
     
-    func reviewDelete(reviewId: Int, userId: Int, token: String, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
+    func reviewDelete(reviewId: Int,
+                      userId: Int,
+                      token: String,
+                      completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
         let requestModel = ReviewDelete(baseUrl: baseUrl, reviewId: reviewId, userId: userId, token: token)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
 }
 
 extension ReviewRequest {
-    
+
     struct ReviewByProduct: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .get
         var path: String = "product"
-        var parameters: Parameters? = nil
-        
+        var parameters: Parameters?
+    
         init(baseUrl: URL, id: Int) {
             self.baseUrl = baseUrl
             self.path += "/\(id)/review/"
         }
     }
-    
+
     struct ReviewByUser: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .get
         var path: String = "user"
-        var parameters: Parameters? = nil
-        
+        var parameters: Parameters?
+
         init(baseUrl: URL, id: Int) {
             self.baseUrl = baseUrl
             self.path += "/\(id)/review/"
         }
     }
-    
+
     struct ReviewAdd: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .post
@@ -91,7 +96,7 @@ extension ReviewRequest {
             ]
         }
     }
-    
+
     struct ReviewDelete: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .post

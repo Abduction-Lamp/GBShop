@@ -39,7 +39,7 @@ extension AuthRequest: AuthRequestFactory {
 }
 
 extension AuthRequest {
-    
+
     struct Login: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .post
@@ -53,7 +53,7 @@ extension AuthRequest {
             ]
         }
     }
-    
+
     struct Logout: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .post
