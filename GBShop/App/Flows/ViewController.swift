@@ -46,22 +46,22 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        login(login: "Username", password: "UserPassword")
-//        logout(id: 1, token: tokenToId1)
-//        register(user: newUser, password: "mypassword")
-//        change(user: userDataChange, token: tokenToId2)
-//        getProduct(id: 1)
-//        getCatalog(id: 2, page: 1)
-//        reviewByProduct(id: 1)
-//        reviewByUser(id: 2)
-//        reviewAdd(newReview, token: tokenToId2)
-//        reviewDelete(id: 2, userId: 2, token: tokenToId2)
+        login(login: "Username", password: "UserPassword")
+        logout(id: 1, token: tokenToId1)
+        register(user: newUser, password: "mypassword")
+        change(user: userDataChange, token: tokenToId2)
+        getProduct(id: 1)
+        getCatalog(id: 2, page: 1)
+        reviewByProduct(id: 1)
+        reviewByUser(id: 2)
+        reviewAdd(newReview, token: tokenToId2)
+        reviewDelete(id: 2, userId: 2, token: tokenToId2)
         
-//        productAddToCart(productId: 1, owner: 1, token: tokenToId1)
-//        productAddToCart(productId: 4, owner: 1, token: tokenToId1)
+        productAddToCart(productId: 1, owner: 1, token: tokenToId1)
+        productAddToCart(productId: 4, owner: 1, token: tokenToId1)
         
-//        productDeleteFromCart(productId: 1, owner: 1, token: tokenToId1)
-//        productDeleteFromCart(productId: 1, owner: 1, token: tokenToId1)
+        productDeleteFromCart(productId: 1, owner: 1, token: tokenToId1)
+        productDeleteFromCart(productId: 1, owner: 1, token: tokenToId1)
 
         pay(owner: 1, token: tokenToId1)
     }

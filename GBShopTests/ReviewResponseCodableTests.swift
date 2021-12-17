@@ -190,7 +190,7 @@ extension ReviewResponseCodableTests {
                                userLogin: nil,
                                comment: "test",
                                assessment: 5,
-                               date: Date().timeIntervalSince1970)
+                               date: 12345)
 
         let responseReview = Review(id: 11,
                                     productId: 1,

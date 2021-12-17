@@ -12,6 +12,7 @@
 		4E027FD82766274400326158 /* ReviewRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD72766274400326158 /* ReviewRequest.swift */; };
 		4E027FDA276627F700326158 /* ReviewRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD9276627F700326158 /* ReviewRequestFactory.swift */; };
 		4E027FDC27662C0700326158 /* ReviewResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */; };
+		4E16DF1D276B93960019FEDA /* CartResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E16DF1C276B93960019FEDA /* CartResponseCodableTests.swift */; };
 		4E22569627526863008E52F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E22569527526863008E52F8 /* AppDelegate.swift */; };
 		4E22569827526863008E52F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E22569727526863008E52F8 /* SceneDelegate.swift */; };
 		4E22569A27526863008E52F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E22569927526863008E52F8 /* ViewController.swift */; };
@@ -77,6 +78,7 @@
 		4E027FD72766274400326158 /* ReviewRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequest.swift; sourceTree = "<group>"; };
 		4E027FD9276627F700326158 /* ReviewRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestFactory.swift; sourceTree = "<group>"; };
 		4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewResponseCodableTests.swift; sourceTree = "<group>"; };
+		4E16DF1C276B93960019FEDA /* CartResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartResponseCodableTests.swift; sourceTree = "<group>"; };
 		4E22569227526863008E52F8 /* GBShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E22569527526863008E52F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E22569727526863008E52F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				4E901BE5275E3B1800E6160F /* UserResponseCodableTests.swift */,
 				4E901BE7275E3B2600E6160F /* ProductResponseCodableTests.swift */,
 				4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */,
+				4E16DF1C276B93960019FEDA /* CartResponseCodableTests.swift */,
 			);
 			path = GBShopTests;
 			sourceTree = "<group>";
@@ -661,6 +664,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E901BE8275E3B2600E6160F /* ProductResponseCodableTests.swift in Sources */,
+				4E16DF1D276B93960019FEDA /* CartResponseCodableTests.swift in Sources */,
 				4E901BE6275E3B1800E6160F /* UserResponseCodableTests.swift in Sources */,
 				4E901BDA275CEB9200E6160F /* ErrorParserTests.swift in Sources */,
 				4E901BE4275E3B0300E6160F /* AuthResponseCodableTests.swift in Sources */,
