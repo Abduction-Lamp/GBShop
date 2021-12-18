@@ -11,7 +11,10 @@ struct ReviewResponse: Codable {
     let result: Int
     let message: String
     let review: [Review]?
+}
 
+extension ReviewResponse: CustomStringConvertible {
+    
     var description: String {
         var output = """
                      result:   \(result)

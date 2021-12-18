@@ -10,7 +10,10 @@ import Foundation
 struct UserRegisterResponse: Codable {
     let result: Int
     let message: String
+}
 
+extension UserRegisterResponse: CustomStringConvertible {
+    
     var description: String {
         return  """
                 result:  \(result)

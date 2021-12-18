@@ -11,7 +11,10 @@ struct CartResponse: Codable {
     let result: Int
     let message: String
     let cart: [Product]?
+}
 
+extension CartResponse: CustomStringConvertible {
+    
     var description: String {
         var output = """
                      result:   \(result)

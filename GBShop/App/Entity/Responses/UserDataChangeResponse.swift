@@ -11,7 +11,10 @@ struct UserDataChangeResponse: Codable {
     let result: Int
     let message: String
     let user: User?
+}
 
+extension UserDataChangeResponse: CustomStringConvertible {
+    
     var description: String {
         var output =    """
                         result:  \(result)

@@ -11,7 +11,10 @@ struct CatalogResponse: Codable {
     let result: Int
     let message: String
     let catalog: [Product]?
+}
 
+extension CatalogResponse: CustomStringConvertible {
+    
     var description: String {
         var output = """
                      result:   \(result)

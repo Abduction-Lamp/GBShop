@@ -12,7 +12,10 @@ struct LoginResponse: Codable {
     let message: String
     let user: User?
     let token: String?
+}
 
+extension LoginResponse: CustomStringConvertible {
+    
     var description: String {
         var output =    """
                         result:  \(result)

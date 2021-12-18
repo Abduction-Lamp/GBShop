@@ -11,7 +11,10 @@ struct ProductResponse: Codable {
     let result: Int
     let message: String
     let product: Product?
+}
 
+extension ProductResponse: CustomStringConvertible {
+    
     var description: String {
         var output = """
                      result:   \(result)
