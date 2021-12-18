@@ -32,6 +32,7 @@ extension ProfileUserRequest: ProfileUserRequestFactory {
         let requestModel = Request(baseUrl: baseUrl, path: path, user: user, password: password)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
+    
     func change(user: Profile, password: String, completionHandler: @escaping (AFDataResponse<ChangeUserResult>) -> Void) {
         let path = "changeUserData.json"
         let requestModel = Request(baseUrl: baseUrl, path: path, user: user, password: password)
