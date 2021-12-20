@@ -52,6 +52,12 @@
 		4EC02F3B2770D62900EACE3D /* LoginViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F3A2770D62900EACE3D /* LoginViewPresenter.swift */; };
 		4EC02F3E2770D7A300EACE3D /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F3D2770D7A300EACE3D /* Padding.swift */; };
 		4EC02F402770D8CC00EACE3D /* BuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F3F2770D8CC00EACE3D /* BuilderViewController.swift */; };
+		4EC02F452770DA1300EACE3D /* NewYork.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F432770DA1300EACE3D /* NewYork.ttf */; };
+		4EC02F462770DA1300EACE3D /* NewYork.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F432770DA1300EACE3D /* NewYork.ttf */; };
+		4EC02F472770DA1300EACE3D /* NewYork.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F432770DA1300EACE3D /* NewYork.ttf */; };
+		4EC02F482770DA1300EACE3D /* NewYorkItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */; };
+		4EC02F492770DA1300EACE3D /* NewYorkItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */; };
+		4EC02F4A2770DA1300EACE3D /* NewYorkItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */; };
 		58EE9680BF3E0E18B2D3D45E /* Pods_GBShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3774A26186DCA5D518099D2 /* Pods_GBShop.framework */; };
 		824B6DE575A039A8A8C164AE /* Pods_GBShop_GBShopUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3528E615E659985AB35B0433 /* Pods_GBShop_GBShopUITests.framework */; };
 		D0A42D0907D5DAD9D1F13AE9 /* Pods_GBShopTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ECA94BE0430B6C437201305 /* Pods_GBShopTests.framework */; };
@@ -131,6 +137,8 @@
 		4EC02F3A2770D62900EACE3D /* LoginViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewPresenter.swift; sourceTree = "<group>"; };
 		4EC02F3D2770D7A300EACE3D /* Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Padding.swift; sourceTree = "<group>"; };
 		4EC02F3F2770D8CC00EACE3D /* BuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderViewController.swift; sourceTree = "<group>"; };
+		4EC02F432770DA1300EACE3D /* NewYork.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewYork.ttf; sourceTree = "<group>"; };
+		4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewYorkItalic.ttf; sourceTree = "<group>"; };
 		B463B398E94150A8D41687CD /* Pods-GBShopTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShopTests.release.xcconfig"; path = "Target Support Files/Pods-GBShopTests/Pods-GBShopTests.release.xcconfig"; sourceTree = "<group>"; };
 		C82D62A9AA38F6E0764E24E1 /* Pods-GBShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShop.release.xcconfig"; path = "Target Support Files/Pods-GBShop/Pods-GBShop.release.xcconfig"; sourceTree = "<group>"; };
 		CCEFFB3DC1FFA8234385F2F9 /* Pods-GBShop-GBShopUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShop-GBShopUITests.release.xcconfig"; path = "Target Support Files/Pods-GBShop-GBShopUITests/Pods-GBShop-GBShopUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -315,6 +323,7 @@
 		4E985A002752760A0009538C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4EC02F412770DA1300EACE3D /* Fonts */,
 				4E22569E27526866008E52F8 /* Assets.xcassets */,
 				4E2256A027526866008E52F8 /* LaunchScreen.storyboard */,
 			);
@@ -406,6 +415,23 @@
 				4EC02F3D2770D7A300EACE3D /* Padding.swift */,
 			);
 			path = Suppoting;
+			sourceTree = "<group>";
+		};
+		4EC02F412770DA1300EACE3D /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F422770DA1300EACE3D /* NewYork */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		4EC02F422770DA1300EACE3D /* NewYork */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F432770DA1300EACE3D /* NewYork.ttf */,
+				4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */,
+			);
+			path = NewYork;
 			sourceTree = "<group>";
 		};
 		CA22B858912D54C4C6EDD53B /* Pods */ = {
@@ -530,7 +556,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EC02F452770DA1300EACE3D /* NewYork.ttf in Resources */,
 				4E2256A227526866008E52F8 /* LaunchScreen.storyboard in Resources */,
+				4EC02F482770DA1300EACE3D /* NewYorkItalic.ttf in Resources */,
 				4E22569F27526866008E52F8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,6 +567,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EC02F492770DA1300EACE3D /* NewYorkItalic.ttf in Resources */,
+				4EC02F462770DA1300EACE3D /* NewYork.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,6 +576,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EC02F4A2770DA1300EACE3D /* NewYorkItalic.ttf in Resources */,
+				4EC02F472770DA1300EACE3D /* NewYork.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
