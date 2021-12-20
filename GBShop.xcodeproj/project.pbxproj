@@ -223,13 +223,8 @@
 		4E2256AB27526867008E52F8 /* GBShopTests */ = {
 			isa = PBXGroup;
 			children = (
+				4EC02F4B2770EC8E00EACE3D /* ResponseCodable */,
 				4E2256AE27526867008E52F8 /* Info.plist */,
-				4E901BD9275CEB9200E6160F /* ErrorParserTests.swift */,
-				4E901BE3275E3B0300E6160F /* AuthResponseCodableTests.swift */,
-				4E901BE5275E3B1800E6160F /* UserResponseCodableTests.swift */,
-				4E901BE7275E3B2600E6160F /* ProductResponseCodableTests.swift */,
-				4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */,
-				4E16DF1C276B93960019FEDA /* CartResponseCodableTests.swift */,
 			);
 			path = GBShopTests;
 			sourceTree = "<group>";
@@ -432,6 +427,19 @@
 				4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */,
 			);
 			path = NewYork;
+			sourceTree = "<group>";
+		};
+		4EC02F4B2770EC8E00EACE3D /* ResponseCodable */ = {
+			isa = PBXGroup;
+			children = (
+				4E901BD9275CEB9200E6160F /* ErrorParserTests.swift */,
+				4E901BE3275E3B0300E6160F /* AuthResponseCodableTests.swift */,
+				4E901BE5275E3B1800E6160F /* UserResponseCodableTests.swift */,
+				4E901BE7275E3B2600E6160F /* ProductResponseCodableTests.swift */,
+				4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */,
+				4E16DF1C276B93960019FEDA /* CartResponseCodableTests.swift */,
+			);
+			path = ResponseCodable;
 			sourceTree = "<group>";
 		};
 		CA22B858912D54C4C6EDD53B /* Pods */ = {
