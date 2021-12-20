@@ -45,7 +45,9 @@ class ViewController: UIViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.view.backgroundColor = .systemBrown
+        
 //        login(login: "Username", password: "UserPassword")
 //        logout(id: 1, token: tokenToId1)
 //        register(user: newUser, password: "mypassword")
