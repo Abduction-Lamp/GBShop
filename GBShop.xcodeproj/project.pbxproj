@@ -47,6 +47,11 @@
 		4E901BE6275E3B1800E6160F /* UserResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E901BE5275E3B1800E6160F /* UserResponseCodableTests.swift */; };
 		4E901BE8275E3B2600E6160F /* ProductResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E901BE7275E3B2600E6160F /* ProductResponseCodableTests.swift */; };
 		4EBF95202763B22F00B9B0F0 /* CatalogResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBF951F2763B22F00B9B0F0 /* CatalogResponse.swift */; };
+		4EC02F362770D54800EACE3D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F352770D54800EACE3D /* LoginView.swift */; };
+		4EC02F382770D55600EACE3D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F372770D55600EACE3D /* LoginViewController.swift */; };
+		4EC02F3B2770D62900EACE3D /* LoginViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F3A2770D62900EACE3D /* LoginViewPresenter.swift */; };
+		4EC02F3E2770D7A300EACE3D /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F3D2770D7A300EACE3D /* Padding.swift */; };
+		4EC02F402770D8CC00EACE3D /* BuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F3F2770D8CC00EACE3D /* BuilderViewController.swift */; };
 		58EE9680BF3E0E18B2D3D45E /* Pods_GBShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3774A26186DCA5D518099D2 /* Pods_GBShop.framework */; };
 		824B6DE575A039A8A8C164AE /* Pods_GBShop_GBShopUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3528E615E659985AB35B0433 /* Pods_GBShop_GBShopUITests.framework */; };
 		D0A42D0907D5DAD9D1F13AE9 /* Pods_GBShopTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ECA94BE0430B6C437201305 /* Pods_GBShopTests.framework */; };
@@ -121,6 +126,11 @@
 		4E901BE5275E3B1800E6160F /* UserResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponseCodableTests.swift; sourceTree = "<group>"; };
 		4E901BE7275E3B2600E6160F /* ProductResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductResponseCodableTests.swift; sourceTree = "<group>"; };
 		4EBF951F2763B22F00B9B0F0 /* CatalogResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogResponse.swift; sourceTree = "<group>"; };
+		4EC02F352770D54800EACE3D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		4EC02F372770D55600EACE3D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		4EC02F3A2770D62900EACE3D /* LoginViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewPresenter.swift; sourceTree = "<group>"; };
+		4EC02F3D2770D7A300EACE3D /* Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Padding.swift; sourceTree = "<group>"; };
+		4EC02F3F2770D8CC00EACE3D /* BuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderViewController.swift; sourceTree = "<group>"; };
 		B463B398E94150A8D41687CD /* Pods-GBShopTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShopTests.release.xcconfig"; path = "Target Support Files/Pods-GBShopTests/Pods-GBShopTests.release.xcconfig"; sourceTree = "<group>"; };
 		C82D62A9AA38F6E0764E24E1 /* Pods-GBShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShop.release.xcconfig"; path = "Target Support Files/Pods-GBShop/Pods-GBShop.release.xcconfig"; sourceTree = "<group>"; };
 		CCEFFB3DC1FFA8234385F2F9 /* Pods-GBShop-GBShopUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShop-GBShopUITests.release.xcconfig"; path = "Target Support Files/Pods-GBShop-GBShopUITests/Pods-GBShop-GBShopUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -296,6 +306,7 @@
 		4E9859FF275276020009538C /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				4EC02F3C2770D77500EACE3D /* Suppoting */,
 				4E859D3627565AB800A7F2F1 /* Network */,
 			);
 			path = Core;
@@ -321,6 +332,7 @@
 		4E985A02275276510009538C /* BusinessLogic */ = {
 			isa = PBXGroup;
 			children = (
+				4EC02F392770D56500EACE3D /* LoginViewPresenter */,
 				4E859D462756670D00A7F2F1 /* Network */,
 			);
 			path = BusinessLogic;
@@ -341,6 +353,7 @@
 		4E985A042752767A0009538C /* Assembly */ = {
 			isa = PBXGroup;
 			children = (
+				4EC02F3F2770D8CC00EACE3D /* BuilderViewController.swift */,
 			);
 			path = Assembly;
 			sourceTree = "<group>";
@@ -348,9 +361,51 @@
 		4E985A052752768E0009538C /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				4EC02F322770D50800EACE3D /* LoginViewController */,
 				4E22569927526863008E52F8 /* ViewController.swift */,
 			);
 			path = Flows;
+			sourceTree = "<group>";
+		};
+		4EC02F322770D50800EACE3D /* LoginViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F342770D52100EACE3D /* View */,
+				4EC02F332770D51C00EACE3D /* ViewController */,
+			);
+			path = LoginViewController;
+			sourceTree = "<group>";
+		};
+		4EC02F332770D51C00EACE3D /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F372770D55600EACE3D /* LoginViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		4EC02F342770D52100EACE3D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F352770D54800EACE3D /* LoginView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4EC02F392770D56500EACE3D /* LoginViewPresenter */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F3A2770D62900EACE3D /* LoginViewPresenter.swift */,
+			);
+			path = LoginViewPresenter;
+			sourceTree = "<group>";
+		};
+		4EC02F3C2770D77500EACE3D /* Suppoting */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F3D2770D7A300EACE3D /* Padding.swift */,
+			);
+			path = Suppoting;
 			sourceTree = "<group>";
 		};
 		CA22B858912D54C4C6EDD53B /* Pods */ = {
@@ -625,6 +680,7 @@
 				4E859D482756674C00A7F2F1 /* AuthRequestFactory.swift in Sources */,
 				4E859D412756641900A7F2F1 /* RequestRouter.swift in Sources */,
 				4E3246B5276B76B400F77BF2 /* Cart.swift in Sources */,
+				4EC02F402770D8CC00EACE3D /* BuilderViewController.swift in Sources */,
 				4E859D3F275662E100A7F2F1 /* AbstractRequestFactory.swift in Sources */,
 				4E901BE0275E383700E6160F /* ProductRequestFactory.swift in Sources */,
 				4E027FD82766274400326158 /* ReviewRequest.swift in Sources */,
@@ -638,10 +694,13 @@
 				4E859D3B27565CC200A7F2F1 /* ErrorParser.swift in Sources */,
 				4E859D3D27565FD100A7F2F1 /* ResponseCodable.swift in Sources */,
 				4E3246B9276B7B9C00F77BF2 /* CartRequest.swift in Sources */,
+				4EC02F3E2770D7A300EACE3D /* Padding.swift in Sources */,
+				4EC02F3B2770D62900EACE3D /* LoginViewPresenter.swift in Sources */,
 				4E22569A27526863008E52F8 /* ViewController.swift in Sources */,
 				4E859D4E2756711C00A7F2F1 /* UserRequestFactory.swift in Sources */,
 				4E22569627526863008E52F8 /* AppDelegate.swift in Sources */,
 				4E859D432756669900A7F2F1 /* LoginResponse.swift in Sources */,
+				4EC02F382770D55600EACE3D /* LoginViewController.swift in Sources */,
 				4E859D5A27567DF100A7F2F1 /* UserRequest.swift in Sources */,
 				4E22569827526863008E52F8 /* SceneDelegate.swift in Sources */,
 				4E027FD42766214900326158 /* Review.swift in Sources */,
@@ -651,6 +710,7 @@
 				4E859D3827565B1B00A7F2F1 /* AbstractErrorParser.swift in Sources */,
 				4E901BDC275E2D9700E6160F /* Product.swift in Sources */,
 				4E859D53275676BD00A7F2F1 /* LogoutResponse.swift in Sources */,
+				4EC02F362770D54800EACE3D /* LoginView.swift in Sources */,
 				4E859D4A275667A600A7F2F1 /* AuthRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
