@@ -14,7 +14,8 @@ protocol Builder: AnyObject {
 class BuilderViewController: Builder {
     static func makeLoginViewController() -> UIViewController {
         let viewController = LoginViewController()
-        let presenter = LoginViewPresenter(view: viewController)
+        let request = RequestFactory()
+        let presenter = LoginViewPresenter(view: viewController, network: request.makeAuthRequestFatory())
         viewController.presenret = presenter
         return viewController
     }

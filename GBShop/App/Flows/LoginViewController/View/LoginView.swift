@@ -94,7 +94,7 @@ final class LoginView: UIView {
         return button
     }()
     
-    private(set) var registerButton: UIButton = {
+    private(set) var registrationButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemYellow
@@ -106,7 +106,7 @@ final class LoginView: UIView {
         return button
     }()
     private let buttonSize = CGSize(width: 150, height: 40)
-    private let registerButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, trailing: .zero, leading: .zero)
+    private let registrationButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, trailing: .zero, leading: .zero)
     
     private var stack: UIStackView = {
         let stack = UIStackView()
@@ -145,7 +145,7 @@ final class LoginView: UIView {
         stack.addArrangedSubview(passwordTextField)
         stack.addArrangedSubview(loginButton)
         
-        contentView.addSubview(registerButton)
+        contentView.addSubview(registrationButton)
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
@@ -175,10 +175,11 @@ final class LoginView: UIView {
             loginButton.widthAnchor.constraint(equalToConstant: buttonSize.width),
             loginButton.heightAnchor.constraint(equalToConstant: buttonSize.height),
 
-            registerButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            registerButton.widthAnchor.constraint(equalToConstant: buttonSize.width),
-            registerButton.heightAnchor.constraint(equalToConstant: buttonSize.height),
-            registerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -registerButtonPadding.bottom)
+            registrationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            registrationButton.widthAnchor.constraint(equalToConstant: buttonSize.width),
+            registrationButton.heightAnchor.constraint(equalToConstant: buttonSize.height),
+            registrationButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                       constant: -registrationButtonPadding.bottom)
         ])
     }
 }

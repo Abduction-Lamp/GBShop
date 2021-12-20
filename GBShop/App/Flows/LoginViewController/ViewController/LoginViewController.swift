@@ -66,13 +66,37 @@ final class LoginViewController: UIViewController {
         
         loginView.loginTextField.delegate = self
         loginView.passwordTextField.delegate = self
+        
+        loginView.loginButton.addTarget(self, action: #selector(pressingLoginButton), for: .touchUpInside)
     }
 }
 
 // MARK: - LoginView Protocol
 //
 extension LoginViewController: LoginViewProtocol {
-
+    
+    func showAlertRequestError(error: Error) {
+        showAlertError(message: error.localizedDescription, title: "error")
+    }
+    
+    func showAlertAuthError(message: String) {
+        showAlertError(message: message, title: "Ошибка")
+    }
+    
+    func presentMainView() {
+        showAlertError(message: "Ok")
+    }
+    
+    func presentRegistrationView() {
+        showAlertError(message: "registrationButtonPadding")
+    }
+    
+    private func showAlertError(message: String, title: String? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 // MARK: - Keyboard Actions
@@ -99,8 +123,12 @@ extension LoginViewController {
     }
     
     @objc
-    func keyboardHide() {
+    func keyboardHide(_ sender: Any?) {
         loginView.scrollView.endEditing(true)
+        if let button = sender as? UIButton,
+           button === loginView.loginButton {
+            pressingLoginButton(button)
+        }
     }
 }
 
@@ -119,5 +147,19 @@ extension LoginViewController: UITextFieldDelegate {
         } else {
             textField.placeholder = "Пароль"
         }
+    }
+}
+
+// MARK: - Button Actions
+//
+extension LoginViewController {
+    
+    @objc
+    func pressingLoginButton(_ sender: UIButton) {
+        guard let login = loginView.loginTextField.text,
+              let password = loginView.passwordTextField.text,
+              !login.isEmpty,
+              !password.isEmpty else { return }
+        presenret?.auth(login: login, password: password)
     }
 }
