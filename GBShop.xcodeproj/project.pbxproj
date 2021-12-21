@@ -12,6 +12,9 @@
 		4E027FD82766274400326158 /* ReviewRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD72766274400326158 /* ReviewRequest.swift */; };
 		4E027FDA276627F700326158 /* ReviewRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD9276627F700326158 /* ReviewRequestFactory.swift */; };
 		4E027FDC27662C0700326158 /* ReviewResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */; };
+		4E11B34C2771FF4500CECFB5 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11B34B2771FF4500CECFB5 /* RegistrationViewController.swift */; };
+		4E11B3502772025A00CECFB5 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11B34F2772025A00CECFB5 /* RegistrationView.swift */; };
+		4E11B35A2772331B00CECFB5 /* RegistrationViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11B3592772331B00CECFB5 /* RegistrationViewPresenter.swift */; };
 		4E16DF1D276B93960019FEDA /* CartResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E16DF1C276B93960019FEDA /* CartResponseCodableTests.swift */; };
 		4E22569627526863008E52F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E22569527526863008E52F8 /* AppDelegate.swift */; };
 		4E22569827526863008E52F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E22569727526863008E52F8 /* SceneDelegate.swift */; };
@@ -58,6 +61,9 @@
 		4EC02F482770DA1300EACE3D /* NewYorkItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */; };
 		4EC02F492770DA1300EACE3D /* NewYorkItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */; };
 		4EC02F4A2770DA1300EACE3D /* NewYorkItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */; };
+		4EC02F4E2770EFEB00EACE3D /* LoginViewPresenterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F4D2770EFEB00EACE3D /* LoginViewPresenterTest.swift */; };
+		4EC02F5127711E9600EACE3D /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F5027711E9600EACE3D /* Color.swift */; };
+		4EC1548A27726E6300B30078 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC1548927726E6300B30078 /* String.swift */; };
 		58EE9680BF3E0E18B2D3D45E /* Pods_GBShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3774A26186DCA5D518099D2 /* Pods_GBShop.framework */; };
 		824B6DE575A039A8A8C164AE /* Pods_GBShop_GBShopUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3528E615E659985AB35B0433 /* Pods_GBShop_GBShopUITests.framework */; };
 		D0A42D0907D5DAD9D1F13AE9 /* Pods_GBShopTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ECA94BE0430B6C437201305 /* Pods_GBShopTests.framework */; };
@@ -88,6 +94,9 @@
 		4E027FD72766274400326158 /* ReviewRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequest.swift; sourceTree = "<group>"; };
 		4E027FD9276627F700326158 /* ReviewRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestFactory.swift; sourceTree = "<group>"; };
 		4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewResponseCodableTests.swift; sourceTree = "<group>"; };
+		4E11B34B2771FF4500CECFB5 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		4E11B34F2772025A00CECFB5 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		4E11B3592772331B00CECFB5 /* RegistrationViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewPresenter.swift; sourceTree = "<group>"; };
 		4E16DF1C276B93960019FEDA /* CartResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartResponseCodableTests.swift; sourceTree = "<group>"; };
 		4E22569227526863008E52F8 /* GBShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E22569527526863008E52F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +148,9 @@
 		4EC02F3F2770D8CC00EACE3D /* BuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderViewController.swift; sourceTree = "<group>"; };
 		4EC02F432770DA1300EACE3D /* NewYork.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewYork.ttf; sourceTree = "<group>"; };
 		4EC02F442770DA1300EACE3D /* NewYorkItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewYorkItalic.ttf; sourceTree = "<group>"; };
+		4EC02F4D2770EFEB00EACE3D /* LoginViewPresenterTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewPresenterTest.swift; sourceTree = "<group>"; };
+		4EC02F5027711E9600EACE3D /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		4EC1548927726E6300B30078 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		B463B398E94150A8D41687CD /* Pods-GBShopTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShopTests.release.xcconfig"; path = "Target Support Files/Pods-GBShopTests/Pods-GBShopTests.release.xcconfig"; sourceTree = "<group>"; };
 		C82D62A9AA38F6E0764E24E1 /* Pods-GBShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShop.release.xcconfig"; path = "Target Support Files/Pods-GBShop/Pods-GBShop.release.xcconfig"; sourceTree = "<group>"; };
 		CCEFFB3DC1FFA8234385F2F9 /* Pods-GBShop-GBShopUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShop-GBShopUITests.release.xcconfig"; path = "Target Support Files/Pods-GBShop-GBShopUITests/Pods-GBShop-GBShopUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +198,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4E11B3482771FD0D00CECFB5 /* RegistrationViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4E11B3492771FF2000CECFB5 /* View */,
+				4E11B34A2771FF2700CECFB5 /* ViewController */,
+			);
+			path = RegistrationViewController;
+			sourceTree = "<group>";
+		};
+		4E11B3492771FF2000CECFB5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4E11B34F2772025A00CECFB5 /* RegistrationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4E11B34A2771FF2700CECFB5 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4E11B34B2771FF4500CECFB5 /* RegistrationViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		4E22568927526863008E52F8 = {
 			isa = PBXGroup;
 			children = (
@@ -223,7 +260,8 @@
 		4E2256AB27526867008E52F8 /* GBShopTests */ = {
 			isa = PBXGroup;
 			children = (
-				4EC02F4B2770EC8E00EACE3D /* ResponseCodable */,
+				4EC02F4B2770EC8E00EACE3D /* ResponseCodableTests */,
+				4EC02F4C2770EDD000EACE3D /* PresenterTests */,
 				4E2256AE27526867008E52F8 /* Info.plist */,
 			);
 			path = GBShopTests;
@@ -309,6 +347,7 @@
 		4E9859FF275276020009538C /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				4EC02F4F27711E7600EACE3D /* Extensions */,
 				4EC02F3C2770D77500EACE3D /* Suppoting */,
 				4E859D3627565AB800A7F2F1 /* Network */,
 			);
@@ -336,7 +375,7 @@
 		4E985A02275276510009538C /* BusinessLogic */ = {
 			isa = PBXGroup;
 			children = (
-				4EC02F392770D56500EACE3D /* LoginViewPresenter */,
+				4EC02F392770D56500EACE3D /* Presenters */,
 				4E859D462756670D00A7F2F1 /* Network */,
 			);
 			path = BusinessLogic;
@@ -365,6 +404,7 @@
 		4E985A052752768E0009538C /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				4E11B3482771FD0D00CECFB5 /* RegistrationViewController */,
 				4EC02F322770D50800EACE3D /* LoginViewController */,
 				4E22569927526863008E52F8 /* ViewController.swift */,
 			);
@@ -396,12 +436,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		4EC02F392770D56500EACE3D /* LoginViewPresenter */ = {
+		4EC02F392770D56500EACE3D /* Presenters */ = {
 			isa = PBXGroup;
 			children = (
 				4EC02F3A2770D62900EACE3D /* LoginViewPresenter.swift */,
+				4E11B3592772331B00CECFB5 /* RegistrationViewPresenter.swift */,
 			);
-			path = LoginViewPresenter;
+			path = Presenters;
 			sourceTree = "<group>";
 		};
 		4EC02F3C2770D77500EACE3D /* Suppoting */ = {
@@ -429,7 +470,7 @@
 			path = NewYork;
 			sourceTree = "<group>";
 		};
-		4EC02F4B2770EC8E00EACE3D /* ResponseCodable */ = {
+		4EC02F4B2770EC8E00EACE3D /* ResponseCodableTests */ = {
 			isa = PBXGroup;
 			children = (
 				4E901BD9275CEB9200E6160F /* ErrorParserTests.swift */,
@@ -439,7 +480,24 @@
 				4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */,
 				4E16DF1C276B93960019FEDA /* CartResponseCodableTests.swift */,
 			);
-			path = ResponseCodable;
+			path = ResponseCodableTests;
+			sourceTree = "<group>";
+		};
+		4EC02F4C2770EDD000EACE3D /* PresenterTests */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F4D2770EFEB00EACE3D /* LoginViewPresenterTest.swift */,
+			);
+			path = PresenterTests;
+			sourceTree = "<group>";
+		};
+		4EC02F4F27711E7600EACE3D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4EC02F5027711E9600EACE3D /* Color.swift */,
+				4EC1548927726E6300B30078 /* String.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		CA22B858912D54C4C6EDD53B /* Pods */ = {
@@ -718,14 +776,19 @@
 			files = (
 				4E901BDE275E35D700E6160F /* ProductResponse.swift in Sources */,
 				4E859D482756674C00A7F2F1 /* AuthRequestFactory.swift in Sources */,
+				4EC1548A27726E6300B30078 /* String.swift in Sources */,
+				4E11B34C2771FF4500CECFB5 /* RegistrationViewController.swift in Sources */,
+				4E11B3502772025A00CECFB5 /* RegistrationView.swift in Sources */,
 				4E859D412756641900A7F2F1 /* RequestRouter.swift in Sources */,
 				4E3246B5276B76B400F77BF2 /* Cart.swift in Sources */,
 				4EC02F402770D8CC00EACE3D /* BuilderViewController.swift in Sources */,
 				4E859D3F275662E100A7F2F1 /* AbstractRequestFactory.swift in Sources */,
+				4E11B35A2772331B00CECFB5 /* RegistrationViewPresenter.swift in Sources */,
 				4E901BE0275E383700E6160F /* ProductRequestFactory.swift in Sources */,
 				4E027FD82766274400326158 /* ReviewRequest.swift in Sources */,
 				4E859D5827567B3C00A7F2F1 /* UserDataChangeResponse.swift in Sources */,
 				4E027FDA276627F700326158 /* ReviewRequestFactory.swift in Sources */,
+				4EC02F5127711E9600EACE3D /* Color.swift in Sources */,
 				4E027FD62766224800326158 /* ReviewResponse.swift in Sources */,
 				4E3246BB276B7F2A00F77BF2 /* CartRequestFactory.swift in Sources */,
 				4E859D5527567A4C00A7F2F1 /* UserRegisterResponse.swift in Sources */,
@@ -764,6 +827,7 @@
 				4E901BE6275E3B1800E6160F /* UserResponseCodableTests.swift in Sources */,
 				4E901BDA275CEB9200E6160F /* ErrorParserTests.swift in Sources */,
 				4E901BE4275E3B0300E6160F /* AuthResponseCodableTests.swift in Sources */,
+				4EC02F4E2770EFEB00EACE3D /* LoginViewPresenterTest.swift in Sources */,
 				4E027FDC27662C0700326158 /* ReviewResponseCodableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

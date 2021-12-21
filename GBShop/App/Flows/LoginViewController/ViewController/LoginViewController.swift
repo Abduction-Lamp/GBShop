@@ -67,7 +67,8 @@ final class LoginViewController: UIViewController {
         loginView.loginTextField.delegate = self
         loginView.passwordTextField.delegate = self
         
-        loginView.loginButton.addTarget(self, action: #selector(pressingLoginButton), for: .touchUpInside)
+        loginView.loginButton.addTarget(self, action: #selector(pressedLoginButton), for: .touchUpInside)
+        loginView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
     }
 }
 
@@ -76,22 +77,23 @@ final class LoginViewController: UIViewController {
 extension LoginViewController: LoginViewProtocol {
     
     func showAlertRequestError(error: Error) {
-        showAlertError(message: error.localizedDescription, title: "error")
+        showAlert(message: error.localizedDescription, title: "error")
     }
     
     func showAlertAuthError(message: String) {
-        showAlertError(message: message, title: "Ошибка")
+        showAlert(message: message, title: "Ошибка")
     }
     
     func presentMainView() {
-        showAlertError(message: "Ok")
+        showAlert(message: "Ok")
     }
     
     func presentRegistrationView() {
-        showAlertError(message: "registrationButtonPadding")
+        let registrationViewController = BuilderViewController.makeRegistrationViewController()
+        self.present(registrationViewController, animated: true, completion: nil)
     }
     
-    private func showAlertError(message: String, title: String? = nil) {
+    private func showAlert(message: String, title: String? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
         alert.addAction(action)
@@ -127,7 +129,7 @@ extension LoginViewController {
         loginView.scrollView.endEditing(true)
         if let button = sender as? UIButton,
            button === loginView.loginButton {
-            pressingLoginButton(button)
+            pressedLoginButton(button)
         }
     }
 }
@@ -155,11 +157,16 @@ extension LoginViewController: UITextFieldDelegate {
 extension LoginViewController {
     
     @objc
-    func pressingLoginButton(_ sender: UIButton) {
+    func pressedLoginButton(_ sender: UIButton) {
         guard let login = loginView.loginTextField.text,
               let password = loginView.passwordTextField.text,
               !login.isEmpty,
               !password.isEmpty else { return }
         presenret?.auth(login: login, password: password)
+    }
+    
+    @objc
+    func pressedRegistrationButton(_ sender: UIButton) {
+        presentRegistrationView()
     }
 }

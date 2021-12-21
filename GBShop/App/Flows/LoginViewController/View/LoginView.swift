@@ -128,7 +128,7 @@ final class LoginView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Support methods
+    // MARK: - Configure Content
     //
     private func configuration() {
         self.layer.addSublayer(gradientLayer)
