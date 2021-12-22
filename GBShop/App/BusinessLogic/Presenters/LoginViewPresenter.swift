@@ -12,22 +12,23 @@ import Foundation
 protocol LoginViewProtocol: AnyObject {
     func showAlertRequestError(error: Error)
     func showAlertAuthError(message: String)
-    func presentMainView()
-    func presentRegistrationView()
 }
 
 protocol LoginViewPresenterProtool: AnyObject {
-    init(view: LoginViewProtocol, network: AuthRequestFactory)
+    init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory)
     func auth(login: String, password: String)
+    func presentRegistrationViewController()
 }
 
 // MARK: - LoginView Presenter
 //
 class LoginViewPresenter: LoginViewPresenterProtool {
-    weak var view: LoginViewProtocol?
+    private var router: RouterProtocol?
+    private weak var view: LoginViewProtocol?
     private let network: AuthRequestFactory
-    
-    required init(view: LoginViewProtocol, network: AuthRequestFactory) {
+
+    required init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory) {
+        self.router = router
         self.view = view
         self.network = network
     }
@@ -39,7 +40,12 @@ class LoginViewPresenter: LoginViewPresenterProtool {
                 switch response.result {
                 case .success(let result):
                     if result.result == 1 {
-                        self.view?.presentMainView()
+                        guard let user = result.user,
+                              let token = result.token else {
+                               self.view?.showAlertAuthError(message: result.message)
+                                  return
+                              }
+                        self.router?.pushUserViewController(user: user, token: token)
                     } else {
                         self.view?.showAlertAuthError(message: result.message)
                     }
@@ -48,5 +54,9 @@ class LoginViewPresenter: LoginViewPresenterProtool {
                 }
             }
         }
+    }
+    
+    func presentRegistrationViewController() {
+        router?.presentRegistrationViewController()
     }
 }

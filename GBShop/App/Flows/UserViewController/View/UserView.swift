@@ -1,13 +1,13 @@
 //
-//  RegistrationView.swift
+//  UserView.swift
 //  GBShop
 //
-//  Created by Владимир on 21.12.2021.
+//  Created by Владимир on 22.12.2021.
 //
 
 import UIKit
 
-final class RegistrationView: UIView {
+final class UserView: UIView {
     
     private(set) var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -68,22 +68,8 @@ final class RegistrationView: UIView {
         return makeTextFildView(placeholder: "Пароль")
     }()
     
-    private(set) var registrationButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemYellow
-        button.setTitleColor(.systemGray2, for: .highlighted)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont(name: "NewYork-Regular", size: 17)
-        button.layer.cornerRadius = 5
-        button.setTitle("Зарегистрироваться ", for: .normal)
-        return button
-    }()
-    
     private let textFieldSize = CGSize(width: .zero, height: 40)
     private let textFieldPadding = Padding<CGFloat>(top: 7, bottom: 7, trailing: 40, leading: 40)
-    
-    private let registrationButtonSize = CGSize(width: 200, height: 40)
 
     // MARK: - Initiation
     //
@@ -116,8 +102,7 @@ final class RegistrationView: UIView {
         contentView.addSubview(creditCardTextField)
         contentView.addSubview(loginTextField)
         contentView.addSubview(passwordTextField)
-        contentView.addSubview(registrationButton)
-        
+
         placesConstraint()
     }
     
@@ -127,12 +112,12 @@ final class RegistrationView: UIView {
             scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
             scrollView.widthAnchor.constraint(equalTo: self.safeAreaLayoutGuide.widthAnchor),
             scrollView.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor),
-
+            
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            
+
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textFieldPadding.top * 2),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -176,12 +161,7 @@ final class RegistrationView: UIView {
             passwordTextField.topAnchor.constraint(equalTo: loginTextField.bottomAnchor, constant: textFieldPadding.top),
             passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
             passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            passwordTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
-            
-            registrationButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: textFieldPadding.top * 4),
-            registrationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            registrationButton.widthAnchor.constraint(equalToConstant: registrationButtonSize.width),
-            registrationButton.heightAnchor.constraint(equalToConstant: registrationButtonSize.height)
+            passwordTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height)
         ])
     }
     

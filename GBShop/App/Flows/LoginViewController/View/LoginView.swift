@@ -147,6 +147,10 @@ final class LoginView: UIView {
         
         contentView.addSubview(registrationButton)
 
+        placesConstraint()
+    }
+    
+    private func placesConstraint() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),

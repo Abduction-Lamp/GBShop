@@ -88,10 +88,10 @@ extension LoginViewController: LoginViewProtocol {
         showAlert(message: "Ok")
     }
     
-    func presentRegistrationView() {
-        let registrationViewController = BuilderViewController.makeRegistrationViewController()
-        self.present(registrationViewController, animated: true, completion: nil)
-    }
+//    func presentRegistrationView() {
+//        let registrationViewController = BuilderViewController.makeRegistrationViewController()
+//        self.present(registrationViewController, animated: true, completion: nil)
+//    }
     
     private func showAlert(message: String, title: String? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -167,6 +167,6 @@ extension LoginViewController {
     
     @objc
     func pressedRegistrationButton(_ sender: UIButton) {
-        presentRegistrationView()
+        presenret?.presentRegistrationViewController()
     }
 }

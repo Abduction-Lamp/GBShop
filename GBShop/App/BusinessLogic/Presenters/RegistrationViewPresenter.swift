@@ -12,80 +12,102 @@ import Foundation
 protocol RegistrationViewProtocol: AnyObject {
     func showAlertRequestError(error: Error)
     func showAlertRegisterError(message: String)
-    func presentMainView()
 }
 
 protocol RegistrationViewPresenterProtool: AnyObject {
-    init(view: RegistrationViewProtocol, network: UserRequestFactory)
-    func makeUser(firstName: String,
-                  lastName: String,
-                  gender: Int,
-                  email: String,
-                  creditCard: String,
-                  login: String,
-                  password: String)
+    init(router: RouterProtocol, view: RegistrationViewProtocol, network: UserRequestFactory)
+    func userRegistration(firstName: String,
+                          lastName: String,
+                          gender: Int,
+                          email: String,
+                          creditCard: String,
+                          login: String,
+                          password: String)
 }
 
 // MARK: - RegistrationView Presenter
 //
 class RegistrationViewPresenter: RegistrationViewPresenterProtool {
+    private var router: RouterProtocol?
     weak var view: RegistrationViewProtocol?
     private let network: UserRequestFactory
     
-    required init(view: RegistrationViewProtocol, network: UserRequestFactory) {
+    private var newUser: User?
+    private var token: String?
+    
+    required init(router: RouterProtocol, view: RegistrationViewProtocol, network: UserRequestFactory) {
+        self.router = router
         self.view = view
         self.network = network
     }
     
-    func makeUser(firstName: String,
-                  lastName: String,
-                  gender: Int,
-                  email: String,
-                  creditCard: String,
-                  login: String,
-                  password: String) {
+    func userRegistration(firstName: String,
+                          lastName: String,
+                          gender: Int,
+                          email: String,
+                          creditCard: String,
+                          login: String,
+                          password: String) {
+        
+        newUser = makeUser(firstName: firstName,
+                           lastName: lastName,
+                           gender: gender,
+                           email: email,
+                           creditCard: creditCard,
+                           login: login,
+                           password: password)
+        guard let user = newUser else { return }
+        register(user: user, password: password)
+    }
+    
+    private func makeUser(firstName: String,
+                          lastName: String,
+                          gender: Int,
+                          email: String,
+                          creditCard: String,
+                          login: String,
+                          password: String) -> User? {
         
         guard !firstName.isEmpty else {
             view?.showAlertRegisterError(message: "Поле Имя не заполнено")
-            return
+            return nil
         }
         guard !lastName.isEmpty else {
             view?.showAlertRegisterError(message: "Поле Фамилия не заполнено")
-            return
+            return nil
         }
         guard !email.isEmpty else {
             view?.showAlertRegisterError(message: "Поле E-mail не заполнено")
-            return
+            return nil
         }
         guard !creditCard.isEmpty else {
             view?.showAlertRegisterError(message: "Поле Кредитная Карта не заполнено")
-            return
+            return nil
         }
         guard !login.isEmpty else {
             view?.showAlertRegisterError(message: "Поле Логин не заполнено")
-            return
+            return nil
         }
         guard !password.isEmpty else {
             view?.showAlertRegisterError(message: "Поле Пароль не заполнено")
-            return
+            return nil
         }
         guard email.isValidEmail() else {
             view?.showAlertRegisterError(message: "Не верный формат E-mail")
-            return
+            return nil
         }
         guard creditCard.isValidCreditCard() else {
             view?.showAlertRegisterError(message: "Не верный формат Кредитной Карты")
-            return
+            return nil
         }
         
-        let user = User(id: 3,
-                        login: login,
-                        firstName: firstName,
-                        lastName: lastName,
-                        email: email,
-                        gender: gender == 0 ? "m" : "w",
-                        creditCard: creditCard)
-        register(user: user, password: password)
+        return User(id: 3,
+                    login: login,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    gender: gender == 0 ? "m" : "w",
+                    creditCard: creditCard)
     }
     
     private func register(user: User, password: String) {
@@ -95,7 +117,7 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
                 switch response.result {
                 case .success(let result):
                     if result.result == 1 {
-                        self.view?.presentMainView()
+                        self.router?.pushUserViewController(user: user, token: "")
                     } else {
                         self.view?.showAlertRegisterError(message: result.message)
                     }

@@ -7,25 +7,31 @@
 
 import UIKit
 
-protocol Builder: AnyObject {
-    static func makeLoginViewController() -> UIViewController & LoginViewProtocol
-    static func makeRegistrationViewController() -> UIViewController & RegistrationViewProtocol
+protocol BuilderProtocol: AnyObject {
+    func makeLoginViewController(router: RouterProtocol) -> UIViewController & LoginViewProtocol
+    func makeRegistrationViewController(router: RouterProtocol) -> UIViewController & RegistrationViewProtocol
+    func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController
 }
 
-class BuilderViewController: Builder {
-    static func makeLoginViewController() -> UIViewController & LoginViewProtocol {
+class BuilderViewController: BuilderProtocol {
+    func makeLoginViewController(router: RouterProtocol) -> UIViewController & LoginViewProtocol {
         let viewController = LoginViewController()
-        let request = RequestFactory()
-        let presenter = LoginViewPresenter(view: viewController, network: request.makeAuthRequestFatory())
+        let network = RequestFactory().makeAuthRequestFatory()
+        let presenter = LoginViewPresenter(router: router, view: viewController, network: network)
         viewController.presenret = presenter
         return viewController
     }
     
-    static func makeRegistrationViewController() -> UIViewController & RegistrationViewProtocol {
+    func makeRegistrationViewController(router: RouterProtocol) -> UIViewController & RegistrationViewProtocol {
         let viewController = RegistrationViewController()
-        let request = RequestFactory()
-        let presenter = RegistrationViewPresenter(view: viewController, network: request.makeUserRequestFactory())
+        let network = RequestFactory().makeUserRequestFactory()
+        let presenter = RegistrationViewPresenter(router: router, view: viewController, network: network)
         viewController.presenret = presenter
+        return viewController
+    }
+    
+    func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController {
+        let viewController = UIViewController()
         return viewController
     }
 }

@@ -82,10 +82,6 @@ extension RegistrationViewController: RegistrationViewProtocol {
     func showAlertRegisterError(message: String) {
         showAlert(message: message, title: "Ошибка")
     }
-    
-    func presentMainView() {
-        showAlert(message: "Ok")
-    }
 }
 
 // MARK: - Extension Button Actions
@@ -93,7 +89,7 @@ extension RegistrationViewController: RegistrationViewProtocol {
 extension RegistrationViewController {
     
     @objc
-    func pressedRegistrationButton(_ sender: UIButton) {
+    private func pressedRegistrationButton(_ sender: UIButton) {
         guard let firstName = registrationView.firstNameTextField.text,
               let lastName = registrationView.lastNameTextField.text,
               let email = registrationView.emailTextField.text,
@@ -105,13 +101,13 @@ extension RegistrationViewController {
               }
               let gender = registrationView.genderSegmentControl.selectedSegmentIndex
         
-        presenret?.makeUser(firstName: firstName,
-                            lastName: lastName,
-                            gender: gender,
-                            email: email,
-                            creditCard: creditCard,
-                            login: login,
-                            password: password)
+        presenret?.userRegistration(firstName: firstName,
+                                    lastName: lastName,
+                                    gender: gender,
+                                    email: email,
+                                    creditCard: creditCard,
+                                    login: login,
+                                    password: password)
     }
 }
 
@@ -120,7 +116,7 @@ extension RegistrationViewController {
 extension RegistrationViewController {
 
     @objc
-    func keyboardWillShow(notification: NSNotification) {
+    private func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
               let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else {
                   return
@@ -133,13 +129,13 @@ extension RegistrationViewController {
     }
 
     @objc
-    func keyboardWillHide(notification: NSNotification) {
+    private func keyboardWillHide(notification: NSNotification) {
         let contentInset: UIEdgeInsets = UIEdgeInsets.zero
         registrationView.scrollView.contentInset = contentInset
     }
 
     @objc
-    func keyboardHide(_ sender: Any?) {
+    private func keyboardHide(_ sender: Any?) {
         registrationView.scrollView.endEditing(true)
     }
 }
@@ -147,17 +143,15 @@ extension RegistrationViewController {
 // MARK: - TextField Delegate
 //
 extension RegistrationViewController: UITextFieldDelegate {
-//    
-//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        if textField === registrationView.passwordTextField {
-//            textField.placeholder = ""
-//        }
-//        return true
-//    }
-//    
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        if textField === registrationView.passwordTextField {
-//            textField.placeholder = "Пароль"
-//        }
-//    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField === registrationView.passwordTextField else { return true}
+        guard let count = textField.text?.count else { return false }
+        switch count {
+        case 0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17: break
+        case 3, 8, 13: textField.text?.append("-")
+        default: return false
+        }
+        return true
+    }
 }
