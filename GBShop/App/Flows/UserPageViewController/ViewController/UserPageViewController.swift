@@ -63,10 +63,7 @@ final class UserPageViewController: UIViewController {
         
         userPageView.scrollView.addGestureRecognizer(keyboardHideGesture)
         
-        userPageView.firstNameTextField.delegate = self
-        userPageView.lastNameTextField.delegate = self
-        userPageView.emailTextField.delegate = self
-        userPageView.passwordTextField.delegate = self
+        userPageView.creditCardTextField.delegate = self
         
         userPageView.logoutButton.addTarget(self, action: #selector(pressedLogOutButton), for: .touchUpInside)
     }
@@ -175,11 +172,21 @@ extension UserPageViewController {
 extension UserPageViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard textField === userPageView.passwordTextField else { return true}
-        guard let count = textField.text?.count else { return false }
+        guard textField === userPageView.creditCardTextField,
+              let count = textField.text?.count,
+              let char = string.cString(using: String.Encoding.utf8) else {
+                  return false
+              }
+        
+        let backSpace = strcmp(char, "\\b")
+        if backSpace == -92 && count > 0 {
+            textField.text?.removeLast()
+            return false
+        }
+        
         switch count {
-        case 0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17: break
-        case 3, 8, 13: textField.text?.append("-")
+        case 0, 1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 18: break
+        case 4, 9, 14: textField.text?.append("-")
         default: return false
         }
         return true

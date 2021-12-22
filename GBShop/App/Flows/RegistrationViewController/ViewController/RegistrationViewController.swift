@@ -56,10 +56,10 @@ final class RegistrationViewController: UIViewController {
         
         registrationView.scrollView.addGestureRecognizer(keyboardHideGesture)
         
-        registrationView.firstNameTextField.delegate = self
-        registrationView.lastNameTextField.delegate = self
-        registrationView.emailTextField.delegate = self
-        registrationView.passwordTextField.delegate = self
+        registrationView.creditCardTextField.delegate = self
+//        registrationView.lastNameTextField.delegate = self
+//        registrationView.emailTextField.delegate = self
+//        registrationView.passwordTextField.delegate = self
         
         registrationView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
     }
@@ -138,11 +138,21 @@ extension RegistrationViewController {
 extension RegistrationViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard textField === registrationView.passwordTextField else { return true}
-        guard let count = textField.text?.count else { return false }
+        guard textField === registrationView.creditCardTextField,
+              let count = textField.text?.count,
+              let char = string.cString(using: String.Encoding.utf8) else {
+                  return false
+              }
+        
+        let backSpace = strcmp(char, "\\b")
+        if backSpace == -92 && count > 0 {
+            textField.text?.removeLast()
+            return false
+        }
+        
         switch count {
-        case 0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17: break
-        case 3, 8, 13: textField.text?.append("-")
+        case 0, 1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 18: break
+        case 4, 9, 14: textField.text?.append("-")
         default: return false
         }
         return true

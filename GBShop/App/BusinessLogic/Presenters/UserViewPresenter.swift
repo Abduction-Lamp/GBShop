@@ -62,7 +62,6 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                 switch response.result {
                 case .success(let result):
                     if result.result == 1 {
-                        print("2")
                         self.router?.popToRootViewController()
                     } else {
                         self.view?.showErrorAlert(message: result.message)

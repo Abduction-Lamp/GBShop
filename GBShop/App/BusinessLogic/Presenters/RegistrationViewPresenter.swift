@@ -13,7 +13,7 @@ protocol RegistrationViewProtocol: AbstractViewController { }
 
 protocol RegistrationViewPresenterProtool: AnyObject {
     init(router: RouterProtocol, view: RegistrationViewProtocol, network: UserRequestFactory)
-    func registration(firstName: String, lastName: String, gender: Int,  email: String, creditCard: String, login: String, password: String)
+    func registration(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String)
 }
 
 // MARK: - RegistrationView Presenter
