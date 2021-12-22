@@ -184,17 +184,4 @@ extension UserPageViewController: UITextFieldDelegate {
         }
         return true
     }
-//
-//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        if textField === registrationView.passwordTextField {
-//            textField.placeholder = ""
-//        }
-//        return true
-//    }
-//
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        if textField === registrationView.passwordTextField {
-//            textField.placeholder = "Пароль"
-//        }
-//    }
 }

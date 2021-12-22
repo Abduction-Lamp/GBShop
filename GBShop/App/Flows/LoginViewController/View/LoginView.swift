@@ -59,6 +59,7 @@ final class LoginView: UIView {
         textfield.translatesAutoresizingMaskIntoConstraints = false
         textfield.font = UIFont(name: "NewYork-Regular", size: 17)
         textfield.autocapitalizationType = .none
+        textfield.autocorrectionType = .no
         textfield.textAlignment = .center
         textfield.textColor = .black
         textfield.backgroundColor = .systemGray6
@@ -73,6 +74,7 @@ final class LoginView: UIView {
         textfield.font = UIFont(name: "NewYork-Regular", size: 17)
         textfield.isSecureTextEntry = true
         textfield.autocapitalizationType = .none
+        textfield.autocorrectionType = .no
         textfield.textAlignment = .center
         textfield.textColor = .black
         textfield.backgroundColor = .systemGray6

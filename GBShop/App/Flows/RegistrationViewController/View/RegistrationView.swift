@@ -55,7 +55,9 @@ final class RegistrationView: UIView {
     }()
 
     private(set) lazy var passwordTextField: UITextField = {
-        return makeTextFildView(placeholder: "Пароль")
+        let textField = makeTextFildView(placeholder: "Пароль")
+        textField.isSecureTextEntry = true
+        return textField
     }()
     
     private(set) var registrationButton: UIButton = {
@@ -168,11 +170,12 @@ final class RegistrationView: UIView {
     
     // MARK: - Support methods
     //
-    private func makeTextFildView(placeholder: String, keyboardType: UIKeyboardType = .default) -> UITextField {
+    private func makeTextFildView(placeholder: String, keyboardType: UIKeyboardType = .asciiCapable) -> UITextField {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
         textfield.font = UIFont(name: "NewYork-Regular", size: 17)
         textfield.autocapitalizationType = .none
+        textfield.autocorrectionType = .no
         textfield.clearButtonMode = .whileEditing
         textfield.textAlignment = .left
         textfield.textColor = .black

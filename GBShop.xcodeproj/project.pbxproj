@@ -416,9 +416,9 @@
 		4E985A052752768E0009538C /* Flows */ = {
 			isa = PBXGroup;
 			children = (
-				4EDB81132773289C001BB693 /* UserPageViewController */,
-				4E11B3482771FD0D00CECFB5 /* RegistrationViewController */,
 				4EC02F322770D50800EACE3D /* LoginViewController */,
+				4E11B3482771FD0D00CECFB5 /* RegistrationViewController */,
+				4EDB81132773289C001BB693 /* UserPageViewController */,
 				4E22569927526863008E52F8 /* ViewController.swift */,
 			);
 			path = Flows;
