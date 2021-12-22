@@ -51,6 +51,8 @@ final class RegistrationViewController: UIViewController {
     //
     private func configurationView() {
         self.view = RegistrationView(frame: self.view.frame)
+        self.navigationController?.isNavigationBarHidden = false
+        self.title = "Регистрация"
         
         registrationView.scrollView.addGestureRecognizer(keyboardHideGesture)
         

@@ -20,20 +20,10 @@ final class RegistrationView: UIView {
     private let contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
+        view.backgroundColor = .clear
         return view
     }()
     
-    private var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "NewYork-Regular", size: 21)
-        label.textColor = .black
-        label.textAlignment = .center
-        label.text = "Регистрация"
-        return label
-    }()
-
     private(set) lazy var firstNameTextField: UITextField = {
         return makeTextFildView(placeholder: "Имя")
     }()
@@ -53,7 +43,7 @@ final class RegistrationView: UIView {
     }()
     
     private(set) lazy var emailTextField: UITextField = {
-        return makeTextFildView(placeholder: "Фамилия", keyboardType: .emailAddress)
+        return makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
     }()
 
     private(set) lazy var creditCardTextField: UITextField = {
@@ -81,9 +71,10 @@ final class RegistrationView: UIView {
     }()
     
     private let textFieldSize = CGSize(width: .zero, height: 40)
-    private let textFieldPadding = Padding<CGFloat>(top: 7, bottom: 7, trailing: 40, leading: 40)
+    private let textFieldPadding = Padding<CGFloat>(top: 7, bottom: 7, leading: 30, trailing: 30)
     
     private let registrationButtonSize = CGSize(width: 200, height: 40)
+    private let registrationButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, leading: .zero, trailing: .zero)
 
     // MARK: - Initiation
     //
@@ -103,12 +94,12 @@ final class RegistrationView: UIView {
     // MARK: - Configure Content
     //
     private func configureContent() {
-        self.backgroundColor = .systemGray6
+        self.backgroundColor = .white
+        
         self.addSubview(scrollView)
 
         scrollView.addSubview(contentView)
         
-        contentView.addSubview(titleLabel)
         contentView.addSubview(firstNameTextField)
         contentView.addSubview(lastNameTextField)
         contentView.addSubview(genderSegmentControl)
@@ -132,18 +123,8 @@ final class RegistrationView: UIView {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textFieldPadding.top * 2),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: textFieldSize.height),
-            
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textFieldPadding.top * 2),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: textFieldSize.height),
-            
-            firstNameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldPadding.top * 2),
+
+            firstNameTextField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textFieldPadding.top * 2),
             firstNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
             firstNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
             firstNameTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
@@ -178,10 +159,10 @@ final class RegistrationView: UIView {
             passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
             passwordTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
             
-            registrationButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: textFieldPadding.top * 4),
             registrationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             registrationButton.widthAnchor.constraint(equalToConstant: registrationButtonSize.width),
-            registrationButton.heightAnchor.constraint(equalToConstant: registrationButtonSize.height)
+            registrationButton.heightAnchor.constraint(equalToConstant: registrationButtonSize.height),
+            registrationButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -registrationButtonPadding.bottom)
         ])
     }
     
@@ -195,8 +176,8 @@ final class RegistrationView: UIView {
         textfield.clearButtonMode = .whileEditing
         textfield.textAlignment = .left
         textfield.textColor = .black
-        textfield.backgroundColor = .white
-        textfield.borderStyle = .none
+        textfield.backgroundColor = .systemGray6
+        textfield.borderStyle = .roundedRect
         textfield.keyboardType = keyboardType
         textfield.placeholder = placeholder
         return textfield

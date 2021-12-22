@@ -69,7 +69,7 @@ final class UserView: UIView {
     }()
     
     private let textFieldSize = CGSize(width: .zero, height: 40)
-    private let textFieldPadding = Padding<CGFloat>(top: 7, bottom: 7, trailing: 40, leading: 40)
+    private let textFieldPadding = Padding<CGFloat>(top: 7, bottom: 7, leading: 40, trailing: 40)
 
     // MARK: - Initiation
     //

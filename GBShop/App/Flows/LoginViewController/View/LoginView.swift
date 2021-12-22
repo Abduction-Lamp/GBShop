@@ -51,7 +51,7 @@ final class LoginView: UIView {
         label.text = "Магазин"
         return label
     }()
-    private let headerPadding = Padding<CGFloat>(top: 45, bottom: .zero, trailing: .zero, leading: .zero)
+    private let headerPadding = Padding<CGFloat>(top: 45, bottom: .zero, leading: .zero, trailing: .zero)
     private let headerSize = CGSize(width: .zero, height: 50)
 
     private(set) var loginTextField: UITextField = {
@@ -61,7 +61,7 @@ final class LoginView: UIView {
         textfield.autocapitalizationType = .none
         textfield.textAlignment = .center
         textfield.textColor = .black
-        textfield.backgroundColor = .systemGray5
+        textfield.backgroundColor = .systemGray6
         textfield.borderStyle = .roundedRect
         textfield.placeholder = "Логин"
         return textfield
@@ -75,7 +75,7 @@ final class LoginView: UIView {
         textfield.autocapitalizationType = .none
         textfield.textAlignment = .center
         textfield.textColor = .black
-        textfield.backgroundColor = .systemGray5
+        textfield.backgroundColor = .systemGray6
         textfield.borderStyle = .roundedRect
         textfield.placeholder = "Пароль"
         return textfield
@@ -106,7 +106,7 @@ final class LoginView: UIView {
         return button
     }()
     private let buttonSize = CGSize(width: 150, height: 40)
-    private let registrationButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, trailing: .zero, leading: .zero)
+    private let registrationButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, leading: .zero, trailing: .zero)
     
     private var stack: UIStackView = {
         let stack = UIStackView()

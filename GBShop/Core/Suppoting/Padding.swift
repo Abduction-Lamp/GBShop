@@ -10,6 +10,6 @@ import Foundation
 struct Padding<T: Numeric> {
     let top: T
     let bottom: T
-    let trailing: T
     let leading: T
+    let trailing: T
 }
