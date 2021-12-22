@@ -31,7 +31,10 @@ class BuilderViewController: BuilderProtocol {
     }
     
     func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController {
-        let viewController = UIViewController()
+        let viewController = UserPageViewController()
+        let network = RequestFactory()
+        let presenter = UserPageViewPresenter(router: router, view: viewController, network: network, user: user, token: token)
+        viewController.presenret = presenter
         return viewController
     }
 }

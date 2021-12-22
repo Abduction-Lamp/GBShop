@@ -59,5 +59,6 @@ class Router: RouterProtocol {
     func popToRootViewController() {
         guard let navigation = self.navigation else { return }
         navigation.popToRootViewController(animated: true)
+        print("ok")
     }
 }

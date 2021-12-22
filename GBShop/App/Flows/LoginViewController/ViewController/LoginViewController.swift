@@ -12,6 +12,7 @@ final class LoginViewController: UIViewController {
     var presenret: LoginViewPresenterProtool?
     
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    private let notification = NotificationCenter.default
     
     private var loginView: LoginView {
         guard let view = self.view as? LoginView else {
@@ -35,25 +36,15 @@ final class LoginViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        notification.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        notification.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardWillShowNotification,
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardWillHideNotification,
-                                                  object: nil)
+        notification.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        notification.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK: - Support methods
@@ -69,6 +60,9 @@ final class LoginViewController: UIViewController {
         
         loginView.loginButton.addTarget(self, action: #selector(pressedLoginButton), for: .touchUpInside)
         loginView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
+        
+        loginView.loginTextField.text = "Username"
+        loginView.passwordTextField.text = "UserPassword"
     }
 }
 
@@ -83,15 +77,6 @@ extension LoginViewController: LoginViewProtocol {
     func showAlertAuthError(message: String) {
         showAlert(message: message, title: "Ошибка")
     }
-    
-    func presentMainView() {
-        showAlert(message: "Ok")
-    }
-    
-//    func presentRegistrationView() {
-//        let registrationViewController = BuilderViewController.makeRegistrationViewController()
-//        self.present(registrationViewController, animated: true, completion: nil)
-//    }
     
     private func showAlert(message: String, title: String? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

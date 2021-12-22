@@ -1,5 +1,5 @@
 //
-//  UserView.swift
+//  UserPageView.swift
 //  GBShop
 //
 //  Created by Владимир on 22.12.2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class UserView: UIView {
+final class UserPageView: UIView {
     
     private(set) var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -22,16 +22,6 @@ final class UserView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         return view
-    }()
-    
-    private var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "NewYork-Regular", size: 21)
-        label.textColor = .black
-        label.textAlignment = .center
-        label.text = "Регистрация"
-        return label
     }()
 
     private(set) lazy var firstNameTextField: UITextField = {
@@ -49,6 +39,7 @@ final class UserView: UIView {
         segment.insertSegment(withTitle: "Мужчина", at: 0, animated: false)
         segment.insertSegment(withTitle: "Женщина", at: 1, animated: false)
         segment.selectedSegmentIndex = 0
+        segment.isEnabled = false
         return segment
     }()
     
@@ -67,6 +58,20 @@ final class UserView: UIView {
     private(set) lazy var passwordTextField: UITextField = {
         return makeTextFildView(placeholder: "Пароль")
     }()
+    
+    private(set) var logoutButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemYellow
+        button.setTitleColor(.systemGray2, for: .highlighted)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont(name: "NewYork-Regular", size: 17)
+        button.layer.cornerRadius = 5
+        button.setTitle("Выйти", for: .normal)
+        return button
+    }()
+    private let buttonSize = CGSize(width: 100, height: 40)
+    private let logoutButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, leading: .zero, trailing: .zero)
     
     private let textFieldSize = CGSize(width: .zero, height: 40)
     private let textFieldPadding = Padding<CGFloat>(top: 7, bottom: 7, leading: 40, trailing: 40)
@@ -94,7 +99,6 @@ final class UserView: UIView {
 
         scrollView.addSubview(contentView)
         
-        contentView.addSubview(titleLabel)
         contentView.addSubview(firstNameTextField)
         contentView.addSubview(lastNameTextField)
         contentView.addSubview(genderSegmentControl)
@@ -102,6 +106,7 @@ final class UserView: UIView {
         contentView.addSubview(creditCardTextField)
         contentView.addSubview(loginTextField)
         contentView.addSubview(passwordTextField)
+        contentView.addSubview(logoutButton)
 
         placesConstraint()
     }
@@ -117,18 +122,8 @@ final class UserView: UIView {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textFieldPadding.top * 2),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: textFieldSize.height),
             
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textFieldPadding.top * 2),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: textFieldSize.height),
-            
-            firstNameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldPadding.top * 2),
+            firstNameTextField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textFieldPadding.top * 2),
             firstNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
             firstNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
             firstNameTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
@@ -161,7 +156,13 @@ final class UserView: UIView {
             passwordTextField.topAnchor.constraint(equalTo: loginTextField.bottomAnchor, constant: textFieldPadding.top),
             passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
             passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            passwordTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height)
+            passwordTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
+            
+            logoutButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            logoutButton.widthAnchor.constraint(equalToConstant: buttonSize.width),
+            logoutButton.heightAnchor.constraint(equalToConstant: buttonSize.height),
+            logoutButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                       constant: -logoutButtonPadding.bottom)
         ])
     }
     
@@ -170,13 +171,14 @@ final class UserView: UIView {
     private func makeTextFildView(placeholder: String, keyboardType: UIKeyboardType = .default) -> UITextField {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = UIFont(name: "NewYork-Regular", size: 17)
+        textfield.font = UIFont(name: "NewYork-Regular", size: 21)
         textfield.autocapitalizationType = .none
         textfield.clearButtonMode = .whileEditing
         textfield.textAlignment = .left
         textfield.textColor = .black
         textfield.backgroundColor = .white
         textfield.borderStyle = .none
+        textfield.isEnabled = false
         textfield.keyboardType = keyboardType
         textfield.placeholder = placeholder
         return textfield
