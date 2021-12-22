@@ -9,10 +9,10 @@ import UIKit
 
 final class RegistrationViewController: UIViewController {
     
+    var presenret: RegistrationViewPresenterProtool?
+    
     private let notifiction = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
-    var presenret: RegistrationViewPresenterProtool?
     
     private var registrationView: RegistrationView {
         guard let view = self.view as? RegistrationView else {
@@ -46,8 +46,8 @@ final class RegistrationViewController: UIViewController {
         notifiction.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         notifiction.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
-    // MARK: - Support methods
+
+    // MARK: - Configure Content
     //
     private func configurationView() {
         self.view = RegistrationView(frame: self.view.frame)
@@ -58,18 +58,10 @@ final class RegistrationViewController: UIViewController {
         
         registrationView.firstNameTextField.delegate = self
         registrationView.lastNameTextField.delegate = self
-//        registrationView.genderSegmentControl.delegate = self
         registrationView.emailTextField.delegate = self
         registrationView.passwordTextField.delegate = self
         
         registrationView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
-    }
-    
-    private func showAlert(message: String, title: String? = nil) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -77,11 +69,11 @@ final class RegistrationViewController: UIViewController {
 //
 extension RegistrationViewController: RegistrationViewProtocol {
     
-    func showAlertRequestError(error: Error) {
+    func showRequestErrorAlert(error: Error) {
         showAlert(message: error.localizedDescription, title: "error")
     }
     
-    func showAlertRegisterError(message: String) {
+    func showErrorAlert(message: String) {
         showAlert(message: message, title: "Ошибка")
     }
 }
@@ -101,15 +93,14 @@ extension RegistrationViewController {
                   showAlert(message: "Не все поля заполнены")
                   return
               }
-              let gender = registrationView.genderSegmentControl.selectedSegmentIndex
-        
-        presenret?.userRegistration(firstName: firstName,
-                                    lastName: lastName,
-                                    gender: gender,
-                                    email: email,
-                                    creditCard: creditCard,
-                                    login: login,
-                                    password: password)
+        let gender = registrationView.genderSegmentControl.selectedSegmentIndex
+        presenret?.registration(firstName: firstName,
+                                lastName: lastName,
+                                gender: gender,
+                                email: email,
+                                creditCard: creditCard,
+                                login: login,
+                                password: password)
     }
 }
 

@@ -9,10 +9,10 @@ import UIKit
 
 final class UserPageViewController: UIViewController {
     
+    var presenret: UserPageViewPresenterProtool?
+    
     private let notifiction = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
-    var presenret: UserPageViewPresenterProtool?
     
     private var userPageView: UserPageView {
         guard let view = self.view as? UserPageView else {
@@ -49,7 +49,7 @@ final class UserPageViewController: UIViewController {
         notifiction.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    // MARK: - Support methods
+    // MARK: - Configure Content
     //
     private func configurationView() {
         self.view = UserPageView(frame: self.view.frame)
@@ -70,24 +70,17 @@ final class UserPageViewController: UIViewController {
         
         userPageView.logoutButton.addTarget(self, action: #selector(pressedLogOutButton), for: .touchUpInside)
     }
-    
-    private func showAlert(message: String, title: String? = nil) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
 }
 
 // MARK: - Extension RegistrationView Protocol
 //
 extension UserPageViewController: UserPageViewProtocol {
     
-    func showAlertRequestError(error: Error) {
+    func showRequestErrorAlert(error: Error) {
         showAlert(message: error.localizedDescription, title: "error")
     }
     
-    func showAlertError(message: String) {
+    func showErrorAlert(message: String) {
         showAlert(message: message, title: "Ошибка")
     }
     
@@ -153,7 +146,7 @@ extension UserPageViewController {
 extension UserPageViewController {
 
     @objc
-    func keyboardWillShow(notification: NSNotification) {
+    private func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
               let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else {
                   return
@@ -166,13 +159,13 @@ extension UserPageViewController {
     }
 
     @objc
-    func keyboardWillHide(notification: NSNotification) {
+    private func keyboardWillHide(notification: NSNotification) {
         let contentInset: UIEdgeInsets = UIEdgeInsets.zero
         userPageView.scrollView.contentInset = contentInset
     }
 
     @objc
-    func keyboardHide(_ sender: Any?) {
+    private func keyboardHide(_ sender: Any?) {
         userPageView.scrollView.endEditing(true)
     }
 }

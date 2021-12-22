@@ -11,8 +11,8 @@ final class LoginViewController: UIViewController {
     
     var presenret: LoginViewPresenterProtool?
     
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
     private let notification = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
     
     private var loginView: LoginView {
         guard let view = self.view as? LoginView else {
@@ -47,7 +47,7 @@ final class LoginViewController: UIViewController {
         notification.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    // MARK: - Support methods
+    // MARK: - Configure Content
     //
     private func configurationView() {
         self.view = LoginView(frame: self.view.frame)
@@ -70,19 +70,12 @@ final class LoginViewController: UIViewController {
 //
 extension LoginViewController: LoginViewProtocol {
     
-    func showAlertRequestError(error: Error) {
+    func showRequestErrorAlert(error: Error) {
         showAlert(message: error.localizedDescription, title: "error")
     }
     
-    func showAlertAuthError(message: String) {
+    func showErrorAlert(message: String) {
         showAlert(message: message, title: "Ошибка")
-    }
-    
-    private func showAlert(message: String, title: String? = nil) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -91,7 +84,7 @@ extension LoginViewController: LoginViewProtocol {
 extension LoginViewController {
     
     @objc
-    func keyboardWillShow(notification: NSNotification) {
+    private func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
               let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else {
                   return
@@ -104,13 +97,13 @@ extension LoginViewController {
     }
     
     @objc
-    func keyboardWillHide(notification: NSNotification) {
+    private func keyboardWillHide(notification: NSNotification) {
         let contentInset: UIEdgeInsets = UIEdgeInsets.zero
         loginView.scrollView.contentInset = contentInset
     }
     
     @objc
-    func keyboardHide(_ sender: Any?) {
+    private func keyboardHide(_ sender: Any?) {
         loginView.scrollView.endEditing(true)
         if let button = sender as? UIButton,
            button === loginView.loginButton {
@@ -142,7 +135,7 @@ extension LoginViewController: UITextFieldDelegate {
 extension LoginViewController {
     
     @objc
-    func pressedLoginButton(_ sender: UIButton) {
+    private func pressedLoginButton(_ sender: UIButton) {
         guard let login = loginView.loginTextField.text,
               let password = loginView.passwordTextField.text,
               !login.isEmpty,
@@ -151,7 +144,7 @@ extension LoginViewController {
     }
     
     @objc
-    func pressedRegistrationButton(_ sender: UIButton) {
-        presenret?.presentRegistrationViewController()
+    private func pressedRegistrationButton(_ sender: UIButton) {
+        presenret?.pushRegistrationViewController()
     }
 }

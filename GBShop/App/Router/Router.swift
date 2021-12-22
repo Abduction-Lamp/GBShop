@@ -16,7 +16,7 @@ protocol AbstractRouterProtocol {
 
 protocol RouterProtocol: AbstractRouterProtocol {
     func initialViewController()
-    func presentRegistrationViewController()
+    func pushRegistrationViewController()
     func pushUserViewController(user: User, token: String)
     func popToRootViewController()
 }
@@ -40,7 +40,7 @@ class Router: RouterProtocol {
         navigation.viewControllers = [rootViewController]
     }
     
-    func presentRegistrationViewController() {
+    func pushRegistrationViewController() {
         guard let navigation = self.navigation,
               let registrationViewController = builder?.makeRegistrationViewController(router: self) else {
                   return

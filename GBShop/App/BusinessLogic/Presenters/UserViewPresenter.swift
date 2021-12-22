@@ -9,10 +9,7 @@ import Foundation
 
 // MARK: - Protools
 //
-protocol UserPageViewProtocol: AnyObject {
-    func showAlertRequestError(error: Error)
-    func showAlertError(message: String)
-    
+protocol UserPageViewProtocol: AbstractViewController {
     func setUserData(firstName: String,
                      lastName: String,
                      gender: Int,
@@ -68,10 +65,10 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                         print("2")
                         self.router?.popToRootViewController()
                     } else {
-                        self.view?.showAlertError(message: result.message)
+                        self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
-                    self.view?.showAlertRequestError(error: error)
+                    self.view?.showRequestErrorAlert(error: error)
                 }
             }
         }

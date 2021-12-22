@@ -9,15 +9,12 @@ import Foundation
 
 // MARK: - Protools
 //
-protocol LoginViewProtocol: AnyObject {
-    func showAlertRequestError(error: Error)
-    func showAlertAuthError(message: String)
-}
+protocol LoginViewProtocol: AbstractViewController {}
 
 protocol LoginViewPresenterProtool: AnyObject {
     init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory)
     func auth(login: String, password: String)
-    func presentRegistrationViewController()
+    func pushRegistrationViewController()
 }
 
 // MARK: - LoginView Presenter
@@ -36,27 +33,28 @@ class LoginViewPresenter: LoginViewPresenterProtool {
     func auth(login: String, password: String) {
         network.login(login: login, password: password) { [weak self] response in
             guard let self = self else { return }
+            
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
                     if result.result == 1 {
                         guard let user = result.user,
                               let token = result.token else {
-                               self.view?.showAlertAuthError(message: result.message)
+                               self.view?.showErrorAlert(message: result.message)
                                   return
                               }
                         self.router?.pushUserViewController(user: user, token: token)
                     } else {
-                        self.view?.showAlertAuthError(message: result.message)
+                        self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
-                    self.view?.showAlertRequestError(error: error)
+                    self.view?.showRequestErrorAlert(error: error)
                 }
             }
         }
     }
     
-    func presentRegistrationViewController() {
-        router?.presentRegistrationViewController()
+    func pushRegistrationViewController() {
+        router?.pushRegistrationViewController()
     }
 }
