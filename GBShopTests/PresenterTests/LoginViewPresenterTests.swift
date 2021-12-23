@@ -6,35 +6,22 @@
 //
 
 import XCTest
+import Alamofire
 @testable import GBShop
 
 // MARK: - Mock Entity
 //
-class MockLoginView: LoginViewProtocol {
-    
-    let expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
+class MockLoginView: UIViewController, LoginViewProtocol {
+    var expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
     
     var error: String?
-    func showAlertRequestError(error: Error) {
+    func showRequestErrorAlert(error: Error) {
         self.error = "error"
         self.expectation.fulfill()
     }
-    
     var message: String?
-    func showAlertAuthError(message: String) {
+    func showErrorAlert(message: String) {
         self.message = message
-        self.expectation.fulfill()
-    }
-    
-    var main: String?
-    func presentMainView() {
-        main = "success"
-        self.expectation.fulfill()
-    }
-    
-    var registration: String?
-    func presentRegistrationView() {
-        registration = "success"
         self.expectation.fulfill()
     }
 }
@@ -43,21 +30,25 @@ class MockLoginView: LoginViewProtocol {
 //
 class LoginViewPresenterTest: XCTestCase {
 
+    var router: MockRouter!
     var view: MockLoginView!
     var network: AuthRequestFactory!
     var presenter: LoginViewPresenter!
-    
+
     var request = RequestFactory()
     
     override func setUpWithError() throws {
+        router = MockRouter()
         view = MockLoginView()
-        network = request.makeAuthRequestFatory()
-        presenter = LoginViewPresenter(view: view, network: network)
+        network = MockNetworkAuthRequest()
+
+        presenter = LoginViewPresenter(router: router, view: view, network: network)
     }
 
     override func tearDownWithError() throws {
         view = nil
         network = nil
+        router = nil
         presenter = nil
     }
 }
@@ -67,26 +58,32 @@ extension LoginViewPresenterTest {
     func testIsNotNill() throws {
         XCTAssertNotNil(view, "View component is not nil")
         XCTAssertNotNil(network, "Network component is not nil")
+        XCTAssertNotNil(router, "Router component is not nil")
         XCTAssertNotNil(presenter, "Presenter component is not nil")
     }
     
-    func testViewValidationPresentMainView() throws {
-        self.presenter.auth(login: "Username", password: "UserPassword")
+    func testLoginViewPresenterAuthSuccess() throws {
+        presenter.auth(login: "login", password: "password")
         wait(for: [self.view.expectation], timeout: 10.0)
         
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.main, "success")
-        XCTAssertEqual(view.registration, nil)
+        XCTAssertEqual(view.message, "success")
     }
     
-    func testViewValidationshowAlertRequestError() throws {
-        self.presenter.auth(login: "1", password: "1")
+    func testLoginViewPresenterAuthFailure() throws {
+        presenter.auth(login: "", password: "")
         wait(for: [self.view.expectation], timeout: 10.0)
         
-        XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "Неверный логин или пароль")
-        XCTAssertEqual(view.main, nil)
-        XCTAssertEqual(view.registration, nil)
+        XCTAssertEqual(view.message, nil)
+        XCTAssertEqual(view.error, "error")
+    }
+    
+    func testLoginViewPresenterPushRegistration() throws {
+        presenter.pushRegistrationViewController()
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messageRegistration, "success")
+        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messageRoot, nil)
     }
 }

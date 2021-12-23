@@ -1,5 +1,5 @@
 //
-//  UserViewPresenter.swift
+//  UserPageViewPresenter.swift
 //  GBShop
 //
 //  Created by Владимир on 22.12.2021.
@@ -21,7 +21,7 @@ protocol UserPageViewProtocol: AbstractViewController {
 }
 
 protocol UserPageViewPresenterProtool: AnyObject {
-    init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactory, user: User, token: String)
+    init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     func logout()
     func getUserData()
     func changeUserData(firstName: String,
@@ -38,7 +38,7 @@ protocol UserPageViewPresenterProtool: AnyObject {
 class UserPageViewPresenter: UserPageViewPresenterProtool {
     private var router: RouterProtocol?
     private weak var view: UserPageViewProtocol?
-    private let network: RequestFactory
+    private let network: RequestFactoryProtocol
     
     var user: User
     var isUserDataChange: Bool = false {
@@ -52,7 +52,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
     }
     private let token: String
 
-    required init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactory, user: User, token: String) {
+    required init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
         self.router = router
         self.view = view
         self.network = network
