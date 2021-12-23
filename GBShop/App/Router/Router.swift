@@ -17,7 +17,7 @@ protocol AbstractRouterProtocol {
 protocol RouterProtocol: AbstractRouterProtocol {
     func initialViewController()
     func pushRegistrationViewController()
-    func pushUserViewController(user: User, token: String)
+    func pushUserPageViewController(user: User, token: String)
     func popToRootViewController()
 }
 
@@ -48,7 +48,7 @@ class Router: RouterProtocol {
         navigation.pushViewController(registrationViewController, animated: true)
     }
     
-    func pushUserViewController(user: User, token: String) {
+    func pushUserPageViewController(user: User, token: String) {
         guard let navigation = self.navigation,
               let userPageViewController = builder?.makeUserPageViewController(router: self, user: user, token: token) else {
                   return

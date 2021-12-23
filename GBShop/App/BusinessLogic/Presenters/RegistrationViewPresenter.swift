@@ -84,19 +84,24 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
             view?.showErrorAlert(message: "Не верный формат Кредитной Карты")
             return nil
         }
-        
-        return User(id: 3, login: login, firstName: firstName, lastName: lastName, email: email, gender: gender == 0 ? "m" : "w",
+        return User(id: 3,
+                    login: login,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    gender: gender == 0 ? "m" : "w",
                     creditCard: creditCard)
     }
     
     private func requestRegister(user: User, password: String) {
         network.register(user: user, password: password) { [weak self] response in
             guard let self = self else { return }
+            
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
                     if result.result == 1 {
-                        self.router?.pushUserViewController(user: user, token: "")
+                        self.router?.pushUserPageViewController(user: user, token: "")
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }

@@ -364,7 +364,7 @@
 				4EC02F4F27711E7600EACE3D /* Extensions */,
 				4EC02F3C2770D77500EACE3D /* Suppoting */,
 				4E859D3627565AB800A7F2F1 /* Network */,
-				4EB846AF27737F52004F5E16 /* ViewController */,
+				4EB846AF27737F52004F5E16 /* Protocols */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -427,12 +427,12 @@
 			path = Flows;
 			sourceTree = "<group>";
 		};
-		4EB846AF27737F52004F5E16 /* ViewController */ = {
+		4EB846AF27737F52004F5E16 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
 				4EB846AD277378A8004F5E16 /* AbstractViewController.swift */,
 			);
-			path = ViewController;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		4EC02F322770D50800EACE3D /* LoginViewController */ = {

@@ -173,7 +173,7 @@ final class UserPageView: UIView {
     private func makeTextFildView(placeholder: String, keyboardType: UIKeyboardType = .asciiCapable) -> UITextField {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = UIFont(name: "NewYork-Regular", size: 21)
+        textfield.font = UIFont(name: "NewYork-Regular", size: 20)
         textfield.autocapitalizationType = .none
         textfield.autocorrectionType = .no
         textfield.clearButtonMode = .whileEditing
