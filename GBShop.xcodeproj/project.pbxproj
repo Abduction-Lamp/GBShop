@@ -71,6 +71,8 @@
 		4EC4DCE92774BEC700165F77 /* MockRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4DCE82774BEC700165F77 /* MockRouter.swift */; };
 		4EC4DCEB2774BF9900165F77 /* MockNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4DCEA2774BF9900165F77 /* MockNetwork.swift */; };
 		4EC4DCEF2774D6F600165F77 /* UserPageViewPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4DCEE2774D6F600165F77 /* UserPageViewPresenterTests.swift */; };
+		4EC4DCF22774E53900165F77 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4DCF12774E53900165F77 /* RouterTests.swift */; };
+		4EC4DCF42774E59F00165F77 /* MockNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4DCF32774E59F00165F77 /* MockNavigation.swift */; };
 		4EDB81172773293A001BB693 /* UserPageViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDB81162773293A001BB693 /* UserPageViewPresenter.swift */; };
 		4EDB8119277329D5001BB693 /* UserPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDB8118277329D5001BB693 /* UserPageViewController.swift */; };
 		4EDB811B27732A2B001BB693 /* UserPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDB811A27732A2B001BB693 /* UserPageView.swift */; };
@@ -170,6 +172,8 @@
 		4EC4DCE82774BEC700165F77 /* MockRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRouter.swift; sourceTree = "<group>"; };
 		4EC4DCEA2774BF9900165F77 /* MockNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetwork.swift; sourceTree = "<group>"; };
 		4EC4DCEE2774D6F600165F77 /* UserPageViewPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageViewPresenterTests.swift; sourceTree = "<group>"; };
+		4EC4DCF12774E53900165F77 /* RouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
+		4EC4DCF32774E59F00165F77 /* MockNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNavigation.swift; sourceTree = "<group>"; };
 		4EDB81162773293A001BB693 /* UserPageViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageViewPresenter.swift; sourceTree = "<group>"; };
 		4EDB8118277329D5001BB693 /* UserPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageViewController.swift; sourceTree = "<group>"; };
 		4EDB811A27732A2B001BB693 /* UserPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageView.swift; sourceTree = "<group>"; };
@@ -288,6 +292,7 @@
 				4EC4DCE027749C7200165F77 /* ExtensionsTests */,
 				4EC02F4B2770EC8E00EACE3D /* ResponseCodableTests */,
 				4EC02F4C2770EDD000EACE3D /* PresenterTests */,
+				4EC4DCF02774E50900165F77 /* RouterTests */,
 				4E2256AE27526867008E52F8 /* Info.plist */,
 			);
 			path = GBShopTests;
@@ -555,8 +560,17 @@
 			children = (
 				4EC4DCE82774BEC700165F77 /* MockRouter.swift */,
 				4EC4DCEA2774BF9900165F77 /* MockNetwork.swift */,
+				4EC4DCF32774E59F00165F77 /* MockNavigation.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		4EC4DCF02774E50900165F77 /* RouterTests */ = {
+			isa = PBXGroup;
+			children = (
+				4EC4DCF12774E53900165F77 /* RouterTests.swift */,
+			);
+			path = RouterTests;
 			sourceTree = "<group>";
 		};
 		4EDB81132773289C001BB693 /* UserPageViewController */ = {
@@ -929,6 +943,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EC4DCEB2774BF9900165F77 /* MockNetwork.swift in Sources */,
+				4EC4DCF42774E59F00165F77 /* MockNavigation.swift in Sources */,
 				4E901BE8275E3B2600E6160F /* ProductResponseCodableTests.swift in Sources */,
 				4E16DF1D276B93960019FEDA /* CartResponseCodableTests.swift in Sources */,
 				4EC4DCE62774BD2700165F77 /* RegistrationViewPresenterTests.swift in Sources */,
@@ -940,6 +955,7 @@
 				4EC02F4E2770EFEB00EACE3D /* LoginViewPresenterTests.swift in Sources */,
 				4E027FDC27662C0700326158 /* ReviewResponseCodableTests.swift in Sources */,
 				4EC4DCEF2774D6F600165F77 /* UserPageViewPresenterTests.swift in Sources */,
+				4EC4DCF22774E53900165F77 /* RouterTests.swift in Sources */,
 				4EC4DCE42774A05300165F77 /* StringExtensionsValidCreditCardTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
