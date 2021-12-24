@@ -89,23 +89,31 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
             return nil
         }
 
-        return  User(id: 0,
-                     firstName: firstName,
-                     lastName: lastName,
-                     gender: gender == 0 ? "m" : "w",
-                     email: email,
-                     creditCard: creditCard,
-                     login: login,
-                     password: password)
+        return User(id: 0,
+                    firstName: firstName,
+                    lastName: lastName,
+                    gender: gender == 0 ? "m" : "w",
+                    email: email,
+                    creditCard: creditCard,
+                    login: login,
+                    password: password)
     }
     
     private func requestRegister(user: User) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
         network.register(user: user) { [weak self] response in
             guard let self = self else { return }
+            
+            logging("[\(self) \(user)]")
             
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
                     if result.result == 1,
                        let newUser = result.user,
                        let token = result.token {
@@ -115,9 +123,17 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
         }
+    }
+}
+
+extension RegistrationViewPresenter: CustomStringConvertible {
+    
+    var description: String {
+        " - RegistrationViewPresenter (class):"
     }
 }

@@ -42,3 +42,20 @@ extension User: Equatable {
                 lhs.password == rhs.password
     }
 }
+
+extension User: CustomStringConvertible {
+    
+    var description: String {
+        """
+        User (struct):
+            id:         \(self.id)
+            firstName:  \(self.firstName)
+            lastName:   \(self.lastName)
+            gender:     \(self.gender)
+            email:      \(self.email)
+            creditCard: \(self.creditCard)
+            login:      \(self.login)
+            password:   \(self.password)\n
+        """
+    }
+}

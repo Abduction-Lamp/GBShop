@@ -31,12 +31,20 @@ class LoginViewPresenter: LoginViewPresenterProtool {
     }
     
     func auth(login: String, password: String) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+
         network.login(login: login, password: password) { [weak self] response in
             guard let self = self else { return }
+            
+            logging("[\(self) login: \(login), password: \(password)]")
             
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
                         guard let user = result.user,
                               let token = result.token else {
@@ -48,6 +56,7 @@ class LoginViewPresenter: LoginViewPresenterProtool {
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -56,5 +65,12 @@ class LoginViewPresenter: LoginViewPresenterProtool {
     
     func pushRegistrationViewController() {
         router?.pushRegistrationViewController()
+    }
+}
+
+extension LoginViewPresenter: CustomStringConvertible {
+    
+    var description: String {
+        " - LoginViewPresenter (class):"
     }
 }

@@ -33,7 +33,7 @@ protocol UserPageViewPresenterProtool: AnyObject {
                         password: String)
 }
 
-// MARK: - LoginView Presenter
+// MARK: - UserPageView Presenter
 //
 class UserPageViewPresenter: UserPageViewPresenterProtool {
     private var router: RouterProtocol?
@@ -73,6 +73,11 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
     }
     
     func getUserData() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        logging("\(self) func getUserData()")
         DispatchQueue.main.async {
             let gender: Int = self.user.gender == "m" ? 0 : 1
             self.view?.setUserData(firstName: self.user.firstName,
@@ -86,18 +91,27 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
     }
     
     func logout() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
         let auth = network.makeAuthRequestFatory()
         auth.logout(id: user.id, token: token) { response in
+            
+            logging("[\(self) id: \(self.user.id) token: \(self.token)]")
             
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
                         self.router?.popToRootViewController()
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -111,6 +125,11 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                         creditCard: String,
                         login: String,
                         password: String) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
         guard let newUserData = makeUser(firstName: firstName,
                                          lastName: lastName,
                                          gender: gender,
@@ -122,9 +141,12 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
         let userRequest = network.makeUserRequestFactory()
         userRequest.change(user: newUserData, token: token) { response in
             
+            logging("[\(self) user: \(newUserData) token: \(self.token)]")
+            
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
                     if let resulNewUserData = result.user {
                         self.user = resulNewUserData
                         self.view?.didChangeUserData()
@@ -132,6 +154,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -189,5 +212,12 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                     creditCard: creditCard,
                     login: login,
                     password: password)
+    }
+}
+
+extension UserPageViewPresenter: CustomStringConvertible {
+    
+    var description: String {
+        " - UserPageViewPresenter (class):"
     }
 }
