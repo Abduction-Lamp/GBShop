@@ -26,9 +26,8 @@ class UserRequest: AbstractRequestFactory {
 extension UserRequest: UserRequestFactory {
 
     func register(user: User,
-                  password: String,
                   completionHandler: @escaping (AFDataResponse<UserRegisterResponse>) -> Void) {
-        let requestModel = Register(baseUrl: baseUrl, user: user, password: password)
+        let requestModel = Register(baseUrl: baseUrl, user: user)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
 
@@ -47,17 +46,16 @@ extension UserRequest {
         let method: HTTPMethod = .post
         let path = "register"
         let user: User
-        let password: String
         var parameters: Parameters? {
             return [
                 "id": user.id,
-                "login": user.login,
                 "first_name": user.firstName,
                 "last_name": user.lastName,
-                "email": user.email,
                 "gender": user.gender,
+                "email": user.email,
                 "credit_card": user.creditCard,
-                "password": password
+                "login": user.login,
+                "password": user.password
             ]
         }
     }
@@ -71,12 +69,13 @@ extension UserRequest {
         var parameters: Parameters? {
             return [
                 "id": user.id,
-                "login": user.login,
                 "first_name": user.firstName,
                 "last_name": user.lastName,
-                "email": user.email,
                 "gender": user.gender,
+                "email": user.email,
                 "credit_card": user.creditCard,
+                "login": user.login,
+                "password": user.password,
                 "token": token
             ]
         }

@@ -23,12 +23,13 @@ extension UserDataChangeResponse: CustomStringConvertible {
         if let user = self.user {
             output +=   """
                         user:    id:         \(user.id)
-                                 login:      \(user.login)
                                  firstName:  \(user.firstName)
                                  lastName:   \(user.lastName)
-                                 email:      \(user.email)
                                  gender:     \(user.gender)
-                                 creditCard: \(user.creditCard)\n
+                                 email:      \(user.email)
+                                 creditCard: \(user.creditCard)
+                                 login:      \(user.login)
+                                 password:   \(user.password)\n
                         """
         }
         return output

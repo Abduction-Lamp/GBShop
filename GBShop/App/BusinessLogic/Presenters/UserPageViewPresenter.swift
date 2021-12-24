@@ -68,7 +68,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                                    email: user.email,
                                    creditCard: user.creditCard,
                                    login: user.login,
-                                   password: "")
+                                   password: user.password)
         }
     }
     
@@ -81,7 +81,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                                    email: self.user.email,
                                    creditCard: self.user.creditCard,
                                    login: self.user.login,
-                                   password: "")
+                                   password: self.user.password)
         }
     }
     
@@ -169,6 +169,10 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
             view?.showErrorAlert(message: "Поле Пароль не заполнено")
             return nil
         }
+        guard password.count > 6 else {
+            view?.showErrorAlert(message: "Короткий Пароль (меньше 7 символов)")
+            return nil
+        }
         guard email.isValidEmail() else {
             view?.showErrorAlert(message: "Не верный формат E-mail")
             return nil
@@ -178,11 +182,12 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
             return nil
         }
         return User(id: user.id,
-                    login: login,
                     firstName: firstName,
                     lastName: lastName,
-                    email: email,
                     gender: gender == 0 ? "m" : "w",
-                    creditCard: creditCard)
+                    email: email,
+                    creditCard: creditCard,
+                    login: login,
+                    password: password)
     }
 }

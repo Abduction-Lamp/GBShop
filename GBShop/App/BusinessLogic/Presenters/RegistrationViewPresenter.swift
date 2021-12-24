@@ -42,7 +42,7 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
                            password: password)
         
         guard let user = newUser else { return }
-        requestRegister(user: user, password: password)
+        requestRegister(user: user)
     }
     
     private func makeUser(firstName: String,
@@ -76,6 +76,10 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
             view?.showErrorAlert(message: "Поле Пароль не заполнено")
             return nil
         }
+        guard password.count > 6 else {
+            view?.showErrorAlert(message: "Короткий Пароль (меньше 7 символов)")
+            return nil
+        }
         guard email.isValidEmail() else {
             view?.showErrorAlert(message: "Не верный формат E-mail")
             return nil
@@ -84,24 +88,29 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
             view?.showErrorAlert(message: "Не верный формат Кредитной Карты")
             return nil
         }
-        return User(id: 3,
-                    login: login,
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    gender: gender == 0 ? "m" : "w",
-                    creditCard: creditCard)
+
+        return  User(id: 0,
+                     firstName: firstName,
+                     lastName: lastName,
+                     gender: gender == 0 ? "m" : "w",
+                     email: email,
+                     creditCard: creditCard,
+                     login: login,
+                     password: password)
     }
     
-    private func requestRegister(user: User, password: String) {
-        network.register(user: user, password: password) { [weak self] response in
+    private func requestRegister(user: User) {
+        network.register(user: user) { [weak self] response in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
-                    if result.result == 1 {
-                        self.router?.pushUserPageViewController(user: user, token: "")
+                    if result.result == 1,
+                       let newUser = result.user,
+                       let token = result.token {
+                        self.newUser = newUser
+                        self.router?.pushUserPageViewController(user: newUser, token: token)
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }

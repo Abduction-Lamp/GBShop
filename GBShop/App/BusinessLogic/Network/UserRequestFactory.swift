@@ -10,7 +10,6 @@ import Alamofire
 
 protocol UserRequestFactory {
     func register(user: User,
-                  password: String,
                   completionHandler: @escaping (AFDataResponse<UserRegisterResponse>) -> Void)
     
     func change(user: User,

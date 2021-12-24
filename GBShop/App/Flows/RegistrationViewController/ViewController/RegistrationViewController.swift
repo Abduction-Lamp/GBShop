@@ -57,9 +57,6 @@ final class RegistrationViewController: UIViewController {
         registrationView.scrollView.addGestureRecognizer(keyboardHideGesture)
         
         registrationView.creditCardTextField.delegate = self
-//        registrationView.lastNameTextField.delegate = self
-//        registrationView.emailTextField.delegate = self
-//        registrationView.passwordTextField.delegate = self
         
         registrationView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
     }

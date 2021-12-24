@@ -9,21 +9,23 @@ import Foundation
 
 struct User: Codable {
     let id: Int
-    let login: String
     let firstName: String
     let lastName: String
-    let email: String
     let gender: String
+    let email: String
     let creditCard: String
+    let login: String
+    let password: String
     
     enum CodingKeys: String, CodingKey {
         case id
-        case login
         case firstName = "first_name"
         case lastName = "last_name"
-        case email
         case gender
+        case email
         case creditCard = "credit_card"
+        case login
+        case password
     }
 }
 
@@ -36,6 +38,7 @@ extension User: Equatable {
                 lhs.lastName == rhs.lastName &&
                 lhs.email == rhs.email &&
                 lhs.gender == rhs.gender &&
-                lhs.creditCard == rhs.creditCard
+                lhs.creditCard == rhs.creditCard &&
+                lhs.password == rhs.password
     }
 }

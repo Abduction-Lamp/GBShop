@@ -56,7 +56,8 @@ final class RegistrationView: UIView {
 
     private(set) lazy var passwordTextField: UITextField = {
         let textField = makeTextFildView(placeholder: "Пароль")
-        textField.isSecureTextEntry = true
+        textField.isSecureTextEntry = false
+        textField.textContentType = .init(rawValue: "")
         return textField
     }()
     
