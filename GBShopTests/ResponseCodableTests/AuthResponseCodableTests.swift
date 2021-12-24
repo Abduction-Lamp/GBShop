@@ -28,12 +28,13 @@ extension AuthResponseCodableTests {
         let expression = LoginResponse(result: 1,
                                        message: "Иван, добро пожаловать!",
                                        user: User(id: 1,
-                                                  login: "Username",
                                                   firstName: "Иван",
                                                   lastName: "Иванов",
-                                                  email: "ivanov@mail.ru",
                                                   gender: "m",
-                                                  creditCard: "1000-2000-3000-4000"),
+                                                  email: "ivanov@mail.ru",
+                                                  creditCard: "1000-2000-3000-4000",
+                                                  login: "Username",
+                                                  password: "UserPassword"),
                                        token: "ED86EE70-124E-46DD-876B-4A4441F74575")
 
         auth.login(login: loginStub, password: passwordStu) { response in

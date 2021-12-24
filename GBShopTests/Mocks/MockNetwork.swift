@@ -64,11 +64,20 @@ class MockNetworkAuthRequest: AuthRequestFactory {
 //
 class MockNetworkUserRequest: UserRequestFactory {
     
-    static var fakeUser: User = User(id: 3, login: "login", firstName: "firstName", lastName: "lastName",
-                                     email: "email@email.ru", gender: "m", creditCard: "1111-1111-1111-1111")
+    static var fakeUser: User = User(id: 3,
+                                     firstName: "firstName",
+                                     lastName: "lastName",
+                                     gender: "m",
+                                     email: "email@email.ru",
+                                     creditCard: "1111-1111-1111-1111",
+                                     login: "login",
+                                     password: "password")
     
     // MARK: register
-    lazy var registerResultSuccess: Result<UserRegisterResponse, AFError> = .success(UserRegisterResponse(result: 1, message: "success"))
+    lazy var registerResultSuccess: Result<UserRegisterResponse, AFError> = .success(UserRegisterResponse(result: 1,
+                                                                                                          message: "success",
+                                                                                                          user: MockNetworkUserRequest.fakeUser,
+                                                                                                          token: "token"))
     lazy var registerResultFailure: Result<UserRegisterResponse, AFError> = .failure(.explicitlyCancelled)
     
     lazy var registerResponseSuccess = AFDataResponse<UserRegisterResponse>(request: nil, response: nil, data: nil, metrics: nil,
@@ -93,8 +102,14 @@ class MockNetworkUserRequest: UserRequestFactory {
     
     // MARK: -
     //
-    func register(user: User, password: String, completionHandler: @escaping (AFDataResponse<UserRegisterResponse>) -> Void) {
-        if (user == MockNetworkUserRequest.fakeUser) && (password == "password") {
+    func register(user: User, completionHandler: @escaping (AFDataResponse<UserRegisterResponse>) -> Void) {
+        if  (user.firstName == MockNetworkUserRequest.fakeUser.firstName) &&
+            (user.lastName == MockNetworkUserRequest.fakeUser.lastName) &&
+            (user.gender == MockNetworkUserRequest.fakeUser.gender) &&
+            (user.email == MockNetworkUserRequest.fakeUser.email) &&
+            (user.creditCard == MockNetworkUserRequest.fakeUser.creditCard) &&
+            (user.login == MockNetworkUserRequest.fakeUser.login) &&
+            (user.password == MockNetworkUserRequest.fakeUser.password) {
             completionHandler(registerResponseSuccess)
         } else {
             completionHandler(registerResponseFailure)

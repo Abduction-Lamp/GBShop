@@ -27,7 +27,13 @@ class MockRouter: RouterProtocol {
     
     var messageUserPage: String?
     func pushUserPageViewController(user: User, token: String) {
-        if (user == MockNetworkUserRequest.fakeUser) && (token == "") {
+        if  (user.firstName == MockNetworkUserRequest.fakeUser.firstName) &&
+            (user.lastName == MockNetworkUserRequest.fakeUser.lastName) &&
+            (user.gender == MockNetworkUserRequest.fakeUser.gender) &&
+            (user.email == MockNetworkUserRequest.fakeUser.email) &&
+            (user.creditCard == MockNetworkUserRequest.fakeUser.creditCard) &&
+            (user.login == MockNetworkUserRequest.fakeUser.login) &&
+            (user.password == MockNetworkUserRequest.fakeUser.password) {
             messageUserPage = "success"
             self.expectation.fulfill()
         }
