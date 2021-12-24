@@ -17,10 +17,10 @@ struct UserRegisterResponse: Codable {
 extension UserRegisterResponse: CustomStringConvertible {
     
     var description: String {
-        var output =    """
-                        result:  \(result)
-                        message: \(message)\n
-                        """
+        var output = """
+                     result:    \(result)
+                     message:   \(message)\n
+                     """
         if let token = self.token {
             output +=   """
                         token:   \(token)\n

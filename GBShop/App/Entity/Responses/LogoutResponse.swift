@@ -15,9 +15,10 @@ struct LogoutResponse: Codable {
 extension LogoutResponse: CustomStringConvertible {
     
     var description: String {
-        return  """
-                result:  \(result)
-                message: \(message)\n
-                """
+        let output = """
+                     result:    \(result)
+                     message:   \(message)\n
+                     """
+        return output
     }
 }

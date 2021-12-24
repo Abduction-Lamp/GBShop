@@ -16,10 +16,10 @@ struct UserDataChangeResponse: Codable {
 extension UserDataChangeResponse: CustomStringConvertible {
     
     var description: String {
-        var output =    """
-                        result:  \(result)
-                        message: \(message)\n
-                        """
+        var output = """
+                     result:    \(result)
+                     message:   \(message)\n
+                     """
         if let user = self.user {
             output +=   """
                         user:    id:         \(user.id)

@@ -12,6 +12,9 @@
 		4E027FD82766274400326158 /* ReviewRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD72766274400326158 /* ReviewRequest.swift */; };
 		4E027FDA276627F700326158 /* ReviewRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD9276627F700326158 /* ReviewRequestFactory.swift */; };
 		4E027FDC27662C0700326158 /* ReviewResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */; };
+		4E0339D42775F48300C13DA4 /* ColorExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0339D32775F48300C13DA4 /* ColorExtensionTests.swift */; };
+		4E0339D72775F9F200C13DA4 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0339D62775F9F200C13DA4 /* EntityTests.swift */; };
+		4E0339D92775FE7600C13DA4 /* EntityRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0339D82775FE7600C13DA4 /* EntityRequestTests.swift */; };
 		4E11B34C2771FF4500CECFB5 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11B34B2771FF4500CECFB5 /* RegistrationViewController.swift */; };
 		4E11B3502772025A00CECFB5 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11B34F2772025A00CECFB5 /* RegistrationView.swift */; };
 		4E11B35A2772331B00CECFB5 /* RegistrationViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11B3592772331B00CECFB5 /* RegistrationViewPresenter.swift */; };
@@ -108,6 +111,9 @@
 		4E027FD72766274400326158 /* ReviewRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequest.swift; sourceTree = "<group>"; };
 		4E027FD9276627F700326158 /* ReviewRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestFactory.swift; sourceTree = "<group>"; };
 		4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewResponseCodableTests.swift; sourceTree = "<group>"; };
+		4E0339D32775F48300C13DA4 /* ColorExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensionTests.swift; sourceTree = "<group>"; };
+		4E0339D62775F9F200C13DA4 /* EntityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityTests.swift; sourceTree = "<group>"; };
+		4E0339D82775FE7600C13DA4 /* EntityRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityRequestTests.swift; sourceTree = "<group>"; };
 		4E11B34B2771FF4500CECFB5 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		4E11B34F2772025A00CECFB5 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		4E11B3592772331B00CECFB5 /* RegistrationViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewPresenter.swift; sourceTree = "<group>"; };
@@ -226,6 +232,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4E0339D52775F9CA00C13DA4 /* EntityTests */ = {
+			isa = PBXGroup;
+			children = (
+				4E0339D62775F9F200C13DA4 /* EntityTests.swift */,
+				4E0339D82775FE7600C13DA4 /* EntityRequestTests.swift */,
+			);
+			path = EntityTests;
+			sourceTree = "<group>";
+		};
 		4E11B3482771FD0D00CECFB5 /* RegistrationViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,10 +304,11 @@
 			isa = PBXGroup;
 			children = (
 				4EC4DCE72774BE9500165F77 /* Mocks */,
-				4EC4DCE027749C7200165F77 /* ExtensionsTests */,
 				4EC02F4B2770EC8E00EACE3D /* ResponseCodableTests */,
 				4EC02F4C2770EDD000EACE3D /* PresenterTests */,
 				4EC4DCF02774E50900165F77 /* RouterTests */,
+				4E0339D52775F9CA00C13DA4 /* EntityTests */,
+				4EC4DCE027749C7200165F77 /* ExtensionsTests */,
 				4E2256AE27526867008E52F8 /* Info.plist */,
 			);
 			path = GBShopTests;
@@ -551,6 +567,7 @@
 			children = (
 				4EC4DCE127749CB100165F77 /* StringExtensionsValidEmailTests.swift */,
 				4EC4DCE32774A05300165F77 /* StringExtensionsValidCreditCardTests.swift */,
+				4E0339D32775F48300C13DA4 /* ColorExtensionTests.swift */,
 			);
 			path = ExtensionsTests;
 			sourceTree = "<group>";
@@ -945,6 +962,8 @@
 				4EC4DCEB2774BF9900165F77 /* MockNetwork.swift in Sources */,
 				4EC4DCF42774E59F00165F77 /* MockNavigation.swift in Sources */,
 				4E901BE8275E3B2600E6160F /* ProductResponseCodableTests.swift in Sources */,
+				4E0339D42775F48300C13DA4 /* ColorExtensionTests.swift in Sources */,
+				4E0339D72775F9F200C13DA4 /* EntityTests.swift in Sources */,
 				4E16DF1D276B93960019FEDA /* CartResponseCodableTests.swift in Sources */,
 				4EC4DCE62774BD2700165F77 /* RegistrationViewPresenterTests.swift in Sources */,
 				4EC4DCE92774BEC700165F77 /* MockRouter.swift in Sources */,
@@ -954,6 +973,7 @@
 				4E901BE4275E3B0300E6160F /* AuthResponseCodableTests.swift in Sources */,
 				4EC02F4E2770EFEB00EACE3D /* LoginViewPresenterTests.swift in Sources */,
 				4E027FDC27662C0700326158 /* ReviewResponseCodableTests.swift in Sources */,
+				4E0339D92775FE7600C13DA4 /* EntityRequestTests.swift in Sources */,
 				4EC4DCEF2774D6F600165F77 /* UserPageViewPresenterTests.swift in Sources */,
 				4EC4DCF22774E53900165F77 /* RouterTests.swift in Sources */,
 				4EC4DCE42774A05300165F77 /* StringExtensionsValidCreditCardTests.swift in Sources */,
