@@ -22,7 +22,7 @@ class BuilderViewController: BuilderProtocol {
         }
         
         let viewController = LoginViewController()
-        let network = RequestFactory().makeAuthRequestFatory()
+        let network = RequestFactory().makeAuthRequestFactory()
         let presenter = LoginViewPresenter(router: router, view: viewController, network: network)
         viewController.presenret = presenter
         

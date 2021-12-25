@@ -11,11 +11,43 @@ import Alamofire
 
 class AuthResponseCodableTests: XCTestCase {
     
-    let auth = RequestFactory().makeAuthRequestFatory()
-    let expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
+    var auth: AuthRequestFactory!
+    var initialStateEexpectation: XCTestExpectation!
+    var expectation: XCTestExpectation!
     
-    override func setUpWithError() throws {}
-    override func tearDownWithError() throws {}
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        auth = RequestFactory().makeAuthRequestFactory()
+        initialStateEexpectation = XCTestExpectation(description: "[ INITIAL STATE MOCK SERVER ]")
+        expectation = XCTestExpectation(description: "[ Test ]")
+        initialStateServer()
+    }
+    
+    override func tearDownWithError() throws {
+        auth = nil
+        initialStateEexpectation = nil
+        expectation = nil
+        try super.tearDownWithError()
+    }
+    
+    // MARK: - SUPPORT: Сбрасывает мок-данные на сервере в исходное состояние
+    private func initialStateServer() {
+        AF.request("https://salty-springs-77873.herokuapp.com/mock/server/state/initial")
+            .responseJSON { response in
+                switch response.result {
+                case .success(let jsonObject):
+                    if let json = jsonObject as? [String: Any] {
+                        print(String(describing: "\n - [ INITIAL STATE MOCK SERVER ]: \(json["message"] ?? "nil")"))
+                    } else {
+                        XCTFail("server has not returned to its initial state")
+                    }
+                case .failure(let error):
+                    XCTFail(error.localizedDescription)
+                }
+                self.initialStateEexpectation.fulfill()
+            }
+        wait(for: [self.initialStateEexpectation], timeout: 5.0)
+    }
 }
 
 // MARK: - Login

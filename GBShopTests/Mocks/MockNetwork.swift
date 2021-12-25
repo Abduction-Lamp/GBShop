@@ -11,7 +11,7 @@ import Alamofire
 
 class MockNetworkRequest: RequestFactoryProtocol {
     
-    func makeAuthRequestFatory() -> AuthRequestFactory {
+    func makeAuthRequestFactory() -> AuthRequestFactory {
         return MockNetworkAuthRequest()
     }
     func makeUserRequestFactory() -> UserRequestFactory {

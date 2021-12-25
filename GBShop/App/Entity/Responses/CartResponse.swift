@@ -21,7 +21,6 @@ extension CartResponse: CustomStringConvertible {
                      message:   \(message)\n
                      """
         if let cart = self.cart {
-            
             cart.forEach { item in
                 output += """
                           product:  id:          \(item.id)

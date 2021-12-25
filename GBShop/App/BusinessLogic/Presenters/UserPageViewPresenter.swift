@@ -52,6 +52,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
     }
     private let token: String
 
+    // MARK: Initialization
     required init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
         self.router = router
         self.view = view
@@ -96,7 +97,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
             logging(.funcEnd)
         }
         
-        let auth = network.makeAuthRequestFatory()
+        let auth = network.makeAuthRequestFactory()
         auth.logout(id: user.id, token: token) { response in
             
             logging("[\(self) id: \(self.user.id) token: \(self.token)]")

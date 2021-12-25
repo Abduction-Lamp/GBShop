@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 protocol RequestFactoryProtocol {
-    func makeAuthRequestFatory() -> AuthRequestFactory
+    func makeAuthRequestFactory() -> AuthRequestFactory
     func makeUserRequestFactory() -> UserRequestFactory
 }
 
@@ -29,7 +29,7 @@ class RequestFactory: RequestFactoryProtocol {
 
     let sessionQueue = DispatchQueue.global(qos: .utility)
 
-    func makeAuthRequestFatory() -> AuthRequestFactory {
+    func makeAuthRequestFactory() -> AuthRequestFactory {
         let errorParser = makeErrorParser()
         return AuthRequest(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }

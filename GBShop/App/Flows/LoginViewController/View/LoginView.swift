@@ -120,7 +120,6 @@ final class LoginView: UIView {
     }()
     
     // MARK: - Initialization
-    //
     override init(frame: CGRect) {
         super.init(frame: frame)
         configuration()
