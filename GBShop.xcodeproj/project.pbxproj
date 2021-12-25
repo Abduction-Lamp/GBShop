@@ -44,6 +44,7 @@
 		4E859D5527567A4C00A7F2F1 /* UserRegisterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E859D5427567A4C00A7F2F1 /* UserRegisterResponse.swift */; };
 		4E859D5827567B3C00A7F2F1 /* UserDataChangeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E859D5727567B3C00A7F2F1 /* UserDataChangeResponse.swift */; };
 		4E859D5A27567DF100A7F2F1 /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E859D5927567DF100A7F2F1 /* UserRequest.swift */; };
+		4E8ADFB727772C56002FDB84 /* CreditCardTextFieldProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8ADFB627772C56002FDB84 /* CreditCardTextFieldProtocol.swift */; };
 		4E901BDA275CEB9200E6160F /* ErrorParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E901BD9275CEB9200E6160F /* ErrorParserTests.swift */; };
 		4E901BDC275E2D9700E6160F /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E901BDB275E2D9700E6160F /* Product.swift */; };
 		4E901BDE275E35D700E6160F /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E901BDD275E35D700E6160F /* ProductResponse.swift */; };
@@ -149,6 +150,7 @@
 		4E859D5427567A4C00A7F2F1 /* UserRegisterResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegisterResponse.swift; sourceTree = "<group>"; };
 		4E859D5727567B3C00A7F2F1 /* UserDataChangeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataChangeResponse.swift; sourceTree = "<group>"; };
 		4E859D5927567DF100A7F2F1 /* UserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
+		4E8ADFB627772C56002FDB84 /* CreditCardTextFieldProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardTextFieldProtocol.swift; sourceTree = "<group>"; };
 		4E901BD4275CD91E00E6160F /* Unit.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Unit.xctestplan; sourceTree = "<group>"; };
 		4E901BD5275CD9BD00E6160F /* UI.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UI.xctestplan; sourceTree = "<group>"; };
 		4E901BD6275CDAA200E6160F /* Full.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Full.xctestplan; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				4EB846AD277378A8004F5E16 /* AbstractViewController.swift */,
+				4E8ADFB627772C56002FDB84 /* CreditCardTextFieldProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -941,6 +944,7 @@
 				4E22569627526863008E52F8 /* AppDelegate.swift in Sources */,
 				4E859D432756669900A7F2F1 /* LoginResponse.swift in Sources */,
 				4EC02F382770D55600EACE3D /* LoginViewController.swift in Sources */,
+				4E8ADFB727772C56002FDB84 /* CreditCardTextFieldProtocol.swift in Sources */,
 				4E859D5A27567DF100A7F2F1 /* UserRequest.swift in Sources */,
 				4E22569827526863008E52F8 /* SceneDelegate.swift in Sources */,
 				4E027FD42766214900326158 /* Review.swift in Sources */,
