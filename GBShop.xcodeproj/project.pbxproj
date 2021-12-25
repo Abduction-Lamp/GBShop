@@ -45,6 +45,8 @@
 		4E859D5827567B3C00A7F2F1 /* UserDataChangeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E859D5727567B3C00A7F2F1 /* UserDataChangeResponse.swift */; };
 		4E859D5A27567DF100A7F2F1 /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E859D5927567DF100A7F2F1 /* UserRequest.swift */; };
 		4E8ADFB727772C56002FDB84 /* CreditCardTextFieldProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8ADFB627772C56002FDB84 /* CreditCardTextFieldProtocol.swift */; };
+		4E8ADFBA27773CC7002FDB84 /* MakeUserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8ADFB927773CC7002FDB84 /* MakeUserFactory.swift */; };
+		4E8ADFBD2777421E002FDB84 /* MakeUserFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8ADFBC2777421E002FDB84 /* MakeUserFactoryTests.swift */; };
 		4E901BDA275CEB9200E6160F /* ErrorParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E901BD9275CEB9200E6160F /* ErrorParserTests.swift */; };
 		4E901BDC275E2D9700E6160F /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E901BDB275E2D9700E6160F /* Product.swift */; };
 		4E901BDE275E35D700E6160F /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E901BDD275E35D700E6160F /* ProductResponse.swift */; };
@@ -151,6 +153,8 @@
 		4E859D5727567B3C00A7F2F1 /* UserDataChangeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataChangeResponse.swift; sourceTree = "<group>"; };
 		4E859D5927567DF100A7F2F1 /* UserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
 		4E8ADFB627772C56002FDB84 /* CreditCardTextFieldProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardTextFieldProtocol.swift; sourceTree = "<group>"; };
+		4E8ADFB927773CC7002FDB84 /* MakeUserFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeUserFactory.swift; sourceTree = "<group>"; };
+		4E8ADFBC2777421E002FDB84 /* MakeUserFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeUserFactoryTests.swift; sourceTree = "<group>"; };
 		4E901BD4275CD91E00E6160F /* Unit.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Unit.xctestplan; sourceTree = "<group>"; };
 		4E901BD5275CD9BD00E6160F /* UI.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UI.xctestplan; sourceTree = "<group>"; };
 		4E901BD6275CDAA200E6160F /* Full.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Full.xctestplan; sourceTree = "<group>"; };
@@ -311,6 +315,7 @@
 				4EC4DCF02774E50900165F77 /* RouterTests */,
 				4E0339D52775F9CA00C13DA4 /* EntityTests */,
 				4EC4DCE027749C7200165F77 /* ExtensionsTests */,
+				4E8ADFBB277741F7002FDB84 /* Protocols */,
 				4E2256AE27526867008E52F8 /* Info.plist */,
 			);
 			path = GBShopTests;
@@ -368,6 +373,14 @@
 				4E3246B6276B797D00F77BF2 /* CartResponse.swift */,
 			);
 			path = Responses;
+			sourceTree = "<group>";
+		};
+		4E8ADFBB277741F7002FDB84 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				4E8ADFBC2777421E002FDB84 /* MakeUserFactoryTests.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		4E901BD3275CD8B800E6160F /* TestPlans */ = {
@@ -469,6 +482,7 @@
 			children = (
 				4EB846AD277378A8004F5E16 /* AbstractViewController.swift */,
 				4E8ADFB627772C56002FDB84 /* CreditCardTextFieldProtocol.swift */,
+				4E8ADFB927773CC7002FDB84 /* MakeUserFactory.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -954,6 +968,7 @@
 				4E859D3827565B1B00A7F2F1 /* AbstractErrorParser.swift in Sources */,
 				4E901BDC275E2D9700E6160F /* Product.swift in Sources */,
 				4E859D53275676BD00A7F2F1 /* LogoutResponse.swift in Sources */,
+				4E8ADFBA27773CC7002FDB84 /* MakeUserFactory.swift in Sources */,
 				4EC02F362770D54800EACE3D /* LoginView.swift in Sources */,
 				4E859D4A275667A600A7F2F1 /* AuthRequest.swift in Sources */,
 			);
@@ -981,6 +996,7 @@
 				4EC4DCEF2774D6F600165F77 /* UserPageViewPresenterTests.swift in Sources */,
 				4EC4DCF22774E53900165F77 /* RouterTests.swift in Sources */,
 				4EC4DCE42774A05300165F77 /* StringExtensionsValidCreditCardTests.swift in Sources */,
+				4E8ADFBD2777421E002FDB84 /* MakeUserFactoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

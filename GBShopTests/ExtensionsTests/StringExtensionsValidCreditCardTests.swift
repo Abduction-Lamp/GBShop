@@ -26,7 +26,8 @@ class StringExtensionsValidCreditCardTests: XCTestCase {
         "1234-1234-1234",
         "1234-1234-1234-abcd",
         "1234--1234--1234--1234",
-        "1234 1234 1234 1234"
+        "1234 1234 1234 1234",
+        "1111222233334444"
     ]
     
     override func setUpWithError() throws { }
