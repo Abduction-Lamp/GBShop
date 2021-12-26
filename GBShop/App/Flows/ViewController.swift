@@ -126,7 +126,7 @@ extension ViewController {
 
     private func getCatalog(id: Int, page: Int) {
         let catalog = request.makeProductRequestFactory()
-        catalog.getCatalog(id: id, page: page) { response in
+        catalog.getCatalog(page: page) { response in
             switch response.result {
             case .success(let result):
                 print("--- CATALOG ID=\(id) RESULT: ---\n\(result)")

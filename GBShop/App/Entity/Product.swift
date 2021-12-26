@@ -13,6 +13,16 @@ struct Product: Codable {
     let category: String
     let price: Double
     let description: String?
+    let imageURL: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case category
+        case price
+        case description
+        case imageURL = "image_url"
+    }
 }
 
 extension Product: Equatable {

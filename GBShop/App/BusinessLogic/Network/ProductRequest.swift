@@ -25,11 +25,16 @@ class ProductRequest: AbstractRequestFactory {
 
 extension ProductRequest: ProductRequestFactory {
 
-    func getCatalog(id: Int, page: Int, completionHandler: @escaping (AFDataResponse<CatalogResponse>) -> Void) {
-        let requestModel = Catalog(baseUrl: baseUrl, id: id, page: page)
+    func getCatalog(page: Int, completionHandler: @escaping (AFDataResponse<CatalogResponse>) -> Void) {
+        let requestModel = Catalog(baseUrl: baseUrl, page: page)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
 
+    func getSection(id: Int, page: Int, completionHandler: @escaping (AFDataResponse<SectionResponse>) -> Void) {
+        let requestModel = SectionItem(baseUrl: baseUrl, id: id, page: page)
+        self.request(request: requestModel, completionHandler: completionHandler)
+    }
+    
     func getProduct(id: Int, completionHandler: @escaping (AFDataResponse<ProductResponse>) -> Void) {
         let requestModel = ProductItem(baseUrl: baseUrl, id: id)
         self.request(request: requestModel, completionHandler: completionHandler)
@@ -44,6 +49,18 @@ extension ProductRequest {
         var path: String = "catalog"
         var parameters: Parameters?
 
+        init(baseUrl: URL, page: Int) {
+            self.baseUrl = baseUrl
+            self.path += "/\(page)/"
+        }
+    }
+    
+    struct SectionItem: RequestRouter {
+        let baseUrl: URL
+        let method: HTTPMethod = .get
+        var path: String = "catalog/section"
+        var parameters: Parameters?
+
         init(baseUrl: URL, id: Int, page: Int) {
             self.baseUrl = baseUrl
             self.path += "/\(id)/\(page)/"
@@ -53,7 +70,7 @@ extension ProductRequest {
     struct ProductItem: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .get
-        var path: String = "product"
+        var path: String = "catalog/product"
         var parameters: Parameters?
 
         init(baseUrl: URL, id: Int) {

@@ -66,8 +66,8 @@ final class UserPageViewController: UIViewController {
     private func configurationView() {
         self.view = UserPageView(frame: self.view.frame)
         
+        self.navigationItem.setHidesBackButton(false, animated: false)
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         
         saveBarButtonItem.tintColor = .systemRed
@@ -105,7 +105,8 @@ extension UserPageViewController: UserPageViewProtocol {
     func didChangeUserData() {
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         self.navigationItem.leftBarButtonItem = nil
-        
+        self.navigationItem.setHidesBackButton(false, animated: true)
+
         isEditingUserData = false
         enabledUserDataView(isEnable: isEditingUserData)
     }
@@ -122,6 +123,7 @@ extension UserPageViewController {
     
     @objc
     private func pressedСhangeButton(_ sender: UIBarButtonItem) {
+        self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.rightBarButtonItem = saveBarButtonItem
         self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         
@@ -150,6 +152,7 @@ extension UserPageViewController {
     
     @objc
     private func pressedCancelButton(_ sender: UIBarButtonItem) {
+        self.navigationItem.setHidesBackButton(false, animated: false)
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         self.navigationItem.leftBarButtonItem = nil
         
