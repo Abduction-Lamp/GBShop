@@ -40,6 +40,7 @@ final class CatalogHeaderView: UICollectionReusableView {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         title.text = nil
     }
 }

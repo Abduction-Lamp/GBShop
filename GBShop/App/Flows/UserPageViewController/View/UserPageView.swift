@@ -44,7 +44,7 @@ final class UserPageView: UIView {
     }()
     
     private(set) lazy var emailTextField: UITextField = {
-        return makeTextFildView(placeholder: "Фамилия", keyboardType: .emailAddress)
+        return makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
     }()
 
     private(set) lazy var creditCardTextField: CreditCardTextField = {
