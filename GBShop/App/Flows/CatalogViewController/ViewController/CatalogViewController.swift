@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class CatalogViewController: UICollectionViewController {
     
@@ -69,6 +70,13 @@ final class CatalogViewController: UICollectionViewController {
                                                             for: indexPath) as? CatalogViewCell else { return UICollectionViewCell() }
         cell.title.text = catalog[indexPath.section].items[indexPath.row].name
         cell.priceLabel.text = makePriceString(price: catalog[indexPath.section].items[indexPath.row].price)
+        if  let urlString = catalog[indexPath.section].items[indexPath.row].imageURL,
+            let url = URL(string: urlString) {
+            cell.imageView.kf.indicatorType = .activity
+            cell.imageView.kf.setImage(with: url)
+        }
+        cell.buyButon.tag = catalog[indexPath.section].items[indexPath.row].id
+        cell.buyButon.addTarget(self, action: #selector(pressedBuyButon), for: .touchUpInside)
         return cell
     }
         
@@ -135,6 +143,11 @@ extension CatalogViewController {
     private func pressedUserPageButton(_ sender: UIBarButtonItem) {
         presenret?.userPage()
     }
+    
+    @objc
+    private func pressedBuyButon(_ sender: UIButton, id: Int) {
+        presenret?.addCart(id: sender.tag)
+    }
 }
 
 extension CatalogViewController: CatalogViewProtocol {
@@ -150,5 +163,13 @@ extension CatalogViewController: CatalogViewProtocol {
     func setCatalog(_ catalog: [Section]) {
         self.catalog = catalog
         self.collectionView.reloadData()
+    }
+    
+    func updataCart(count: Int) {
+        if count < 1 {
+            self.title = "Магазин"
+        } else {
+            self.title = "В корзине [\(count)]"
+        }
     }
 }

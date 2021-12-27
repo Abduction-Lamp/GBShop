@@ -12,6 +12,7 @@ import Alamofire
 // MARK: - Mock Entity
 //
 class MockCatalogView: UIViewController, CatalogViewProtocol {
+    
     var expectation = XCTestExpectation(description: "[ TEST MockCatalogView ]")
     
     var error: String?
@@ -31,13 +32,18 @@ class MockCatalogView: UIViewController, CatalogViewProtocol {
         self.messageSetCatalog = "success"
         self.expectation.fulfill()
     }
+    var messageUpdataCart: Int?
+    func updataCart(count: Int) {
+        messageUpdataCart = count
+        self.expectation.fulfill()
+    }
 }
 
 class CatalogViewPresenterTests: XCTestCase {
 
     var router: MockRouter!
     var view: MockCatalogView!
-    var network: ProductRequestFactory!
+    var network: RequestFactoryProtocol!
     var presenter: CatalogViewPresenter!
 
     var request = RequestFactory()
@@ -45,7 +51,7 @@ class CatalogViewPresenterTests: XCTestCase {
     override func setUpWithError() throws {
         router = MockRouter()
         view = MockCatalogView()
-        network = MockNetworkRequest().makeProductRequestFactory()
+        network = MockNetworkRequest()
 
         presenter = CatalogViewPresenter(router: router, view: view, network: network, user: MockNetworkUserRequest.fakeUser, token: "")
     }
@@ -74,6 +80,7 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
         XCTAssertEqual(view.catalog, MockProductRequest.catalog)
+        XCTAssertEqual(view.messageUpdataCart, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
@@ -90,6 +97,7 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
         XCTAssertEqual(view.catalog, MockProductRequest.catalog)
+        XCTAssertEqual(view.messageUpdataCart, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
@@ -105,6 +113,39 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.error, "error")
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messageRegistration, nil)
+        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messageCatalog, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+    }
+    
+    func testCatalogViewPresenterAddCartSeccess() throws {
+        presenter.addCart(id: 1)
+        wait(for: [self.view.expectation], timeout: 2.0)
+        
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, nil)
+        XCTAssertEqual(view.messageSetCatalog, "success")
+        XCTAssertEqual(view.messageUpdataCart, 1)
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messageRegistration, nil)
+        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messageCatalog, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+    }
+    
+    func testCatalogViewPresenterAddCartError() throws {
+        presenter.addCart(id: -1)
+        wait(for: [self.view.expectation], timeout: 2.0)
+        
+        XCTAssertEqual(view.error, "error")
+        XCTAssertEqual(view.message, nil)
+        XCTAssertEqual(view.messageSetCatalog, "success")
+        XCTAssertEqual(view.messageUpdataCart, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)

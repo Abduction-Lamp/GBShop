@@ -20,6 +20,9 @@ class MockNetworkRequest: RequestFactoryProtocol {
     func makeProductRequestFactory() -> ProductRequestFactory {
         return MockProductRequest()
     }
+    func makeCartRequestFactory() -> CartRequestFactory {
+        return MockCartRequestFactory()
+    }
 }
 
 class MockNetworkAuthRequest: AuthRequestFactory {
@@ -226,5 +229,48 @@ class MockProductRequest: ProductRequestFactory {
         } else {
             completionHandler(productResponseFailure)
         }
+    }
+}
+
+class MockCartRequestFactory: CartRequestFactory {
+    
+    // MARK: Catalog
+    lazy var cartResultSuccess: Result<CartResponse, AFError> = .success(CartResponse(result: 1,
+                                                                                      message: "success",
+                                                                                      cart: [
+                                                                                        Product(id: 1,
+                                                                                                name: "MacBook Pro",
+                                                                                                category: "Ноутбук",
+                                                                                                price: 250_000,
+                                                                                                description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                                                                                imageURL: nil)
+                                                                                      ]))
+    lazy var cartResultFailure: Result<CartResponse, AFError> = .failure(.explicitlyCancelled)
+          
+    lazy var cartResponseSuccess = AFDataResponse<CartResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: cartResultSuccess)
+    lazy var cartResponseFailure = AFDataResponse<CartResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: cartResultFailure)
+    
+    func cart(owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        return
+    }
+    
+    func add(productId: Int, owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        if productId > 0 || owner == 0 {
+            completionHandler(cartResponseSuccess)
+        } else {
+            completionHandler(cartResponseFailure)
+        }
+    }
+    
+    func delete(productId: Int, owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        return
+    }
+    
+    func pay(owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        return
     }
 }

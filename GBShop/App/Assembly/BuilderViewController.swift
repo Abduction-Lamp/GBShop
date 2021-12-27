@@ -69,7 +69,7 @@ class BuilderViewController: BuilderProtocol {
         
         let layout = UICollectionViewFlowLayout()
         let viewController = CatalogViewController(collectionViewLayout: layout)
-        let network = RequestFactory().makeProductRequestFactory()
+        let network = RequestFactory()
         let presenter = CatalogViewPresenter(router: router, view: viewController, network: network, user: user, token: token)
         viewController.presenret = presenter
         

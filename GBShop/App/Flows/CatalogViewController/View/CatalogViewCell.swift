@@ -11,7 +11,7 @@ final class CatalogViewCell: UICollectionViewCell {
     static let reuseIdentifier = "CatalogViewCell"
     
     private let padding = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-    private var titleSize: CGSize = .zero
+    private let imagePadding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
     private(set) var title: UILabel = {
         let label = UILabel()
@@ -22,6 +22,13 @@ final class CatalogViewCell: UICollectionViewCell {
         label.textAlignment = .center
         label.text = nil
         return label
+    }()
+    
+    private(set) var imageView: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFit
+        return image
     }()
     
     private(set) var priceLabel: UILabel = {
@@ -60,6 +67,7 @@ final class CatalogViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         title.text = nil
         priceLabel.text = nil
+        imageView.image = nil
     }
     
     // MARK: - Configure Content
@@ -74,27 +82,37 @@ final class CatalogViewCell: UICollectionViewCell {
         self.layer.shadowRadius = 2
         
         self.contentView.addSubview(title)
+        self.contentView.addSubview(imageView)
         self.contentView.addSubview(priceLabel)
         self.contentView.addSubview(buyButon)
         placesConstraint()
     }
     
     private func placesConstraint() {
+        let widthButton: CGFloat = 44
+        let heightButton: CGFloat = 41
+        let imageViewBottomAnchorConstant: CGFloat = 0 - padding.bottom - imagePadding.bottom - heightButton
+        
         NSLayoutConstraint.activate([
             title.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: padding.top),
             title.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: padding.left),
             title.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -padding.right),
             title.heightAnchor.constraint(equalToConstant: 25),
             
+            imageView.topAnchor.constraint(equalTo: title.bottomAnchor, constant: imagePadding.top),
+            imageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: imagePadding.left),
+            imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -imagePadding.right),
+            imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: imageViewBottomAnchorConstant),
+            
             priceLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -padding.bottom),
             priceLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: padding.left),
             priceLabel.trailingAnchor.constraint(equalTo: buyButon.leadingAnchor, constant: -padding.right),
-            priceLabel.heightAnchor.constraint(equalToConstant: 41),
-            
+            priceLabel.heightAnchor.constraint(equalToConstant: heightButton),
+
             buyButon.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -padding.bottom),
             buyButon.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -padding.bottom),
-            buyButon.widthAnchor.constraint(equalToConstant: 44),
-            buyButon.heightAnchor.constraint(equalToConstant: 41)
+            buyButon.widthAnchor.constraint(equalToConstant: widthButton),
+            buyButon.heightAnchor.constraint(equalToConstant: heightButton)
         ])
     }
 }

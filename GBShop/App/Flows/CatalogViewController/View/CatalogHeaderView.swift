@@ -14,7 +14,7 @@ final class CatalogHeaderView: UICollectionReusableView {
          let label: UILabel = UILabel()
          label.translatesAutoresizingMaskIntoConstraints = false
          label.textColor = .black
-         label.font = UIFont(name: "NewYork-Regular", size: 17)
+         label.font = UIFont(name: "NewYork-Regular", size: 18)
          label.layer.masksToBounds = false
          label.layer.shadowColor = UIColor.gray.cgColor
          label.layer.shadowOffset = .zero

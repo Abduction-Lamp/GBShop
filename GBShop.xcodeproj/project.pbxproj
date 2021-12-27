@@ -713,8 +713,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4E2256BC27526867008E52F8 /* Build configuration list for PBXNativeTarget "GBShop" */;
 			buildPhases = (
-				4E839F9127674A9F00F6B05C /* ShellScript */,
 				F1316CF8ECDF59F8EEC4ED9B /* [CP] Check Pods Manifest.lock */,
+				4E839F9127674A9F00F6B05C /* ShellScript */,
 				4E22568E27526863008E52F8 /* Sources */,
 				4E22568F27526863008E52F8 /* Frameworks */,
 				4E22569027526863008E52F8 /* Resources */,
