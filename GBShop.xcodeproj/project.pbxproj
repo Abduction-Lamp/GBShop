@@ -50,6 +50,7 @@
 		4E859D5527567A4C00A7F2F1 /* UserRegisterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E859D5427567A4C00A7F2F1 /* UserRegisterResponse.swift */; };
 		4E859D5827567B3C00A7F2F1 /* UserDataChangeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E859D5727567B3C00A7F2F1 /* UserDataChangeResponse.swift */; };
 		4E859D5A27567DF100A7F2F1 /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E859D5927567DF100A7F2F1 /* UserRequest.swift */; };
+		4E85AF742779CB2200165B32 /* CatalogViewPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85AF732779CB2200165B32 /* CatalogViewPresenterTests.swift */; };
 		4E8ADFB727772C56002FDB84 /* CreditCardTextFieldProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8ADFB627772C56002FDB84 /* CreditCardTextFieldProtocol.swift */; };
 		4E8ADFBA27773CC7002FDB84 /* MakeUserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8ADFB927773CC7002FDB84 /* MakeUserFactory.swift */; };
 		4E8ADFBD2777421E002FDB84 /* MakeUserFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8ADFBC2777421E002FDB84 /* MakeUserFactoryTests.swift */; };
@@ -164,6 +165,7 @@
 		4E859D5427567A4C00A7F2F1 /* UserRegisterResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegisterResponse.swift; sourceTree = "<group>"; };
 		4E859D5727567B3C00A7F2F1 /* UserDataChangeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataChangeResponse.swift; sourceTree = "<group>"; };
 		4E859D5927567DF100A7F2F1 /* UserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
+		4E85AF732779CB2200165B32 /* CatalogViewPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewPresenterTests.swift; sourceTree = "<group>"; };
 		4E8ADFB627772C56002FDB84 /* CreditCardTextFieldProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardTextFieldProtocol.swift; sourceTree = "<group>"; };
 		4E8ADFB927773CC7002FDB84 /* MakeUserFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeUserFactory.swift; sourceTree = "<group>"; };
 		4E8ADFBC2777421E002FDB84 /* MakeUserFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeUserFactoryTests.swift; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 				4EC02F4D2770EFEB00EACE3D /* LoginViewPresenterTests.swift */,
 				4EC4DCE52774BD2700165F77 /* RegistrationViewPresenterTests.swift */,
 				4EC4DCEE2774D6F600165F77 /* UserPageViewPresenterTests.swift */,
+				4E85AF732779CB2200165B32 /* CatalogViewPresenterTests.swift */,
 			);
 			path = PresenterTests;
 			sourceTree = "<group>";
@@ -1033,6 +1036,7 @@
 				4E0339D72775F9F200C13DA4 /* EntityTests.swift in Sources */,
 				4E16DF1D276B93960019FEDA /* CartResponseCodableTests.swift in Sources */,
 				4EC4DCE62774BD2700165F77 /* RegistrationViewPresenterTests.swift in Sources */,
+				4E85AF742779CB2200165B32 /* CatalogViewPresenterTests.swift in Sources */,
 				4EC4DCE92774BEC700165F77 /* MockRouter.swift in Sources */,
 				4E901BE6275E3B1800E6160F /* UserResponseCodableTests.swift in Sources */,
 				4E901BDA275CEB9200E6160F /* ErrorParserTests.swift in Sources */,

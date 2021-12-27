@@ -46,7 +46,7 @@ class AuthResponseCodableTests: XCTestCase {
                 }
                 self.initialStateEexpectation.fulfill()
             }
-        wait(for: [self.initialStateEexpectation], timeout: 5.0)
+        wait(for: [self.initialStateEexpectation], timeout: 10.0)
     }
 }
 

@@ -16,6 +16,8 @@ protocol CatalogViewProtocol: AbstractViewController {
 protocol CatalogViewPresenterProtool: AnyObject {
     init(router: RouterProtocol, view: CatalogViewProtocol, network: ProductRequestFactory, user: User, token: String)
     
+    func getCatalog(page: Int)
+    
     func userPage()
     func cart()
 }
@@ -40,7 +42,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
         
         self.user = user
         self.token = token
-        getCatalog()
+        getCatalog(page: 0)
     }
     
     func userPage() {
@@ -51,13 +53,13 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
         return
     }
     
-    private func getCatalog() {
+    func getCatalog(page: Int) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
         }
         
-        network.getCatalog(page: 0) { response in
+        network.getCatalog(page: page) { response in
         
             DispatchQueue.main.async {
                 switch response.result {

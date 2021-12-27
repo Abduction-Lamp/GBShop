@@ -11,6 +11,7 @@ import Alamofire
 protocol RequestFactoryProtocol {
     func makeAuthRequestFactory() -> AuthRequestFactory
     func makeUserRequestFactory() -> UserRequestFactory
+    func makeProductRequestFactory() -> ProductRequestFactory
 }
 
 class RequestFactory: RequestFactoryProtocol {

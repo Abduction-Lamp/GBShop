@@ -12,7 +12,7 @@ import Alamofire
 // MARK: - Mock Entity
 //
 class MockLoginView: UIViewController, LoginViewProtocol {
-    var expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
+    var expectation = XCTestExpectation(description: "[ TEST MockLoginView ]")
     
     var error: String?
     func showRequestErrorAlert(error: Error) {
