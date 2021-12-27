@@ -91,8 +91,7 @@ final class RegistrationView: UIView {
     private let registrationButtonSize = CGSize(width: 200, height: 40)
     private let registrationButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, leading: .zero, trailing: .zero)
 
-    // MARK: - Initiation
-    //
+    // MARK: Initiation
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

@@ -52,11 +52,17 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
     }
     
     private func getCatalog() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
         network.getCatalog(page: 0) { response in
-            
+        
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
                         if let productList = result.catalog {
                             self.catalog = productList
@@ -66,6 +72,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }

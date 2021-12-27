@@ -71,30 +71,26 @@ final class CatalogViewController: UICollectionViewController {
         cell.priceLabel.text = makePriceString(price: catalog[indexPath.section].items[indexPath.row].price)
         return cell
     }
-    
-    private func makePriceString(price: Double) -> String {
-        var priceString = String(format: "%.0f", price)
-        priceString += " \u{20BD}"
-        return priceString
-    }
-    
+        
     override func collectionView(_ collectionView: UICollectionView,
                                  viewForSupplementaryElementOfKind kind: String,
                                  at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let section = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+        guard kind == UICollectionView.elementKindSectionHeader,
+              let section = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                             withReuseIdentifier: CatalogHeaderView.reuseIdentifier,
                                                                             for: indexPath) as? CatalogHeaderView else {
             return UICollectionReusableView()
         }
         section.title.text = catalog[indexPath.section].title
         return section
-//        if kind == .elementKindSectionHeader {
-//             let section = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
-//             sectionHeader.label.text = "TRENDING"
-//             return sectionHeader
-//        } else { //No footer in this case but can add option for that
-//             return UICollectionReusableView()
-//        }
+    }
+    
+    // MARK: - Support methods
+    //
+    private func makePriceString(price: Double) -> String {
+        var priceString = String(format: "%.0f", price)
+        priceString += " \u{20BD}"
+        return priceString
     }
 }
 

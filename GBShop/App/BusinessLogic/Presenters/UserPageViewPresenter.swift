@@ -78,6 +78,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
         defer {
             logging(.funcEnd)
         }
+        
         logging("\(self) func getUserData()")
         DispatchQueue.main.async {
             let gender: Int = self.user.gender == "m" ? 0 : 1

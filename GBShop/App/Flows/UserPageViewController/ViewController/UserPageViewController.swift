@@ -177,7 +177,7 @@ extension UserPageViewController {
         let font20 = UIFont(name: "NewYork-Regular", size: 20)
         
         textField.isEnabled = isEnable
-        textField.backgroundColor = isEnable ? .systemGray6 : .white
+        textField.backgroundColor = isEnable ? .white : .systemGray6
         textField.borderStyle = isEnable ? .roundedRect : .none
         textField.font = isEnable ? font17 : font20
     }

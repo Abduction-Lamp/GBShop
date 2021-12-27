@@ -46,6 +46,7 @@ final class CatalogViewCell: UICollectionViewCell {
         return button
     }()
     
+    // MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         
