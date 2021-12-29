@@ -80,8 +80,8 @@ final class UserPageView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemYellow
-        button.setTitleColor(.systemGray2, for: .highlighted)
         button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.systemGray2, for: .highlighted)
         button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
         button.setTitle("Выйти", for: .normal)

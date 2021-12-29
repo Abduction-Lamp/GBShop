@@ -90,11 +90,17 @@ final class RegistrationView: UIView {
     private let registrationButtonSize = CGSize(width: 200, height: 40)
     private let registrationButtonPadding = UIEdgeInsets(top: .zero, left: .zero, bottom: 15, right: .zero)
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    // MARK: Initialization
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
         configureContent()
     }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Configure Content
     //
     private func configureContent() {

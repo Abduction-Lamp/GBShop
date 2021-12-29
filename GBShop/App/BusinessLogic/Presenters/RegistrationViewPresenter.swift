@@ -66,7 +66,7 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
                        let newUser = result.user,
                        let token = result.token {
                         self.newUser = newUser
-                        self.router?.pushUserPageViewController(user: newUser, token: token)
+                        self.router?.pushCatalogViewController(user: newUser, token: token)
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }

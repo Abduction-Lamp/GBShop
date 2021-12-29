@@ -24,6 +24,7 @@ protocol UserPageViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     func logout()
     func getUserData()
+    func backToCatalog()
     func changeUserData(firstName: String,
                         lastName: String,
                         gender: Int,
@@ -163,6 +164,10 @@ class UserPageViewPresenter: UserPageViewPresenterProtocol {
                 }
             }
         }
+    }
+    
+    func backToCatalog() {
+        router?.pushCatalogViewController(user: user, token: token)
     }
 }
 

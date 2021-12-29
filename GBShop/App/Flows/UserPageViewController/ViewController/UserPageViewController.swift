@@ -23,6 +23,18 @@ final class UserPageViewController: UIViewController {
         return view
     }
     
+    private lazy var buckBarButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.setTitle(" Магазин", for: .normal)
+        button.tintColor = .systemBlue
+        button.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
+        button.addTarget(self, action: #selector(pressedBackButton), for: .touchUpInside)
+        button.sizeToFit()
+        return button
+    }()
+    private lazy var buckBarButtonItem = UIBarButtonItem(customView: buckBarButton)
+    
     private lazy var changeBarButtonItem = UIBarButtonItem(title: "Изменить",
                                                            style: .plain,
                                                            target: self,
@@ -34,7 +46,7 @@ final class UserPageViewController: UIViewController {
     private lazy var cancelBarButtonItem = UIBarButtonItem(title: "Отменить",
                                                            style: .plain,
                                                            target: self,
-                                                           action: #selector(pressedCancelButton))
+                                                           action: #selector(pressedCancelButton))    
     private var isEditingUserData: Bool = false
 
     // MARK: - Lifecycle
@@ -68,8 +80,8 @@ final class UserPageViewController: UIViewController {
     private func configurationView() {
         self.view = UserPageView(frame: self.view.frame)
         
-        self.navigationItem.setHidesBackButton(false, animated: false)
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationItem.setHidesBackButton(true, animated: false)
+        self.navigationItem.leftBarButtonItem = buckBarButtonItem
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         
         saveBarButtonItem.tintColor = .systemRed
@@ -107,8 +119,7 @@ extension UserPageViewController: UserPageViewProtocol {
     
     func didChangeUserData() {
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
-        self.navigationItem.leftBarButtonItem = nil
-        self.navigationItem.setHidesBackButton(false, animated: true)
+        self.navigationItem.leftBarButtonItem = buckBarButtonItem
 
         isEditingUserData = false
         enabledUserDataView(isEnable: isEditingUserData)
@@ -126,7 +137,6 @@ extension UserPageViewController {
     
     @objc
     private func pressedСhangeButton(_ sender: UIBarButtonItem) {
-        self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.rightBarButtonItem = saveBarButtonItem
         self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         
@@ -155,13 +165,17 @@ extension UserPageViewController {
     
     @objc
     private func pressedCancelButton(_ sender: UIBarButtonItem) {
-        self.navigationItem.setHidesBackButton(false, animated: false)
+        self.navigationItem.leftBarButtonItem = buckBarButtonItem
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
-        self.navigationItem.leftBarButtonItem = nil
-        
+    
         isEditingUserData = false
         enabledUserDataView(isEnable: isEditingUserData)
         presenret?.getUserData()
+    }
+    
+    @objc
+    private func pressedBackButton(_ sender: UIBarButtonItem) {
+        presenret?.backToCatalog()
     }
     
     private func enabledUserDataView(isEnable: Bool) {
