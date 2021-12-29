@@ -11,14 +11,14 @@ import Foundation
 //
 protocol RegistrationViewProtocol: AbstractViewController { }
 
-protocol RegistrationViewPresenterProtool: AnyObject {
+protocol RegistrationViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: RegistrationViewProtocol, network: UserRequestFactory)
     func registration(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String)
 }
 
 // MARK: - RegistrationView Presenter
 //
-class RegistrationViewPresenter: RegistrationViewPresenterProtool {
+class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
     private var router: RouterProtocol?
     weak var view: RegistrationViewProtocol?
     private let network: UserRequestFactory

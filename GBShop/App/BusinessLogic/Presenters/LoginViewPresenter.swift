@@ -11,7 +11,7 @@ import Foundation
 //
 protocol LoginViewProtocol: AbstractViewController {}
 
-protocol LoginViewPresenterProtool: AnyObject {
+protocol LoginViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory)
     func auth(login: String, password: String)
     func pushRegistrationViewController()
@@ -19,7 +19,7 @@ protocol LoginViewPresenterProtool: AnyObject {
 
 // MARK: - LoginView Presenter
 //
-class LoginViewPresenter: LoginViewPresenterProtool {
+class LoginViewPresenter: LoginViewPresenterProtocol {
     private var router: RouterProtocol?
     private weak var view: LoginViewProtocol?
     private let network: AuthRequestFactory

@@ -14,7 +14,7 @@ protocol CatalogViewProtocol: AbstractViewController {
     func updataCart(count: Int)
 }
 
-protocol CatalogViewPresenterProtool: AnyObject {
+protocol CatalogViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     
     func getCatalog(page: Int)
@@ -22,11 +22,12 @@ protocol CatalogViewPresenterProtool: AnyObject {
     
     func userPage()
     func cart()
+    func product(id: Int)
 }
 
 // MARK: - CatalogView Presenter
 //
-final class CatalogViewPresenter: CatalogViewPresenterProtool {
+final class CatalogViewPresenter: CatalogViewPresenterProtocol {
     private var router: RouterProtocol?
     private weak var view: CatalogViewProtocol?
     private let network: RequestFactoryProtocol
@@ -44,6 +45,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
         
         self.user = user
         self.token = token
+        
         getCatalog(page: 0)
     }
     
@@ -111,6 +113,13 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
+        }
+    }
+    
+    func product(id: Int) {
+        if let productList = catalog?.flatMap({ $0.items }),
+        let product = productList.first(where: { $0.id == id }) {
+            router?.pushProductViewController(user: user, token: token, product: product)
         }
     }
 }

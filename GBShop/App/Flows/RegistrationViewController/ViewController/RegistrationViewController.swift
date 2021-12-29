@@ -9,7 +9,7 @@ import UIKit
 
 final class RegistrationViewController: UIViewController {
     
-    var presenret: RegistrationViewPresenterProtool?
+    var presenret: RegistrationViewPresenterProtocol?
     
     private let notifiction = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))

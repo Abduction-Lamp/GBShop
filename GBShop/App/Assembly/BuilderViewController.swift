@@ -12,6 +12,10 @@ protocol BuilderProtocol: AnyObject {
     func makeRegistrationViewController(router: RouterProtocol) -> UIViewController & RegistrationViewProtocol
     func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController & UserPageViewProtocol
     func makeCatalogViewController(router: RouterProtocol, user: User, token: String) -> UICollectionViewController & CatalogViewProtocol
+    func makeProductViewController(router: RouterProtocol,
+                                   user: User,
+                                   token: String,
+                                   product: Product) -> UITableViewController & ProductViewProtocol
 }
 
 class BuilderViewController: BuilderProtocol {
@@ -74,6 +78,28 @@ class BuilderViewController: BuilderProtocol {
         viewController.presenret = presenter
         
         logging("[\(self) MAKE CatalogView Module]")
+        return viewController
+    }
+    
+    func makeProductViewController(router: RouterProtocol,
+                                   user: User,
+                                   token: String,
+                                   product: Product) -> UITableViewController & ProductViewProtocol {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let viewController = ProductViewController()
+        let network = RequestFactory()
+        let presenter = ProductViewPresenter(router: router,
+                                             view: viewController,
+                                             network: network,
+                                             user: user, token: token,
+                                             product: product)
+        viewController.presenret = presenter
+        
+        logging("[\(self) MAKE ProductView Module]")
         return viewController
     }
 }

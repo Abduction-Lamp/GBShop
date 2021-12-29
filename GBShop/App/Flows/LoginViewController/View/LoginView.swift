@@ -9,6 +9,8 @@ import UIKit
 
 final class LoginView: UIView {
     
+    private let design = DesignConstants.shared
+    
     private let gradientLayer: CALayer = {
         let layer = CAGradientLayer()
 
@@ -38,10 +40,10 @@ final class LoginView: UIView {
         return view
     }()
     
-    private(set) var headerLabel: UILabel = {
+    private(set) lazy var headerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "NewYork-Regular", size: 44)
+        label.font = design.font.withSize(44)
         label.textColor = .black
         label.layer.masksToBounds = false
         label.layer.shadowColor = UIColor.black.cgColor
@@ -51,13 +53,13 @@ final class LoginView: UIView {
         label.text = "Магазин"
         return label
     }()
-    private let headerPadding = Padding<CGFloat>(top: 45, bottom: .zero, leading: .zero, trailing: .zero)
+    private let headerPadding = UIEdgeInsets(top: 45, left: .zero, bottom: .zero, right: .zero)
     private let headerSize = CGSize(width: .zero, height: 50)
 
-    private(set) var loginTextField: UITextField = {
+    private(set) lazy var loginTextField: UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = UIFont(name: "NewYork-Regular", size: 17)
+        textfield.font = design.mediumFont
         textfield.autocapitalizationType = .none
         textfield.autocorrectionType = .no
         textfield.textAlignment = .center
@@ -68,10 +70,10 @@ final class LoginView: UIView {
         return textfield
     }()
     
-    private(set) var passwordTextField: UITextField = {
+    private(set) lazy var passwordTextField: UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = UIFont(name: "NewYork-Regular", size: 17)
+        textfield.font = design.mediumFont
         textfield.isSecureTextEntry = true
         textfield.autocapitalizationType = .none
         textfield.autocorrectionType = .no
@@ -84,31 +86,31 @@ final class LoginView: UIView {
     }()
     private let textFieldSize = CGSize(width: 250, height: 40)
     
-    private(set) var loginButton: UIButton = {
+    private(set) lazy var loginButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemYellow
         button.setTitleColor(.systemGray2, for: .highlighted)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont(name: "NewYork-Regular", size: 17)
+        button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
         button.setTitle("Войти", for: .normal)
         return button
     }()
     
-    private(set) var registrationButton: UIButton = {
+    private(set) lazy var registrationButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemYellow
         button.setTitleColor(.systemGray2, for: .highlighted)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont(name: "NewYork-Regular", size: 17)
+        button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
         button.setTitle("Регистрация", for: .normal)
         return button
     }()
     private let buttonSize = CGSize(width: 150, height: 40)
-    private let registrationButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, leading: .zero, trailing: .zero)
+    private let registrationButtonPadding = UIEdgeInsets(top: 45, left: .zero, bottom: 15, right: .zero)
     
     private var stack: UIStackView = {
         let stack = UIStackView()
@@ -122,6 +124,7 @@ final class LoginView: UIView {
     // MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         configuration()
     }
     

@@ -9,7 +9,9 @@ import UIKit
 
 final class UserPageViewController: UIViewController {
     
-    var presenret: UserPageViewPresenterProtool?
+    var presenret: UserPageViewPresenterProtocol?
+    
+    private let desing = DesignConstants.shared
     
     private let notifiction = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
@@ -77,6 +79,7 @@ final class UserPageViewController: UIViewController {
         userPageView.creditCardTextField.delegate = self
         
         userPageView.logoutButton.addTarget(self, action: #selector(pressedLogOutButton), for: .touchUpInside)
+        enabledUserDataView(isEnable: isEditingUserData)
     }
 }
 
@@ -173,13 +176,10 @@ extension UserPageViewController {
     }
     
     private func enabledTextField(_ textField: UITextField, isEnable: Bool) {
-        let font17 = UIFont(name: "NewYork-Regular", size: 17)
-        let font20 = UIFont(name: "NewYork-Regular", size: 20)
-        
         textField.isEnabled = isEnable
         textField.backgroundColor = isEnable ? .white : .systemGray6
         textField.borderStyle = isEnable ? .roundedRect : .none
-        textField.font = isEnable ? font17 : font20
+        textField.font = isEnable ? desing.mediumFont : desing.largeFont
     }
 }
 

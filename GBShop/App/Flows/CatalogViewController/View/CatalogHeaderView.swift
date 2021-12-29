@@ -12,15 +12,7 @@ final class CatalogHeaderView: UICollectionReusableView {
     
      private(set) var title: UILabel = {
          let label: UILabel = UILabel()
-         label.translatesAutoresizingMaskIntoConstraints = false
-         label.textColor = .black
-         label.font = UIFont(name: "NewYork-Regular", size: 18)
-         label.layer.masksToBounds = false
-         label.layer.shadowColor = UIColor.gray.cgColor
-         label.layer.shadowOffset = .zero
-         label.layer.shadowOpacity = 0.2
-         label.layer.shadowRadius = 1
-         label.sizeToFit()
+         label.textColor = .gray
          return label
      }()
     
@@ -28,15 +20,26 @@ final class CatalogHeaderView: UICollectionReusableView {
      override init(frame: CGRect) {
          super.init(frame: frame)
 
-         addSubview(title)
-
-         title.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5).isActive = true
-         title.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
-//         title.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-    }
+         self.addSubview(title)
+         self.setNeedsLayout()
+     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let font = UIFont(name: "NewYork-Regular", size: 19) ?? UIFont.systemFont(ofSize: UIFont.labelFontSize)
+        title.font = font
+        
+        let padding = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: 5)
+        
+        title.frame = CGRect(x: padding.left,
+                             y: font.lineHeight - padding.bottom,
+                             width: self.bounds.width - padding.left - padding.right,
+                             height: font.lineHeight)
     }
     
     override func prepareForReuse() {

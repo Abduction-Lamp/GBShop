@@ -10,7 +10,7 @@ import Kingfisher
 
 final class CatalogViewController: UICollectionViewController {
     
-    var presenret: CatalogViewPresenterProtool?
+    var presenret: CatalogViewPresenterProtocol?
     var catalog: [Section] = []
     
     var cellSize = CGSize.zero
@@ -91,6 +91,10 @@ final class CatalogViewController: UICollectionViewController {
         }
         section.title.text = catalog[indexPath.section].title
         return section
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenret?.product(id: catalog[indexPath.section].items[indexPath.row].id)
     }
     
     // MARK: - Support methods

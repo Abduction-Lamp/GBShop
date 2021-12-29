@@ -20,7 +20,7 @@ protocol UserPageViewProtocol: AbstractViewController {
     func didChangeUserData()
 }
 
-protocol UserPageViewPresenterProtool: AnyObject {
+protocol UserPageViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     func logout()
     func getUserData()
@@ -35,7 +35,7 @@ protocol UserPageViewPresenterProtool: AnyObject {
 
 // MARK: - UserPageView Presenter
 //
-class UserPageViewPresenter: UserPageViewPresenterProtool {
+class UserPageViewPresenter: UserPageViewPresenterProtocol {
     private var router: RouterProtocol?
     private weak var view: UserPageViewProtocol?
     private let network: RequestFactoryProtocol
