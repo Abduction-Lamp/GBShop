@@ -38,6 +38,7 @@ struct DesignConstants {
     // MARK: - SIZE
     //
     let textFieldSize = CGSize(width: .zero, height: 40)
+    let buttonSize = CGSize(width: .zero, height: 40)
     
     // MARK: - MAKE DESING COMPONENTS
     //

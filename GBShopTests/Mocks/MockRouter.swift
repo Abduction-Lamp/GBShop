@@ -10,7 +10,7 @@ import UIKit
 @testable import GBShop
 
 class MockRouter: RouterProtocol {
-    
+
     var expectation = XCTestExpectation(description: "[ MockRouter INIT ]")
     
     var messageInitial: String?
@@ -49,6 +49,21 @@ class MockRouter: RouterProtocol {
             (user.login == MockNetworkUserRequest.fakeUser.login) &&
             (user.password == MockNetworkUserRequest.fakeUser.password) {
             messageUserPage = "success"
+            self.expectation.fulfill()
+        }
+    }
+    
+    var messageProduct: String?
+    func pushProductViewController(user: User, token: String, product: Product) {
+        if  (user.firstName == MockNetworkUserRequest.fakeUser.firstName) &&
+            (user.lastName == MockNetworkUserRequest.fakeUser.lastName) &&
+            (user.gender == MockNetworkUserRequest.fakeUser.gender) &&
+            (user.email == MockNetworkUserRequest.fakeUser.email) &&
+            (user.creditCard == MockNetworkUserRequest.fakeUser.creditCard) &&
+            (user.login == MockNetworkUserRequest.fakeUser.login) &&
+            (user.password == MockNetworkUserRequest.fakeUser.password) &&
+            product == MockProductView.product {
+            messageProduct = "success"
             self.expectation.fulfill()
         }
     }

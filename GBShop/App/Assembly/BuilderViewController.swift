@@ -90,7 +90,7 @@ class BuilderViewController: BuilderProtocol {
             logging(.funcEnd)
         }
         
-        let viewController = ProductViewController()
+        let viewController = ProductViewController(style: .insetGrouped)
         let network = RequestFactory()
         let presenter = ProductViewPresenter(router: router,
                                              view: viewController,

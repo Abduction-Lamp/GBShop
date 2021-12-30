@@ -31,7 +31,7 @@ final class CatalogHeaderView: UICollectionReusableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let font = UIFont(name: "NewYork-Regular", size: 19) ?? UIFont.systemFont(ofSize: UIFont.labelFontSize)
+        let font = DesignConstants.shared.mediumFont
         title.font = font
         
         let padding = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: 5)
@@ -39,7 +39,7 @@ final class CatalogHeaderView: UICollectionReusableView {
         title.frame = CGRect(x: padding.left,
                              y: font.lineHeight - padding.bottom,
                              width: self.bounds.width - padding.left - padding.right,
-                             height: font.lineHeight)
+                             height: ceil(font.lineHeight))
     }
     
     override func prepareForReuse() {

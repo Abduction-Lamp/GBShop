@@ -39,6 +39,8 @@ class MockCatalogView: UIViewController, CatalogViewProtocol {
     }
 }
 
+// MARK: - TESTS
+//
 class CatalogViewPresenterTests: XCTestCase {
 
     var router: MockRouter!

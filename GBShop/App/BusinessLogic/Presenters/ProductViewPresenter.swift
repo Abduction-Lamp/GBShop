@@ -11,7 +11,9 @@ import UIKit
 // MARK: - Protools
 //
 protocol ProductViewProtocol: AbstractViewController {
-    func setProduct(name: String, category: String, price: Double, description: String?, imageURL: URL?)
+    var bounds: CGRect { get }
+    
+    func setProduct(model: ProductViewModel)
     func setReview(id: Int)
 }
 
@@ -36,8 +38,7 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     
     private var product: Product
 
-    // MARK: Initialization``
-    
+    // MARK: Initialization
     init(router: RouterProtocol, view: ProductViewProtocol, network: RequestFactoryProtocol, user: User, token: String, product: Product) {
         self.router = router
         self.view = view
@@ -54,16 +55,21 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     }
     
     private func setProduct() {
-        // ПОДСЧЕТ РАЗМЕРОВ
+        guard let bounds = view?.bounds else { return }
         
         var imageURL: URL?
         if let urlString = product.imageURL {
             imageURL = URL(string: urlString)
         }
-        view?.setProduct(name: product.name,
-                         category: product.category,
-                         price: product.price,
-                         description: product.description,
-                         imageURL: imageURL)
+        var priceString = String(format: "%.0f", product.price)
+        priceString += " \u{20BD}"
+        
+        let model = ProductViewModel(bounds: bounds,
+                                     title: product.name,
+                                     category: product.category,
+                                     imageURL: imageURL,
+                                     description: product.description ?? "",
+                                     price: priceString)
+        view?.setProduct(model: model)
     }
 }

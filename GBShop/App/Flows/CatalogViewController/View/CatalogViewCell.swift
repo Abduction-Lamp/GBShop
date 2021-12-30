@@ -15,6 +15,7 @@ final class CatalogViewCell: UICollectionViewCell {
         label.backgroundColor = .systemYellow.withAlphaComponent(0.4)
         label.textColor = .black
         label.textAlignment = .center
+        label.font = DesignConstants.shared.mediumFont
         return label
     }()
     
@@ -28,6 +29,7 @@ final class CatalogViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
+        label.font = DesignConstants.shared.mediumFont
         return label
     }()
     
@@ -56,7 +58,7 @@ final class CatalogViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        makeFramesLayout()
+        makeLayoutByFrame()
     }
     
     override func prepareForReuse() {
@@ -85,12 +87,10 @@ final class CatalogViewCell: UICollectionViewCell {
         self.setNeedsLayout()
     }
     
-    private func makeFramesLayout() {
-        let font = UIFont(name: "NewYork-Regular", size: 17) ?? UIFont.systemFont(ofSize: UIFont.labelFontSize)
-        setFont(font: font)
+    private func makeLayoutByFrame() {
         
-        let padding = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        let imagePadding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let padding = DesignConstants.shared.padding
+        let imagePadding = DesignConstants.shared.imagePadding
         
         let bounds = self.contentView.bounds
         
@@ -100,7 +100,7 @@ final class CatalogViewCell: UICollectionViewCell {
         title.frame = CGRect(x: padding.left,
                              y: padding.top,
                              width: bounds.width - padding.left - padding.right,
-                             height: font.lineHeight)
+                             height: ceil(DesignConstants.shared.mediumFont.lineHeight))
         buyButon.frame = CGRect(x: bounds.maxX - padding.right - widthButton,
                                 y: bounds.maxY - padding.bottom - heightButton,
                                 width: widthButton,
@@ -113,10 +113,5 @@ final class CatalogViewCell: UICollectionViewCell {
                                  y: title.frame.maxY + imagePadding.top,
                                  width: bounds.width - imagePadding.left - imagePadding.right,
                                  height: buyButon.frame.minY - title.frame.minY - imagePadding.top - imagePadding.bottom)
-    }
-    
-    private func setFont(font: UIFont) {
-        title.font = font
-        priceLabel.font = font
     }
 }

@@ -38,5 +38,9 @@ class RouterTests: XCTestCase {
         router.pushCatalogViewController(user: MockNetworkUserRequest.fakeUser, token: "")
         let catalogViewController = navigation.presentedVC
         XCTAssertTrue(catalogViewController is CatalogViewController)
+        
+        router.pushProductViewController(user: MockNetworkUserRequest.fakeUser, token: "", product: MockProductView.product)
+        let productViewController = navigation.presentedVC
+        XCTAssertTrue(productViewController is ProductViewController)
     }
 }
