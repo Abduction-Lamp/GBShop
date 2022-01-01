@@ -24,12 +24,14 @@ struct ProductViewModel {
         
         self.category = category
         
-        imageCell.value = imageURL
-        imageCell.height = bounds.width
-        
         let design = DesignConstants.shared
+        let width = bounds.width - design.cellPaddingForInsetGroupedStyle.left - design.cellPaddingForInsetGroupedStyle.right
+        
+        imageCell.value = imageURL
+        imageCell.height = width
+        
         descriptionCell.value = description
-        descriptionCell.height = description.calculationTextBlockSize(width: bounds.width - design.padding.left - design.padding.right,
+        descriptionCell.height = description.calculationTextBlockSize(width: width - design.padding.left - design.padding.right,
                                                                       font: design.mediumFont).height
         priceCell.value = price
         priceCell.height = ceil(DesignConstants.shared.largeFont.lineHeight * 3)

@@ -44,7 +44,7 @@ final class ProductViewImageCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
         image.image = nil
+        super.prepareForReuse()
     }
 }

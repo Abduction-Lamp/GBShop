@@ -37,17 +37,17 @@ final class ProductViewTitleCell: UITableViewCell {
         super.layoutSubviews()
         
         let padding = DesignConstants.shared.padding
-        let vvvv = self.contentView.bounds
+        let bounds = self.contentView.bounds
         let fontLineHeight: CGFloat = ceil(DesignConstants.shared.largeFont.lineHeight)
         
         titleLabel.frame = CGRect(x: padding.left,
-                                  y: vvvv.maxY - padding.bottom - fontLineHeight,
-                                  width: vvvv.width - padding.left - padding.right,
+                                  y: bounds.maxY - padding.bottom - fontLineHeight,
+                                  width: bounds.width - padding.left - padding.right,
                                   height: fontLineHeight)
     }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
         titleLabel.text = nil
+        super.prepareForReuse()
     }
 }

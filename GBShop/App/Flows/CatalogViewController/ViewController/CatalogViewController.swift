@@ -35,8 +35,11 @@ final class CatalogViewController: UICollectionViewController {
                                      withReuseIdentifier: CatalogHeaderView.reuseIdentifier)
         self.collectionView.register(CatalogViewCell.self, forCellWithReuseIdentifier: CatalogViewCell.reuseIdentifier)
         
+        let desing = DesignConstants.shared
         let width: CGFloat = (collectionView.bounds.size.width - 21)/2
-        let height: CGFloat = width + width/2
+        var height: CGFloat = width + desing.padding.top + desing.padding.bottom + desing.imagePadding.top + desing.imagePadding.bottom
+        height += desing.largeFont.lineHeight + desing.buttonSize.height + desing.padding.top + desing.padding.bottom
+        
         cellSize = CGSize(width: width, height: height)
         
         self.collectionView.backgroundColor = .systemGray6

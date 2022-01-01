@@ -14,6 +14,8 @@ final class ProductViewDescriptionCell: UITableViewCell {
         let text = UITextView()
         text.font = DesignConstants.shared.mediumFont
         text.textColor = .black
+        text.isEditable = false
+        text.isScrollEnabled = false
         return text
     }()
     
@@ -41,11 +43,11 @@ final class ProductViewDescriptionCell: UITableViewCell {
         textView.frame = CGRect(x: padding.left,
                                 y: padding.top,
                                 width: bounds.width - padding.left - padding.right,
-                                height: bounds.width - padding.top - padding.bottom)
+                                height: bounds.height - padding.top - padding.bottom)
     }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
         textView.text = nil
+        super.prepareForReuse()
     }
 }

@@ -11,7 +11,7 @@ import Kingfisher
 final class ProductViewController: UITableViewController {
     
     var presenret: ProductViewPresenterProtocol?
-    var model: ProductViewModel?
+    var productModel: ProductViewModel?
 
     // MARK: - Lifecycle
     //
@@ -30,6 +30,8 @@ final class ProductViewController: UITableViewController {
         
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(false, animated: false)
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"),
                                                                  style: .plain,
                                                                  target: self,
@@ -60,14 +62,13 @@ extension ProductViewController: ProductViewProtocol {
     }
     
     func setProduct(model: ProductViewModel) {
-        self.model = model
+        self.productModel = model
         self.title = model.category
     }
     
     func setReview(id: Int) {
         return
     }
-    
 }
 
 extension ProductViewController {
@@ -77,19 +78,20 @@ extension ProductViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let model = productModel else { return .zero }
         switch indexPath.row {
         case 0:
-            return model?.titleCell.height ?? .zero
+            return model.titleCell.height
         case 1:
-            return model?.imageCell.height ?? .zero
+            return model.imageCell.height
         case 2:
-            return model?.descriptionCell.height ?? .zero
+            return model.descriptionCell.height
         case 3:
-            return model?.priceCell.height ?? .zero
+            return model.priceCell.height
 
         default:
             return .zero
@@ -99,36 +101,33 @@ extension ProductViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewTitleCell.reuseIdentifier,
-                                                           for: indexPath) as? ProductViewTitleCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewTitleCell.reuseIdentifier) as? ProductViewTitleCell else {
                 return UITableViewCell()
             }
-            cell.titleLabel.text = model?.titleCell.value
+            cell.titleLabel.text = productModel?.titleCell.value
             return cell
             
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewImageCell.reuseIdentifier,
-                                                           for: indexPath) as? ProductViewImageCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewImageCell.reuseIdentifier) as? ProductViewImageCell else {
                 return UITableViewCell()
             }
             cell.image.kf.indicatorType = .activity
-            cell.image.kf.setImage(with: model?.imageCell.value)
+            cell.image.kf.setImage(with: productModel?.imageCell.value)
             return cell
             
         case 2:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewDescriptionCell.reuseIdentifier,
-                                                           for: indexPath) as? ProductViewDescriptionCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewDescriptionCell.reuseIdentifier)
+                    as? ProductViewDescriptionCell else {
                 return UITableViewCell()
             }
-            cell.textView.text = model?.descriptionCell.value
+            cell.textView.text = productModel?.descriptionCell.value
             return cell
             
         case 3:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewPriceCell.reuseIdentifier,
-                                                           for: indexPath) as? ProductViewPriceCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewPriceCell.reuseIdentifier) as? ProductViewPriceCell else {
                 return UITableViewCell()
             }
-            cell.priceLabel.text = model?.priceCell.value
+            cell.priceButton.setTitle(productModel?.priceCell.value, for: .normal)
             return cell
             
         default:

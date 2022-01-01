@@ -10,20 +10,12 @@ import UIKit
 final class ProductViewPriceCell: UITableViewCell {
     static let reuseIdentifier = "ProductViewPriceCell"
     
-    private(set) var priceLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.textAlignment = .center
-        label.font = DesignConstants.shared.mediumFont
-        return label
-    }()
-    
-    private(set) var buyButon: UIButton = {
+    private(set) var priceButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemGreen
-        button.setTitle("Купить", for: .normal)
-        button.tintColor = .black
-        button.contentMode = .scaleAspectFit
+        button.setTitleColor(.systemGray6, for: .highlighted)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = DesignConstants.shared.largeFont
         button.layer.cornerRadius = 5
         return button
     }()
@@ -33,8 +25,7 @@ final class ProductViewPriceCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.contentView.addSubview(buyButon)
-//        self.contentView.addSubview(priceLabel)
+        self.contentView.addSubview(priceButton)
         self.contentView.backgroundColor = .white
         
         self.setNeedsLayout()
@@ -48,23 +39,16 @@ final class ProductViewPriceCell: UITableViewCell {
         super.layoutSubviews()
         
         let bounds = self.contentView.bounds
-        let padding = DesignConstants.shared.padding
-        var buttonSize = DesignConstants.shared.buttonSize
-        buttonSize.width = 100
+        let padding = DesignConstants.shared.imagePadding
         
-//        buyButon.frame = CGRect(x: bounds.width - padding.right - buttonSize.width,
-//                                y: bounds.height - padding.bottom - buttonSize.height,
-//                                width: buttonSize.width,
-//                                height: buttonSize.height)
-        
-//        priceLabel.frame = CGRect(x: padding.left,
-//                                  y: buyButon.frame.origin.y,
-//                                  width: bounds.width - buyButon.frame.width - padding.left - padding.right - padding.right,
-//                                  height: buyButon.frame.height)
+        priceButton.frame = CGRect(x: padding.left,
+                                   y: padding.top,
+                                   width: bounds.width - padding.left - padding.right,
+                                   height: bounds.height - padding.top - padding.bottom)
     }
     
     override func prepareForReuse() {
+        priceButton.setTitle("", for: .normal)
         super.prepareForReuse()
-        priceLabel.text = nil
     }
 }

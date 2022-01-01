@@ -37,6 +37,7 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     private let token: String
     
     private var product: Product
+    private var model: ProductViewModel
 
     // MARK: Initialization
     init(router: RouterProtocol, view: ProductViewProtocol, network: RequestFactoryProtocol, user: User, token: String, product: Product) {
@@ -47,6 +48,19 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
         self.token = token
         self.product = product
         
+        var imageURL: URL?
+        if let urlString = product.imageURL {
+            imageURL = URL(string: urlString)
+        }
+        var priceString = String(format: "%.0f", product.price)
+        priceString += " \u{20BD}"
+         
+        self.model = ProductViewModel(bounds: view.bounds,
+                                      title: product.name,
+                                      category: product.category,
+                                      imageURL: imageURL,
+                                      description: product.description ?? "",
+                                      price: priceString)
         setProduct()
     }
     
@@ -55,21 +69,6 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     }
     
     private func setProduct() {
-        guard let bounds = view?.bounds else { return }
-        
-        var imageURL: URL?
-        if let urlString = product.imageURL {
-            imageURL = URL(string: urlString)
-        }
-        var priceString = String(format: "%.0f", product.price)
-        priceString += " \u{20BD}"
-        
-        let model = ProductViewModel(bounds: bounds,
-                                     title: product.name,
-                                     category: product.category,
-                                     imageURL: imageURL,
-                                     description: product.description ?? "",
-                                     price: priceString)
         view?.setProduct(model: model)
     }
 }

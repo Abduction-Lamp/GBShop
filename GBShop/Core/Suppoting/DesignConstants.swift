@@ -34,6 +34,7 @@ struct DesignConstants {
     // MARK: - PADDING
     //
     let textFieldPadding = UIEdgeInsets(top: 7, left: 40, bottom: 7, right: 40)
+    let cellPaddingForInsetGroupedStyle = UIEdgeInsets(top: .zero, left: 16, bottom: .zero, right: 16)
     
     // MARK: - SIZE
     //
