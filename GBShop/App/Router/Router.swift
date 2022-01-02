@@ -18,9 +18,11 @@ protocol RouterProtocol: AbstractRouterProtocol {
     func initialViewController()
     func pushRegistrationViewController()
     func pushUserPageViewController(user: User, token: String)
-    func popToRootViewController()
     func pushCatalogViewController(user: User, token: String)
+    func popToCatalogViewController(user: User, token: String)
     func pushProductViewController(user: User, token: String, product: Product)
+    
+    func popToRootViewController()
 }
 
 // MARK: - Router
@@ -86,12 +88,30 @@ class Router: RouterProtocol {
         }
         
         guard let navigation = self.navigation,
-              let userPageViewController = builder?.makeCatalogViewController(router: self, user: user, token: token) else {
+              let catalogViewController = builder?.makeCatalogViewController(router: self, user: user, token: token) else {
                   return
               }
         
         logging("[\(self) navigation: pushCatalogViewController]")
-        navigation.pushViewController(userPageViewController, animated: true)
+        navigation.pushViewController(catalogViewController, animated: true)
+    }
+    
+    func popToCatalogViewController(user: User, token: String) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        guard let navigation = self.navigation else { return }
+        let catalogViewController = navigation.viewControllers.first(where: { $0 is CatalogViewProtocol})
+        if let controller = catalogViewController as? CatalogViewController {
+            logging("[\(self) navigation: popToCatalogViewController]")
+            navigation.popToViewController(controller, animated: true)
+            controller.updataUserDataInPresenter(user: user, token: token)
+        } else {
+            logging("[\(self) navigation: popToRootViewController]")
+            navigation.popToRootViewController(animated: true)
+        }
     }
     
     func pushProductViewController(user: User, token: String, product: Product) {

@@ -30,35 +30,51 @@ final class CatalogViewController: UICollectionViewController {
     // MARK: - Configure Content
     //
     private func configurationView() {
+        configurationNavigationBar()
+        self.collectionView.backgroundColor = .systemGray6
         self.collectionView.register(CatalogHeaderView.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: CatalogHeaderView.reuseIdentifier)
         self.collectionView.register(CatalogViewCell.self, forCellWithReuseIdentifier: CatalogViewCell.reuseIdentifier)
-        
-        let desing = DesignConstants.shared
-        let width: CGFloat = (collectionView.bounds.size.width - 21)/2
-        var height: CGFloat = width + desing.padding.top + desing.padding.bottom + desing.imagePadding.top + desing.imagePadding.bottom
-        height += desing.largeFont.lineHeight + desing.buttonSize.height + desing.padding.top + desing.padding.bottom
-        
-        cellSize = CGSize(width: width, height: height)
-        
-        self.collectionView.backgroundColor = .systemGray6
+        cellSize = calculationСellSize()
+    }
+    
+    private func configurationNavigationBar() {
         self.title = "Магазин"
         
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(true, animated: false)
         
-        let personIcon = UIImage(systemName: "person")
-        let cartIcon = UIImage(systemName: "cart")
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: personIcon,
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"),
                                                                 style: .plain,
                                                                 target: self,
                                                                 action: #selector(pressedUserPageButton))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: cartIcon,
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"),
                                                                  style: .plain,
                                                                  target: self,
                                                                  action: nil)
     }
+    
+    // MARK: - Support methods
+    //
+    private func makePriceString(price: Double) -> String {
+        var priceString = String(format: "%.0f", price)
+        priceString += " \u{20BD}"
+        return priceString
+    }
+    
+    private func calculationСellSize() -> CGSize {
+        let desing = DesignConstants.shared
+        let width: CGFloat = (collectionView.bounds.size.width - 21)/2
+        let heightTitleComponent: CGFloat = desing.padding.top + desing.mediumFont.lineHeight
+        let heightImageComponent: CGFloat = width
+        let heightPriceComponent: CGFloat = desing.padding.top + desing.buttonSize.height + desing.padding.bottom
+        let height: CGFloat = heightTitleComponent + heightImageComponent + heightPriceComponent
+        return CGSize(width: width, height: height)
+    }
+}
+
+extension CatalogViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return catalog.count
@@ -98,14 +114,6 @@ final class CatalogViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenret?.product(id: catalog[indexPath.section].items[indexPath.row].id)
-    }
-    
-    // MARK: - Support methods
-    //
-    private func makePriceString(price: Double) -> String {
-        var priceString = String(format: "%.0f", price)
-        priceString += " \u{20BD}"
-        return priceString
     }
 }
 
@@ -173,10 +181,10 @@ extension CatalogViewController: CatalogViewProtocol {
     }
     
     func updataCart(count: Int) {
-        if count < 1 {
-            self.title = "Магазин"
-        } else {
-            self.title = "В корзине [\(count)]"
-        }
+        (count < 1) ? (self.title = "Магазин") : (self.title = "В корзине [\(count)]")
+    }
+    
+    func updataUserDataInPresenter(user: User, token: String) {
+        presenret?.updataUserData(user: user, token: token)
     }
 }

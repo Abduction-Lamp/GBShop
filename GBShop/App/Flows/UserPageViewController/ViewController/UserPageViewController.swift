@@ -11,17 +11,18 @@ final class UserPageViewController: UIViewController {
     
     var presenret: UserPageViewPresenterProtocol?
     
-    private let desing = DesignConstants.shared
-    
-    private let notifiction = NotificationCenter.default
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
     private var userPageView: UserPageView {
         guard let view = self.view as? UserPageView else {
             return UserPageView(frame: self.view.frame)
         }
         return view
     }
+    
+    private let desing = DesignConstants.shared
+    private let notifiction = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
+    private var isEditingUserData: Bool = false
     
     private lazy var buckBarButton: UIButton = {
         let button = UIButton(type: .system)
@@ -34,7 +35,6 @@ final class UserPageViewController: UIViewController {
         return button
     }()
     private lazy var buckBarButtonItem = UIBarButtonItem(customView: buckBarButton)
-    
     private lazy var changeBarButtonItem = UIBarButtonItem(title: "Изменить",
                                                            style: .plain,
                                                            target: self,
@@ -46,8 +46,7 @@ final class UserPageViewController: UIViewController {
     private lazy var cancelBarButtonItem = UIBarButtonItem(title: "Отменить",
                                                            style: .plain,
                                                            target: self,
-                                                           action: #selector(pressedCancelButton))    
-    private var isEditingUserData: Bool = false
+                                                           action: #selector(pressedCancelButton))
 
     // MARK: - Lifecycle
     //
@@ -79,19 +78,22 @@ final class UserPageViewController: UIViewController {
     //
     private func configurationView() {
         self.view = UserPageView(frame: self.view.frame)
+        configurationNavigationBar()
         
+        userPageView.scrollView.addGestureRecognizer(keyboardHideGesture)
+        userPageView.creditCardTextField.delegate = self
+        userPageView.logoutButton.addTarget(self, action: #selector(pressedLogOutButton), for: .touchUpInside)
+        
+        enabledUserDataView(isEnable: isEditingUserData)
+    }
+    
+    private func configurationNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.leftBarButtonItem = buckBarButtonItem
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         
         saveBarButtonItem.tintColor = .systemRed
-        
-        userPageView.scrollView.addGestureRecognizer(keyboardHideGesture)
-        
-        userPageView.creditCardTextField.delegate = self
-        
-        userPageView.logoutButton.addTarget(self, action: #selector(pressedLogOutButton), for: .touchUpInside)
-        enabledUserDataView(isEnable: isEditingUserData)
     }
 }
 

@@ -30,8 +30,10 @@ final class ProductViewController: UITableViewController {
         
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(false, animated: false)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "",
+                                                                                              style: .plain,
+                                                                                              target: nil,
+                                                                                              action: nil)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"),
                                                                  style: .plain,
                                                                  target: self,

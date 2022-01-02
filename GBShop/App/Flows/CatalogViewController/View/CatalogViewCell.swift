@@ -101,6 +101,10 @@ final class CatalogViewCell: UICollectionViewCell {
                              y: padding.top,
                              width: bounds.width - padding.left - padding.right,
                              height: ceil(DesignConstants.shared.mediumFont.lineHeight))
+        imageView.frame = CGRect(x: imagePadding.left,
+                                 y: title.frame.maxY + imagePadding.top,
+                                 width: bounds.width - imagePadding.left - imagePadding.right,
+                                 height: bounds.width - imagePadding.left - imagePadding.right)
         buyButon.frame = CGRect(x: bounds.maxX - padding.right - widthButton,
                                 y: bounds.maxY - padding.bottom - heightButton,
                                 width: widthButton,
@@ -109,9 +113,6 @@ final class CatalogViewCell: UICollectionViewCell {
                                   y: buyButon.frame.minY,
                                   width: bounds.width - padding.left - padding.right - buyButon.frame.width,
                                   height: heightButton)
-        imageView.frame = CGRect(x: imagePadding.left,
-                                 y: title.frame.maxY + imagePadding.top,
-                                 width: bounds.width - imagePadding.left - imagePadding.right,
-                                 height: buyButon.frame.minY - title.frame.minY - imagePadding.top - imagePadding.bottom)
+
     }
 }
