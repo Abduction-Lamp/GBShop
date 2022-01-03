@@ -30,10 +30,28 @@ struct ProductViewModel {
         imageCell.value = imageURL
         imageCell.height = width
         
+        let textBlockSize = description.calculationTextBlockSize(width: width - design.padding.left - design.padding.right,
+                                                                 font: design.mediumFont)
         descriptionCell.value = description
-        descriptionCell.height = description.calculationTextBlockSize(width: width - design.padding.left - design.padding.right,
-                                                                      font: design.mediumFont).height
+        descriptionCell.height = textBlockSize.height + design.padding.top + design.padding.bottom
+        
         priceCell.value = price
-        priceCell.height = ceil(DesignConstants.shared.largeFont.lineHeight * 3)
+        priceCell.height = DesignConstants.shared.buttonSize.height + design.imagePadding.top + design.imagePadding.bottom
+    }
+    
+    init(bounds: CGRect, product: Product) {
+        var imageURL: URL?
+        if let urlString = product.imageURL {
+            imageURL = URL(string: urlString)
+        }
+        var priceString = String(format: "%.0f", product.price)
+        priceString += " \u{20BD}"
+        
+        self.init(bounds: bounds,
+                  title: product.name,
+                  category: product.category,
+                  imageURL: imageURL,
+                  description: product.description ?? "",
+                  price: priceString)
     }
 }

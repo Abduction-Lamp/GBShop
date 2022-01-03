@@ -14,7 +14,7 @@ protocol ProductViewProtocol: AbstractViewController {
     var bounds: CGRect { get }
     
     func setProduct(model: ProductViewModel)
-    func setReview(id: Int)
+    func setReview(model: [ReviewViewModel])
 }
 
 protocol ProductViewPresenterProtocol: AnyObject {
@@ -26,9 +26,11 @@ protocol ProductViewPresenterProtocol: AnyObject {
          product: Product)
     
     func cart()
+    func getReview()
 }
 
 final class ProductViewPresenter: ProductViewPresenterProtocol {
+    
     private var router: RouterProtocol?
     private weak var view: ProductViewProtocol?
     private let network: RequestFactoryProtocol
@@ -37,7 +39,17 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     private let token: String
     
     private var product: Product
-    private var model: ProductViewModel
+    private var review: [Review]? {
+        didSet {
+            var model: [ReviewViewModel] = []
+            if let bounds = view?.bounds {
+                review?.forEach({ model.append(ReviewViewModel(bounds: bounds, review: $0)) })
+                DispatchQueue.main.async {
+                    self.view?.setReview(model: model)
+                }
+            }
+        }
+    }
 
     // MARK: Initialization
     init(router: RouterProtocol, view: ProductViewProtocol, network: RequestFactoryProtocol, user: User, token: String, product: Product) {
@@ -48,27 +60,46 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
         self.token = token
         self.product = product
         
-        var imageURL: URL?
-        if let urlString = product.imageURL {
-            imageURL = URL(string: urlString)
-        }
-        var priceString = String(format: "%.0f", product.price)
-        priceString += " \u{20BD}"
-         
-        self.model = ProductViewModel(bounds: view.bounds,
-                                      title: product.name,
-                                      category: product.category,
-                                      imageURL: imageURL,
-                                      description: product.description ?? "",
-                                      price: priceString)
-        setProduct()
+        view.setProduct(model: ProductViewModel(bounds: view.bounds, product: product))
     }
     
+    // MARK: -
     func cart() {
         return
     }
     
-    private func setProduct() {
-        view?.setProduct(model: model)
+    func getReview() {
+        fetchReview()
+    }
+    
+    private func fetchReview() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let request = network.makeReviewRequestFactory()
+        request.reviewByProduct(id: product.id) { [weak self] response in
+            guard let self = self else { return }
+            switch response.result {
+            case .success(let result):
+                logging("[\(self) result message: \(result.message)]")
+                if result.result == 1 {
+                    self.review = result.review
+                } else {
+                    self.view?.showErrorAlert(message: result.message)
+                }
+            case .failure(let error):
+                logging("[\(self) error: \(error.localizedDescription)]")
+                self.view?.showRequestErrorAlert(error: error)
+            }
+        }
+    }
+}
+
+extension ProductViewPresenter: CustomStringConvertible {
+    
+    var description: String {
+        " - ProductViewPresenter (class):"
     }
 }

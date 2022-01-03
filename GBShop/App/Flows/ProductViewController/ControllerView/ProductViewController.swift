@@ -11,7 +11,13 @@ import Kingfisher
 final class ProductViewController: UITableViewController {
     
     var presenret: ProductViewPresenterProtocol?
+    
     var productModel: ProductViewModel?
+    var reviewModel: [ReviewViewModel]? {
+        didSet {
+            self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        }
+    }
 
     // MARK: - Lifecycle
     //
@@ -23,29 +29,34 @@ final class ProductViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenret?.getReview()
     }
     
+    // MARK: - Configure Content
+    //
     private func configurationView() {
         self.view.backgroundColor = .systemGray6
-        
-        self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.setHidesBackButton(false, animated: false)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "",
-                                                                                              style: .plain,
-                                                                                              target: nil,
-                                                                                              action: nil)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"),
-                                                                 style: .plain,
-                                                                 target: self,
-                                                                 action: nil)
-        
+        configurationNavigationBar()
+
         self.tableView.register(ProductViewTitleCell.self, forCellReuseIdentifier: ProductViewTitleCell.reuseIdentifier)
         self.tableView.register(ProductViewImageCell.self, forCellReuseIdentifier: ProductViewImageCell.reuseIdentifier)
         self.tableView.register(ProductViewDescriptionCell.self, forCellReuseIdentifier: ProductViewDescriptionCell.reuseIdentifier)
         self.tableView.register(ProductViewPriceCell.self, forCellReuseIdentifier: ProductViewPriceCell.reuseIdentifier)
+        self.tableView.register(ProductViewCommentCell.self, forCellReuseIdentifier: ProductViewCommentCell.reuseIdentifier)
         
         self.tableView.separatorStyle = .none
         self.tableView.isEditing = false
+    }
+    
+    private func configurationNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationItem.setHidesBackButton(false, animated: false)
+        
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"), style: .plain, target: self, action: nil)
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
 }
 
@@ -68,49 +79,82 @@ extension ProductViewController: ProductViewProtocol {
         self.title = model.category
     }
     
-    func setReview(id: Int) {
-        return
+    func setReview(model: [ReviewViewModel]) {
+        reviewModel = model
     }
 }
 
 extension ProductViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        switch section {
+        case 0:
+            return 4
+        case 1:
+            return reviewModel?.count ?? 0
+        default:
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let model = productModel else { return .zero }
-        switch indexPath.row {
+        switch indexPath.section {
         case 0:
-            return model.titleCell.height
+            return getHeightForProductSection(tableView, heightForRowAt: indexPath)
         case 1:
-            return model.imageCell.height
-        case 2:
-            return model.descriptionCell.height
-        case 3:
-            return model.priceCell.height
-
+            guard let reviewModel = self.reviewModel else { return .zero }
+            return reviewModel[indexPath.row].height
         default:
             return .zero
         }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            return getCellForProductSection(tableView, cellForRowAt: indexPath)
+        case 1:
+            return getCellForReviewSection(tableView, cellForRowAt: indexPath)
+        default:
+            return UITableViewCell()
+        }
+    }
+    
+    // MARK: - Support methods
+    //
+    private func getHeightForProductSection(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let productModel = self.productModel else { return .zero }
         switch indexPath.row {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewTitleCell.reuseIdentifier) as? ProductViewTitleCell else {
+            return productModel.titleCell.height
+        case 1:
+            return productModel.imageCell.height
+        case 2:
+            return productModel.descriptionCell.height
+        case 3:
+            return productModel.priceCell.height
+        default:
+            return .zero
+        }
+    }
+    
+    private func getCellForProductSection(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.row {
+        case 0:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewTitleCell.reuseIdentifier)
+                    as? ProductViewTitleCell else {
                 return UITableViewCell()
             }
             cell.titleLabel.text = productModel?.titleCell.value
             return cell
             
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewImageCell.reuseIdentifier) as? ProductViewImageCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewImageCell.reuseIdentifier)
+                    as? ProductViewImageCell else {
                 return UITableViewCell()
             }
             cell.image.kf.indicatorType = .activity
@@ -126,7 +170,8 @@ extension ProductViewController {
             return cell
             
         case 3:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewPriceCell.reuseIdentifier) as? ProductViewPriceCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewPriceCell.reuseIdentifier)
+                    as? ProductViewPriceCell else {
                 return UITableViewCell()
             }
             cell.priceButton.setTitle(productModel?.priceCell.value, for: .normal)
@@ -135,5 +180,16 @@ extension ProductViewController {
         default:
             return UITableViewCell()
         }
+    }
+    
+    private func getCellForReviewSection(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewCommentCell.reuseIdentifier)
+                as? ProductViewCommentCell else {
+            return UITableViewCell()
+        }
+        cell.username.text = reviewModel?[indexPath.row].userLogin
+        cell.date.text = reviewModel?[indexPath.row].date
+        cell.comment.text = reviewModel?[indexPath.row].comment
+        return cell
     }
 }

@@ -16,6 +16,8 @@ final class CatalogViewCell: UICollectionViewCell {
         label.textColor = .black
         label.textAlignment = .center
         label.font = DesignConstants.shared.mediumFont
+        label.layer.cornerRadius = 5
+        label.layer.masksToBounds = true
         return label
     }()
     
@@ -27,9 +29,12 @@ final class CatalogViewCell: UICollectionViewCell {
     
     private(set) var priceLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
-        label.textAlignment = .center
         label.font = DesignConstants.shared.mediumFont
+        label.textAlignment = .center
+        label.textColor = .black
+        label.backgroundColor = .systemPurple.withAlphaComponent(0.1)
+        label.layer.cornerRadius = 5
+        label.layer.masksToBounds = true
         return label
     }()
     
@@ -94,8 +99,8 @@ final class CatalogViewCell: UICollectionViewCell {
         
         let bounds = self.contentView.bounds
         
-        let widthButton: CGFloat = 44
-        let heightButton: CGFloat = 41
+        let widthButton: CGFloat = 43
+        let heightButton: CGFloat = 40
         
         title.frame = CGRect(x: padding.left,
                              y: padding.top,

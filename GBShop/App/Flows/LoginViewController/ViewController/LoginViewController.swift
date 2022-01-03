@@ -9,11 +9,6 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
-    var presenret: LoginViewPresenterProtocol?
-    
-    private let notification = NotificationCenter.default
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
     private var loginView: LoginView {
         guard let view = self.view as? LoginView else {
             return LoginView(frame: self.view.frame)
@@ -21,6 +16,11 @@ final class LoginViewController: UIViewController {
         return view
     }
     
+    private let notification = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
+    var presenret: LoginViewPresenterProtocol?
+
     // MARK: - Lifecycle
     //
     override func loadView() {
