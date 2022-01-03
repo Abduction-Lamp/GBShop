@@ -103,11 +103,11 @@ class Router: RouterProtocol {
         }
         
         guard let navigation = self.navigation else { return }
-        let catalogViewController = navigation.viewControllers.first(where: { $0 is CatalogViewProtocol})
+        let catalogViewController = navigation.viewControllers.first(where: { $0 is CatalogViewProtocol })
         if let controller = catalogViewController as? CatalogViewController {
             logging("[\(self) navigation: popToCatalogViewController]")
             navigation.popToViewController(controller, animated: true)
-            controller.updataUserDataInPresenter(user: user, token: token)
+            controller.updateUserDataInPresenter(user: user, token: token)
         } else {
             logging("[\(self) navigation: popToRootViewController]")
             navigation.popToRootViewController(animated: true)
@@ -121,10 +121,7 @@ class Router: RouterProtocol {
         }
         
         guard let navigation = self.navigation,
-              let productViewController = builder?.makeProductViewController(router: self,
-                                                                             user: user,
-                                                                             token: token,
-                                                                             product: product) else {
+              let productViewController = builder?.makeProductViewController(router: self, user: user, token: token, product: product) else {
                   return
               }
         

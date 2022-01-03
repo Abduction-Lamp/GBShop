@@ -145,6 +145,6 @@ extension LoginViewController {
     
     @objc
     private func pressedRegistrationButton(_ sender: UIButton) {
-        presenret?.pushRegistrationViewController()
+        presenret?.goToRegistrationView()
     }
 }

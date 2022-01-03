@@ -9,8 +9,6 @@ import UIKit
 
 final class UserPageViewController: UIViewController {
     
-    var presenret: UserPageViewPresenterProtocol?
-    
     private var userPageView: UserPageView {
         guard let view = self.view as? UserPageView else {
             return UserPageView(frame: self.view.frame)
@@ -23,7 +21,7 @@ final class UserPageViewController: UIViewController {
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
     
     private var isEditingUserData: Bool = false
-    
+
     private lazy var buckBarButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
@@ -35,29 +33,18 @@ final class UserPageViewController: UIViewController {
         return button
     }()
     private lazy var buckBarButtonItem = UIBarButtonItem(customView: buckBarButton)
-    private lazy var changeBarButtonItem = UIBarButtonItem(title: "Изменить",
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(pressedСhangeButton))
-    private lazy var saveBarButtonItem = UIBarButtonItem(title: "Сохранить",
-                                                         style: .done,
-                                                         target: self,
-                                                         action: #selector(pressedSaveButton))
-    private lazy var cancelBarButtonItem = UIBarButtonItem(title: "Отменить",
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(pressedCancelButton))
+    private lazy var changeBarButtonItem = UIBarButtonItem(title: "Изменить", style: .plain, target: self, action: #selector(pressedСhangeButton))
+    private lazy var saveBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(pressedSaveButton))
+    private lazy var cancelBarButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(pressedCancelButton))
 
+    var presenret: UserPageViewPresenterProtocol?
+    
     // MARK: - Lifecycle
     //
     override func loadView() {
         super.loadView()
         
         configurationView()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -172,6 +159,7 @@ extension UserPageViewController {
     
         isEditingUserData = false
         enabledUserDataView(isEnable: isEditingUserData)
+        
         presenret?.getUserData()
     }
     
@@ -180,6 +168,7 @@ extension UserPageViewController {
         presenret?.backToCatalog()
     }
     
+    // MARK: Suppotr methods
     private func enabledUserDataView(isEnable: Bool) {
         userPageView.genderSegmentControl.isEnabled = isEnable
         

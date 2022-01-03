@@ -13,12 +13,14 @@ protocol RegistrationViewProtocol: AbstractViewController { }
 
 protocol RegistrationViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: RegistrationViewProtocol, network: UserRequestFactory)
+    
     func registration(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String)
 }
 
 // MARK: - RegistrationView Presenter
 //
 class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
+    
     private var router: RouterProtocol?
     weak var view: RegistrationViewProtocol?
     private let network: UserRequestFactory
@@ -31,6 +33,11 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
         self.view = view
         self.network = network
     }
+}
+
+extension RegistrationViewPresenter: MakeUserFactory { }
+
+extension RegistrationViewPresenter {
     
     func registration(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String) {
         newUser = makeUser(view: view,
@@ -43,7 +50,10 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
                            login: login,
                            password: password)
         
-        guard let user = newUser else { return }
+        guard let user = newUser else {
+            view?.showErrorAlert(message: "Не удалось зарегистрироваться")
+            return
+        }
         requestRegister(user: user)
     }
     
@@ -78,8 +88,6 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
         }
     }
 }
-
-extension RegistrationViewPresenter: MakeUserFactory { }
 
 extension RegistrationViewPresenter: CustomStringConvertible {
     

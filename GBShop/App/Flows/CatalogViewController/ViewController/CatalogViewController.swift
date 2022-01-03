@@ -10,21 +10,16 @@ import Kingfisher
 
 final class CatalogViewController: UICollectionViewController {
     
-    var presenret: CatalogViewPresenterProtocol?
-    var catalog: [Section] = []
-    
     var cellSize = CGSize.zero
+    var catalog: [Section] = []
+
+    var presenret: CatalogViewPresenterProtocol?
     
     // MARK: - Lifecycle
     //
     override func loadView() {
         super.loadView()
-    
         configurationView()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     // MARK: - Configure Content
@@ -45,14 +40,14 @@ final class CatalogViewController: UICollectionViewController {
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(true, animated: false)
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"),
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(pressedUserPageButton))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"),
-                                                                 style: .plain,
-                                                                 target: self,
-                                                                 action: nil)
+        let personIcon = UIImage(systemName: "person")
+        let cartIcon = UIImage(systemName: "cart")
+        
+        let left = UIBarButtonItem(image: personIcon, style: .plain, target: self, action: #selector(pressedUserPageButton))
+        let right = UIBarButtonItem(image: cartIcon, style: .plain, target: self, action: nil)
+        
+        self.navigationItem.leftBarButtonItem = left
+        self.navigationItem.rightBarButtonItem = right
     }
     
     // MARK: - Support methods
@@ -89,8 +84,8 @@ extension CatalogViewController {
                                                             for: indexPath) as? CatalogViewCell else { return UICollectionViewCell() }
         cell.title.text = catalog[indexPath.section].items[indexPath.row].name
         cell.priceLabel.text = makePriceString(price: catalog[indexPath.section].items[indexPath.row].price)
-        if  let urlString = catalog[indexPath.section].items[indexPath.row].imageURL,
-            let url = URL(string: urlString) {
+        if let urlString = catalog[indexPath.section].items[indexPath.row].imageURL,
+           let url = URL(string: urlString) {
             cell.imageView.kf.indicatorType = .activity
             cell.imageView.kf.setImage(with: url)
         }
@@ -113,7 +108,7 @@ extension CatalogViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenret?.product(id: catalog[indexPath.section].items[indexPath.row].id)
+        presenret?.goToProductView(id: catalog[indexPath.section].items[indexPath.row].id)
     }
 }
 
@@ -156,12 +151,12 @@ extension CatalogViewController {
     
     @objc
     private func pressedUserPageButton(_ sender: UIBarButtonItem) {
-        presenret?.userPage()
+        presenret?.goToUserPageView()
     }
     
     @objc
     private func pressedBuyButon(_ sender: UIButton, id: Int) {
-        presenret?.addCart(id: sender.tag)
+        presenret?.addToCart(productId: sender.tag)
     }
 }
 
@@ -180,11 +175,11 @@ extension CatalogViewController: CatalogViewProtocol {
         self.collectionView.reloadData()
     }
     
-    func updataCart(count: Int) {
+    func updateCartIndicator(count: Int) {
         (count < 1) ? (self.title = "Магазин") : (self.title = "В корзине [\(count)]")
     }
     
-    func updataUserDataInPresenter(user: User, token: String) {
-        presenret?.updataUserData(user: user, token: token)
+    func updateUserDataInPresenter(user: User, token: String) {
+        presenret?.updateUserData(user: user, token: token)
     }
 }

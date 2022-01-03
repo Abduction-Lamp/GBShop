@@ -13,7 +13,7 @@ final class LoginView: UIView {
     
     private let gradientLayer: CALayer = {
         let layer = CAGradientLayer()
-
+        
         let begin: UIColor = .systemGreen
         let end: UIColor = .systemPurple
 
@@ -21,7 +21,6 @@ final class LoginView: UIView {
         layer.locations = [0 as NSNumber, 1 as NSNumber]
         layer.startPoint = CGPoint.zero
         layer.endPoint = CGPoint(x: 0, y: 1)
-
         return layer
     }()
     
@@ -121,7 +120,8 @@ final class LoginView: UIView {
         return stack
     }()
     
-    // MARK: Initialization
+    // MARK: - Initialization
+    //
     override init(frame: CGRect) {
         super.init(frame: frame)
         

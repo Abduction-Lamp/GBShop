@@ -125,7 +125,7 @@ extension CatalogViewPresenterTests {
     }
     
     func testCatalogViewPresenterAddCartSeccess() throws {
-        presenter.addCart(id: 1)
+        presenter.addToCart(productId: 1)
         wait(for: [self.view.expectation], timeout: 2.0)
         
         XCTAssertEqual(view.error, nil)
@@ -141,7 +141,7 @@ extension CatalogViewPresenterTests {
     }
     
     func testCatalogViewPresenterAddCartError() throws {
-        presenter.addCart(id: -1)
+        presenter.addToCart(productId: -1)
         wait(for: [self.view.expectation], timeout: 2.0)
         
         XCTAssertEqual(view.error, "error")

@@ -10,6 +10,7 @@ import Foundation
 // MARK: - Protools
 //
 protocol UserPageViewProtocol: AbstractViewController {
+    func didChangeUserData()
     func setUserData(firstName: String,
                      lastName: String,
                      gender: Int,
@@ -17,12 +18,12 @@ protocol UserPageViewProtocol: AbstractViewController {
                      creditCard: String,
                      login: String,
                      password: String)
-    func didChangeUserData()
 }
 
 protocol UserPageViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     
+    func backToCatalog()
     func logout()
     func getUserData()
     func changeUserData(firstName: String,
@@ -32,7 +33,6 @@ protocol UserPageViewPresenterProtocol: AnyObject {
                         creditCard: String,
                         login: String,
                         password: String)
-    func backToCatalog()
 }
 
 // MARK: - UserPageView Presenter
@@ -74,24 +74,14 @@ class UserPageViewPresenter: UserPageViewPresenterProtocol {
                                    password: user.password)
         }
     }
+}
+
+extension UserPageViewPresenter: MakeUserFactory { }
+
+extension UserPageViewPresenter {
     
-    func getUserData() {
-        logging(.funcStart)
-        defer {
-            logging(.funcEnd)
-        }
-        
-        logging("\(self) func getUserData()")
-        DispatchQueue.main.async {
-            let gender: Int = self.user.gender == "m" ? 0 : 1
-            self.view?.setUserData(firstName: self.user.firstName,
-                                   lastName: self.user.lastName,
-                                   gender: gender,
-                                   email: self.user.email,
-                                   creditCard: self.user.creditCard,
-                                   login: self.user.login,
-                                   password: self.user.password)
-        }
+    func backToCatalog() {
+        router?.popToCatalogViewController(user: user, token: token)
     }
     
     func logout() {
@@ -102,7 +92,6 @@ class UserPageViewPresenter: UserPageViewPresenterProtocol {
         
         let auth = network.makeAuthRequestFactory()
         auth.logout(id: user.id, token: token) { response in
-            
             logging("[\(self) id: \(self.user.id) token: \(self.token)]")
             
             DispatchQueue.main.async {
@@ -122,6 +111,25 @@ class UserPageViewPresenter: UserPageViewPresenterProtocol {
         }
     }
     
+    func getUserData() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        logging("\(self) func getUserData()")
+        DispatchQueue.main.async {
+            let gender: Int = self.user.gender == "m" ? 0 : 1
+            self.view?.setUserData(firstName: self.user.firstName,
+                                   lastName: self.user.lastName,
+                                   gender: gender,
+                                   email: self.user.email,
+                                   creditCard: self.user.creditCard,
+                                   login: self.user.login,
+                                   password: self.user.password)
+        }
+    }
+
     func changeUserData(firstName: String,
                         lastName: String,
                         gender: Int,
@@ -146,15 +154,14 @@ class UserPageViewPresenter: UserPageViewPresenterProtocol {
         
         let userRequest = network.makeUserRequestFactory()
         userRequest.change(user: newUserData, token: token) { response in
-            
             logging("[\(self) user: \(newUserData) token: \(self.token)]")
             
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
-                    if let resulNewUserData = result.user {
-                        self.user = resulNewUserData
+                    if let resultNewUserData = result.user {
+                        self.user = resultNewUserData
                         self.view?.didChangeUserData()
                     } else {
                         self.view?.showErrorAlert(message: result.message)
@@ -166,13 +173,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtocol {
             }
         }
     }
-    
-    func backToCatalog() {
-        router?.popToCatalogViewController(user: user, token: token)
-    }
 }
-
-extension UserPageViewPresenter: MakeUserFactory { }
 
 extension UserPageViewPresenter: CustomStringConvertible {
     

@@ -9,17 +9,17 @@ import UIKit
 
 final class RegistrationViewController: UIViewController {
     
-    var presenret: RegistrationViewPresenterProtocol?
-    
-    private let notifiction = NotificationCenter.default
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
     private var registrationView: RegistrationView {
         guard let view = self.view as? RegistrationView else {
             return RegistrationView(frame: self.view.frame)
         }
         return view
     }
+    
+    private let notifiction = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
+    var presenret: RegistrationViewPresenterProtocol?
 
     // MARK: - Lifecycle
     //
@@ -55,9 +55,7 @@ final class RegistrationViewController: UIViewController {
         self.title = "Регистрация"
         
         registrationView.scrollView.addGestureRecognizer(keyboardHideGesture)
-        
         registrationView.creditCardTextField.delegate = self
-        
         registrationView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
     }
 }

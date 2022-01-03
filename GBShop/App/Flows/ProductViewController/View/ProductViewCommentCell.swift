@@ -59,21 +59,25 @@ final class ProductViewCommentCell: UITableViewCell {
         super.layoutSubviews()
         
         let bounds = self.contentView.bounds
-        let desing = DesignConstants.shared
+        let padding = DesignConstants.shared.padding
+        let imagePadding = DesignConstants.shared.imagePadding
+        let mediumFont = DesignConstants.shared.mediumFont
+        let smallFont = DesignConstants.shared.smallFont
         
-        username.frame = CGRect(x: desing.padding.left,
-                                y: desing.padding.top,
-                                width: bounds.width - desing.padding.left - desing.padding.right,
-                                height: desing.mediumFont.lineHeight)
-        date.frame = CGRect(x: desing.imagePadding.left,
-                            y: username.frame.maxY + desing.padding.top,
-                            width: bounds.width - desing.imagePadding.left - desing.imagePadding.right,
-                            height: desing.smallFont.lineHeight)
-        comment.frame = CGRect(x: desing.imagePadding.left,
-                               y: date.frame.maxY + desing.imagePadding.top,
-                               width: bounds.width - desing.imagePadding.left - desing.imagePadding.right,
-                               height: bounds.height - desing.imagePadding.bottom - desing.imagePadding.top - date.frame.maxY)
-
+        username.frame = CGRect(x: padding.left,
+                                y: padding.top,
+                                width: bounds.width - padding.left - padding.right,
+                                height: ceil(mediumFont.lineHeight))
+        
+        date.frame = CGRect(x: imagePadding.left,
+                            y: username.frame.maxY + padding.top,
+                            width: bounds.width - imagePadding.left - imagePadding.right,
+                            height: ceil(smallFont.lineHeight))
+        
+        comment.frame = CGRect(x: imagePadding.left,
+                               y: date.frame.maxY + imagePadding.top,
+                               width: bounds.width - imagePadding.left - imagePadding.right,
+                               height: bounds.height - imagePadding.bottom - imagePadding.top - date.frame.maxY)
     }
     
     override func prepareForReuse() {

@@ -9,17 +9,19 @@ import Foundation
 
 // MARK: - Protools
 //
-protocol LoginViewProtocol: AbstractViewController {}
+protocol LoginViewProtocol: AbstractViewController { }
 
 protocol LoginViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory)
+    
     func auth(login: String, password: String)
-    func pushRegistrationViewController()
+    func goToRegistrationView()
 }
 
 // MARK: - LoginView Presenter
 //
 class LoginViewPresenter: LoginViewPresenterProtocol {
+    
     private var router: RouterProtocol?
     private weak var view: LoginViewProtocol?
     private let network: AuthRequestFactory
@@ -48,9 +50,9 @@ class LoginViewPresenter: LoginViewPresenterProtocol {
                     if result.result == 1 {
                         guard let user = result.user,
                               let token = result.token else {
-                               self.view?.showErrorAlert(message: result.message)
-                                  return
-                              }
+                            self.view?.showErrorAlert(message: result.message)
+                            return
+                        }
                         self.router?.pushCatalogViewController(user: user, token: token)
                     } else {
                         self.view?.showErrorAlert(message: result.message)
@@ -63,7 +65,7 @@ class LoginViewPresenter: LoginViewPresenterProtocol {
         }
     }
     
-    func pushRegistrationViewController() {
+    func goToRegistrationView() {
         router?.pushRegistrationViewController()
     }
 }

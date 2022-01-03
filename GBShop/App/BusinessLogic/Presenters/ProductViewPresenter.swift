@@ -25,7 +25,7 @@ protocol ProductViewPresenterProtocol: AnyObject {
          token: String,
          product: Product)
     
-    func cart()
+    func goToCart()
     func getReview()
 }
 
@@ -62,17 +62,15 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
         
         view.setProduct(model: ProductViewModel(bounds: view.bounds, product: product))
     }
-    
-    // MARK: -
-    func cart() {
+}
+
+extension ProductViewPresenter {
+
+    func goToCart() {
         return
     }
     
     func getReview() {
-        fetchReview()
-    }
-    
-    private func fetchReview() {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -81,17 +79,20 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
         let request = network.makeReviewRequestFactory()
         request.reviewByProduct(id: product.id) { [weak self] response in
             guard let self = self else { return }
-            switch response.result {
-            case .success(let result):
-                logging("[\(self) result message: \(result.message)]")
-                if result.result == 1 {
-                    self.review = result.review
-                } else {
-                    self.view?.showErrorAlert(message: result.message)
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        self.review = result.review
+                    } else {
+                        self.view?.showErrorAlert(message: result.message)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
                 }
-            case .failure(let error):
-                logging("[\(self) error: \(error.localizedDescription)]")
-                self.view?.showRequestErrorAlert(error: error)
             }
         }
     }

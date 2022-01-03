@@ -79,7 +79,7 @@ extension LoginViewPresenterTest {
     }
     
     func testLoginViewPresenterPushRegistration() throws {
-        presenter.pushRegistrationViewController()
+        presenter.goToRegistrationView()
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, "success")

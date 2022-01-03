@@ -90,7 +90,8 @@ final class RegistrationView: UIView {
     private let registrationButtonSize = CGSize(width: 200, height: 40)
     private let registrationButtonPadding = UIEdgeInsets(top: .zero, left: .zero, bottom: 15, right: .zero)
 
-    // MARK: Initialization
+    // MARK: - Initialization
+    //
     override init(frame: CGRect) {
         super.init(frame: frame)
         

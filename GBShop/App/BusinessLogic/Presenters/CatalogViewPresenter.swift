@@ -11,27 +11,26 @@ import Foundation
 //
 protocol CatalogViewProtocol: AbstractViewController {
     func setCatalog(_ catalog: [Section])
-    func updataCart(count: Int)
-    
-    func updataUserDataInPresenter(user: User, token: String)
+    func updateCartIndicator(count: Int)
+    func updateUserDataInPresenter(user: User, token: String)
 }
 
 protocol CatalogViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     
     func getCatalog(page: Int)
-    func addCart(id: Int)
+    func addToCart(productId: Int)
+    func updateUserData(user: User, token: String)
     
-    func userPage()
-    func updataUserData(user: User, token: String)
-    
-    func cart()
-    func product(id: Int)
+    func goToUserPageView()
+    func goToCartView()
+    func goToProductView(id: Int)
 }
 
 // MARK: - CatalogView Presenter
 //
 final class CatalogViewPresenter: CatalogViewPresenterProtocol {
+    
     private var router: RouterProtocol?
     private weak var view: CatalogViewProtocol?
     private let network: RequestFactoryProtocol
@@ -52,14 +51,9 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
         
         getCatalog(page: 0)
     }
-    
-    func userPage() {
-        self.router?.pushUserPageViewController(user: user, token: token)
-    }
-    
-    func cart() {
-        return
-    }
+}
+
+extension CatalogViewPresenter {
     
     func getCatalog(page: Int) {
         logging(.funcStart)
@@ -90,14 +84,14 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
         }
     }
     
-    func addCart(id: Int) {
+    func addToCart(productId: Int) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
         }
         
         let request = network.makeCartRequestFactory()
-        request.add(productId: id, owner: user.id, token: token) { response in
+        request.add(productId: productId, owner: user.id, token: token) { response in
             
             DispatchQueue.main.async {
                 switch response.result {
@@ -105,7 +99,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
                         if let count = result.cart?.count {
-                            self.view?.updataCart(count: count)
+                            self.view?.updateCartIndicator(count: count)
                         } else {
                             self.view?.showErrorAlert(message: "Карзина пуста")
                         }
@@ -120,16 +114,24 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
         }
     }
     
-    func product(id: Int) {
+    func updateUserData(user: User, token: String) {
+        self.user = user
+        self.token = token
+    }
+    
+    func goToUserPageView() {
+        self.router?.pushUserPageViewController(user: user, token: token)
+    }
+    
+    func goToCartView() {
+        return
+    }
+    
+    func goToProductView(id: Int) {
         if let productList = catalog?.flatMap({ $0.items }),
         let product = productList.first(where: { $0.id == id }) {
             router?.pushProductViewController(user: user, token: token, product: product)
         }
-    }
-    
-    func updataUserData(user: User, token: String) {
-        self.user = user
-        self.token = token
     }
 }
 

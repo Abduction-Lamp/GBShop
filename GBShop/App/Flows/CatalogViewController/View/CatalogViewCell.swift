@@ -52,7 +52,6 @@ final class CatalogViewCell: UICollectionViewCell {
     // MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         configureContent()
     }
     
@@ -62,27 +61,27 @@ final class CatalogViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         makeLayoutByFrame()
     }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
         title.text = nil
         priceLabel.text = nil
         imageView.image = nil
+        super.prepareForReuse()
     }
     
     // MARK: - Configure Content
     //
     private func configureContent() {
         self.backgroundColor = .white
-        self.layer.cornerRadius = 5
-        self.layer.masksToBounds = false
+        
         self.layer.shadowColor = UIColor.gray.cgColor
         self.layer.shadowOffset = .zero
         self.layer.shadowOpacity = 0.3
         self.layer.shadowRadius = 2
+        self.layer.cornerRadius = 5
+        self.layer.masksToBounds = false
         
         self.contentView.addSubview(title)
         self.contentView.addSubview(imageView)
@@ -93,11 +92,11 @@ final class CatalogViewCell: UICollectionViewCell {
     }
     
     private func makeLayoutByFrame() {
+        let bounds = self.contentView.bounds
         
         let padding = DesignConstants.shared.padding
         let imagePadding = DesignConstants.shared.imagePadding
-        
-        let bounds = self.contentView.bounds
+        let font = DesignConstants.shared.mediumFont
         
         let widthButton: CGFloat = 43
         let heightButton: CGFloat = 40
@@ -105,19 +104,21 @@ final class CatalogViewCell: UICollectionViewCell {
         title.frame = CGRect(x: padding.left,
                              y: padding.top,
                              width: bounds.width - padding.left - padding.right,
-                             height: ceil(DesignConstants.shared.mediumFont.lineHeight))
+                             height: ceil(font.lineHeight))
+        
         imageView.frame = CGRect(x: imagePadding.left,
                                  y: title.frame.maxY + imagePadding.top,
                                  width: bounds.width - imagePadding.left - imagePadding.right,
                                  height: bounds.width - imagePadding.left - imagePadding.right)
+        
         buyButon.frame = CGRect(x: bounds.maxX - padding.right - widthButton,
                                 y: bounds.maxY - padding.bottom - heightButton,
                                 width: widthButton,
                                 height: heightButton)
+        
         priceLabel.frame = CGRect(x: padding.left,
                                   y: buyButon.frame.minY,
                                   width: bounds.width - padding.left - padding.right - buyButon.frame.width,
                                   height: heightButton)
-
     }
 }

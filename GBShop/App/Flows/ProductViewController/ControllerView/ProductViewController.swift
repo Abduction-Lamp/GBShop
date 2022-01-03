@@ -10,26 +10,24 @@ import Kingfisher
 
 final class ProductViewController: UITableViewController {
     
-    var presenret: ProductViewPresenterProtocol?
-    
     var productModel: ProductViewModel?
     var reviewModel: [ReviewViewModel]? {
         didSet {
             self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
         }
     }
+    
+    var presenret: ProductViewPresenterProtocol?
 
     // MARK: - Lifecycle
     //
     override func loadView() {
         super.loadView()
-    
         configurationView()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         presenret?.getReview()
     }
     
@@ -53,10 +51,13 @@ final class ProductViewController: UITableViewController {
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(false, animated: false)
         
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"), style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
-        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        let cartIcon = UIImage(systemName: "cart")
+        
+        let back = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        let right = UIBarButtonItem(image: cartIcon, style: .plain, target: self, action: nil)
+        
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = back
+        self.navigationItem.rightBarButtonItem = right
     }
 }
 
