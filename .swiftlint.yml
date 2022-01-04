@@ -1,6 +1,7 @@
 excluded: 
   - Carthage
   - Pods
+  - GBShopTests
 
 disabled_rules:
   - trailing_whitespace

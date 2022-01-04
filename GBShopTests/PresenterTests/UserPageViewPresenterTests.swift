@@ -24,13 +24,7 @@ class MockUserPageView: UIViewController, UserPageViewProtocol {
     }
     
     var messageSetUserData: String?
-    func setUserData(firstName: String,
-                     lastName: String,
-                     gender: Int,
-                     email: String,
-                     creditCard: String,
-                     login: String,
-                     password: String) {
+    func setUserData(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String) {
         messageSetUserData = "success"
         self.expectation.fulfill()
     }
@@ -46,6 +40,8 @@ class MockUserPageView: UIViewController, UserPageViewProtocol {
 //
 class UserPageViewPresenterTests: XCTestCase {
 
+    let fake = FakeData()
+    
     var router: MockRouter!
     var view: MockUserPageView!
     var network: MockNetworkRequest!
@@ -58,7 +54,7 @@ class UserPageViewPresenterTests: XCTestCase {
         view = MockUserPageView()
         network = MockNetworkRequest()
 
-        presenter = UserPageViewPresenter(router: router, view: view, network: network, user: MockNetworkUserRequest.fakeUser, token: "")
+        presenter = UserPageViewPresenter(router: router, view: view, network: network, user: fake.user, token: fake.token)
     }
 
     override func tearDownWithError() throws {
@@ -90,7 +86,9 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
-        XCTAssertEqual(router.messageCatalog, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
         XCTAssertEqual(router.messageRoot, "success")
     }
     
@@ -106,18 +104,21 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
-        XCTAssertEqual(router.messageCatalog, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
     func testUserPageViewPresenterChangeUserData() throws {
-        presenter.changeUserData(firstName: "firstName",
-                                 lastName: "lastName",
-                                 gender: 0, // error
-                                 email: "email@email.ru",
-                                 creditCard: "1111-1111-1111-1111",
-                                 login: "login",
-                                 password: "password")
+        presenter.user = fake.user
+        presenter.changeUserData(firstName: fake.user.firstName,
+                                 lastName: fake.user.lastName,
+                                 gender: 0, 
+                                 email: fake.user.email,
+                                 creditCard: fake.user.creditCard,
+                                 login: fake.user.login,
+                                 password: fake.user.password)
         wait(for: [self.view.expectation], timeout: 2.0)
         
         XCTAssertEqual(view.error, nil)
@@ -128,7 +129,9 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
-        XCTAssertEqual(router.messageCatalog, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -150,7 +153,28 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
-        XCTAssertEqual(router.messageCatalog, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+    }
+    
+    func testUserPageViewPresenterBackToCatalog() {
+        presenter.user = fake.user
+        presenter.backToCatalog()
+        wait(for: [self.router.expectation], timeout: 2.0)
+        
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, nil)
+        XCTAssertEqual(view.messageSetUserData, nil)
+        XCTAssertEqual(view.messageDidChangeUserData, nil)
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messageRegistration, nil)
+        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopCatalog, "success")
+        XCTAssertEqual(router.messageProduct, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
 }

@@ -10,6 +10,8 @@ import XCTest
 
 class RouterTests: XCTestCase {
     
+    let fake = FakeData()
+    
     var router: RouterProtocol!
     var assebly: BuilderViewController!
     var navigation: MockNavigation!
@@ -31,15 +33,15 @@ class RouterTests: XCTestCase {
         let registrationViewController = navigation.presentedVC
         XCTAssertTrue(registrationViewController is RegistrationViewController)
         
-        router.pushUserPageViewController(user: MockNetworkUserRequest.fakeUser, token: "")
+        router.pushUserPageViewController(user: fake.user, token: fake.token)
         let userPageViewController = navigation.presentedVC
         XCTAssertTrue(userPageViewController is UserPageViewController)
         
-        router.pushCatalogViewController(user: MockNetworkUserRequest.fakeUser, token: "")
+        router.pushCatalogViewController(user: fake.user, token: fake.token)
         let catalogViewController = navigation.presentedVC
         XCTAssertTrue(catalogViewController is CatalogViewController)
         
-        router.pushProductViewController(user: MockNetworkUserRequest.fakeUser, token: "", product: MockProductView.product)
+        router.pushProductViewController(user: fake.user, token: fake.token, product: fake.product)
         let productViewController = navigation.presentedVC
         XCTAssertTrue(productViewController is ProductViewController)
     }

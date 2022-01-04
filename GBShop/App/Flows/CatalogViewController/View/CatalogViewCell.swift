@@ -32,7 +32,7 @@ final class CatalogViewCell: UICollectionViewCell {
         label.font = DesignConstants.shared.mediumFont
         label.textAlignment = .center
         label.textColor = .black
-        label.backgroundColor = .systemPurple.withAlphaComponent(0.1)
+        label.backgroundColor = .systemGreen.withAlphaComponent(0.1)
         label.layer.cornerRadius = 5
         label.layer.masksToBounds = true
         return label

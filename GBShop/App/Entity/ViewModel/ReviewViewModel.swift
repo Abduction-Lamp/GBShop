@@ -27,14 +27,19 @@ struct ReviewViewModel {
         let dateOfComment = Date(timeIntervalSince1970: date)
         self.date = format.string(from: dateOfComment)
         
-        let design = DesignConstants.shared
-        let width = bounds.width - design.cellPaddingForInsetGroupedStyle.left - design.cellPaddingForInsetGroupedStyle.right
+        let padding = DesignConstants.shared.padding
+        let imagePadding = DesignConstants.shared.imagePadding
+        let cellPadding = DesignConstants.shared.cellPaddingForInsetGroupedStyle
+        let mediumFont = DesignConstants.shared.mediumFont
+        let smallFont = DesignConstants.shared.smallFont
         
-        let commentBlockSize = comment.calculationTextBlockSize(width: width - design.padding.left - design.padding.right,
-                                                                font: design.mediumFont)
-        let heightTitleReviewComponent: CGFloat = design.padding.top + ceil(design.mediumFont.lineHeight)
-        let heightDateReviewComponent: CGFloat = design.padding.top + ceil(design.smallFont.lineHeight)
-        let heightCommentReviewComponent: CGFloat = design.imagePadding.top + commentBlockSize.height + design.imagePadding.bottom
+        let widthCell = bounds.width - cellPadding.left - cellPadding.right
+        let width = widthCell - imagePadding.left - imagePadding.right
+        
+        let commentBlockSize = comment.calculationTextBlockSize(width: width, font: mediumFont)
+        let heightTitleReviewComponent: CGFloat = padding.top + ceil(mediumFont.lineHeight)
+        let heightDateReviewComponent: CGFloat = padding.top + ceil(smallFont.lineHeight)
+        let heightCommentReviewComponent: CGFloat = imagePadding.top + commentBlockSize.height + imagePadding.bottom
         height = heightTitleReviewComponent + heightDateReviewComponent + heightCommentReviewComponent
     }
     
@@ -44,5 +49,16 @@ struct ReviewViewModel {
                   comment: review.comment ?? "",
                   assessment: review.assessment,
                   date: review.date)
+    }
+}
+
+extension ReviewViewModel: Equatable {
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return  lhs.userLogin == rhs.userLogin &&
+                lhs.comment == rhs.comment &&
+                lhs.assessment == rhs.assessment &&
+                lhs.date == rhs.date &&
+                lhs.height == rhs.height
     }
 }

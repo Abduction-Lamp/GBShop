@@ -63,11 +63,19 @@ extension LoginViewPresenterTest {
     }
     
     func testLoginViewPresenterAuthSuccess() throws {
-        presenter.auth(login: "login", password: "password")
-        wait(for: [self.view.expectation], timeout: 10.0)
+        presenter.auth(login: FakeData().user.login, password: FakeData().user.password)
+        wait(for: [self.router.expectation], timeout: 10.0)
         
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "success")
+        XCTAssertEqual(view.message, nil)
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messageRegistration, nil)
+        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, "success")
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messageRoot, nil)
     }
     
     func testLoginViewPresenterAuthFailure() throws {
@@ -76,14 +84,30 @@ extension LoginViewPresenterTest {
         
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.error, "error")
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messageRegistration, nil)
+        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+
     }
     
     func testLoginViewPresenterPushRegistration() throws {
         presenter.goToRegistrationView()
+                
+        XCTAssertEqual(view.message, nil)
+        XCTAssertEqual(view.error, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, "success")
         XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
         XCTAssertEqual(router.messageRoot, nil)
+
     }
 }

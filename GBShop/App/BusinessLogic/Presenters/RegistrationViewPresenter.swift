@@ -50,10 +50,7 @@ extension RegistrationViewPresenter {
                            login: login,
                            password: password)
         
-        guard let user = newUser else {
-            view?.showErrorAlert(message: "Не удалось зарегистрироваться")
-            return
-        }
+        guard let user = newUser else { return }
         requestRegister(user: user)
     }
     
