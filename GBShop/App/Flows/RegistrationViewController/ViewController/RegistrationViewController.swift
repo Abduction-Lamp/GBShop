@@ -15,6 +15,7 @@ final class RegistrationViewController: UIViewController {
         }
         return view
     }
+    private var spinner: LoadingScreenWithSpinner?
     
     private let notifiction = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
@@ -57,6 +58,8 @@ final class RegistrationViewController: UIViewController {
         registrationView.scrollView.addGestureRecognizer(keyboardHideGesture)
         registrationView.creditCardTextField.delegate = self
         registrationView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
+        
+        spinner = LoadingScreenWithSpinner(view: registrationView)
     }
 }
 
@@ -70,6 +73,14 @@ extension RegistrationViewController: RegistrationViewProtocol {
     
     func showErrorAlert(message: String) {
         showAlert(message: message, title: "Ошибка")
+    }
+    
+    func showLoadingScreen() {
+        spinner?.show()
+    }
+    
+    func hideLoadingScreen() {
+        spinner?.hide()
     }
 }
 

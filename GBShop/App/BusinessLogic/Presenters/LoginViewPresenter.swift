@@ -9,7 +9,10 @@ import Foundation
 
 // MARK: - Protools
 //
-protocol LoginViewProtocol: AbstractViewController { }
+protocol LoginViewProtocol: AbstractViewController {
+    func showLoadingScreen()
+    func hideLoadingScreen()
+}
 
 protocol LoginViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory)
@@ -37,13 +40,17 @@ class LoginViewPresenter: LoginViewPresenterProtocol {
         defer {
             logging(.funcEnd)
         }
-
+        
+        self.view?.showLoadingScreen()
+        
         network.login(login: login, password: password) { [weak self] response in
             guard let self = self else { return }
             
             logging("[\(self) login: \(login), password: \(password)]")
             
             DispatchQueue.main.async {
+                self.view?.hideLoadingScreen()
+                
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")

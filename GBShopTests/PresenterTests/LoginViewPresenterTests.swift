@@ -12,6 +12,7 @@ import Alamofire
 // MARK: - Mock Entity
 //
 class MockLoginView: UIViewController, LoginViewProtocol {
+    
     var expectation = XCTestExpectation(description: "[ TEST MockLoginView ]")
     
     var error: String?
@@ -23,6 +24,16 @@ class MockLoginView: UIViewController, LoginViewProtocol {
     func showErrorAlert(message: String) {
         self.message = message
         self.expectation.fulfill()
+    }
+    
+    var showFlag = false
+    func showLoadingScreen() {
+        showFlag = !showFlag
+    }
+    
+    var hideFlag = false
+    func hideLoadingScreen() {
+        hideFlag = !hideFlag
     }
 }
 
@@ -69,6 +80,9 @@ extension LoginViewPresenterTest {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
@@ -85,6 +99,9 @@ extension LoginViewPresenterTest {
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.error, "error")
         
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
@@ -97,9 +114,12 @@ extension LoginViewPresenterTest {
     
     func testLoginViewPresenterPushRegistration() throws {
         presenter.goToRegistrationView()
-                
+             
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.error, nil)
+        
+        XCTAssertFalse(view.showFlag)
+        XCTAssertFalse(view.hideFlag)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, "success")

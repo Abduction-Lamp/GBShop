@@ -9,7 +9,10 @@ import Foundation
 
 // MARK: - Protools
 //
-protocol RegistrationViewProtocol: AbstractViewController { }
+protocol RegistrationViewProtocol: AbstractViewController {
+    func showLoadingScreen()
+    func hideLoadingScreen()
+}
 
 protocol RegistrationViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: RegistrationViewProtocol, network: UserRequestFactory)
@@ -60,12 +63,15 @@ extension RegistrationViewPresenter {
             logging(.funcEnd)
         }
         
+        self.view?.showLoadingScreen()
+        
         network.register(user: user) { [weak self] response in
             guard let self = self else { return }
-            
             logging("[\(self) \(user)]")
             
             DispatchQueue.main.async {
+                self.view?.hideLoadingScreen()
+                
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")

@@ -34,6 +34,17 @@ class MockUserPageView: UIViewController, UserPageViewProtocol {
         messageDidChangeUserData = "success"
         self.expectation.fulfill()
     }
+    
+    var showFlag = false
+    func showLoadingScreen() {
+        showFlag = !showFlag
+    }
+    
+    var hideFlag = false
+    func hideLoadingScreen() {
+        hideFlag = !hideFlag
+    }
+
 }
 
 // MARK: - TESTS
@@ -83,6 +94,9 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(view.messageSetUserData, "success") // При создании presenter вызываеться SetUserData
         XCTAssertEqual(view.messageDidChangeUserData, nil)
         
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
@@ -100,6 +114,9 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetUserData, "success")
         XCTAssertEqual(view.messageDidChangeUserData, nil)
+        
+        XCTAssertFalse(view.showFlag)
+        XCTAssertFalse(view.hideFlag)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
@@ -126,6 +143,9 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(view.messageSetUserData, "success")
         XCTAssertEqual(view.messageDidChangeUserData, "success")
         
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
@@ -150,6 +170,9 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(view.messageSetUserData, "success")
         XCTAssertEqual(view.messageDidChangeUserData, nil)
         
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
@@ -168,6 +191,9 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetUserData, nil)
         XCTAssertEqual(view.messageDidChangeUserData, nil)
+        
+        XCTAssertFalse(view.showFlag)
+        XCTAssertFalse(view.hideFlag)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)

@@ -113,6 +113,14 @@ extension UserPageViewController: UserPageViewProtocol {
         isEditingUserData = false
         enabledUserDataView(isEnable: isEditingUserData)
     }
+    
+    func showLoadingScreen() {
+        userPageView.spinner.startAnimating()
+    }
+    
+    func hideLoadingScreen() {
+        userPageView.spinner.stopAnimating()
+    }
 }
 
 // MARK: - Extension Button Actions

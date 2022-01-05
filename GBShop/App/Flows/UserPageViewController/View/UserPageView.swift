@@ -90,9 +90,19 @@ final class UserPageView: UIView {
     private let buttonSize = CGSize(width: 100, height: 40)
     private let logoutButtonPadding = UIEdgeInsets(top: .zero, left: .zero, bottom: 15, right: .zero)
 
+    private(set) var spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.style = .large
+        spinner.color = .systemRed
+        return spinner
+    }()
+
+    
+    //
+    //
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         configureContent()
     }
 
@@ -112,6 +122,7 @@ final class UserPageView: UIView {
         contentView.addSubview(loginTextField)
         contentView.addSubview(passwordTextField)
         contentView.addSubview(logoutButton)
+        contentView.addSubview(spinner)
 
         placesConstraint()
     }
@@ -166,8 +177,12 @@ final class UserPageView: UIView {
             logoutButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             logoutButton.widthAnchor.constraint(equalToConstant: buttonSize.width),
             logoutButton.heightAnchor.constraint(equalToConstant: buttonSize.height),
-            logoutButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                       constant: -logoutButtonPadding.bottom)
+            logoutButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -logoutButtonPadding.bottom),
+            
+            spinner.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor),
+            spinner.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            spinner.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            spinner.bottomAnchor.constraint(equalTo: logoutButton.topAnchor)
         ])
     }
 }

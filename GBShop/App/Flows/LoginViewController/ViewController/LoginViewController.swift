@@ -15,6 +15,7 @@ final class LoginViewController: UIViewController {
         }
         return view
     }
+    private var spinner: LoadingScreenWithSpinner?
     
     private let notification = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
@@ -63,19 +64,30 @@ final class LoginViewController: UIViewController {
         
         loginView.loginTextField.text = "Username"
         loginView.passwordTextField.text = "UserPassword"
+        
+        let point = CGPoint(x: loginView.frame.width/2, y: loginView.frame.height/3)
+        spinner = LoadingScreenWithSpinner(view: loginView, center: point)
     }
 }
 
 // MARK: - LoginView Protocol
 //
 extension LoginViewController: LoginViewProtocol {
-    
+
     func showRequestErrorAlert(error: Error) {
         showAlert(message: error.localizedDescription, title: "error")
     }
     
     func showErrorAlert(message: String) {
         showAlert(message: message, title: "Ошибка")
+    }
+    
+    func showLoadingScreen() {
+        spinner?.show()
+    }
+    
+    func hideLoadingScreen() {
+        spinner?.hide()
     }
 }
 

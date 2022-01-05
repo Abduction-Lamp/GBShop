@@ -17,10 +17,21 @@ class MockRegistrationView: UIViewController, RegistrationViewProtocol {
         self.error = "error"
         self.expectation.fulfill()
     }
+    
     var message: String?
     func showErrorAlert(message: String) {
         self.message = message
         self.expectation.fulfill()
+    }
+    
+    var showFlag = false
+    func showLoadingScreen() {
+        showFlag = !showFlag
+    }
+    
+    var hideFlag = false
+    func hideLoadingScreen() {
+        hideFlag = !hideFlag
     }
 }
 
@@ -112,6 +123,9 @@ extension RegistrationViewPresenterTests {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
@@ -134,6 +148,9 @@ extension RegistrationViewPresenterTests {
         
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, "Не верный формат E-mail")
+        
+        XCTAssertFalse(view.showFlag)
+        XCTAssertFalse(view.hideFlag)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)

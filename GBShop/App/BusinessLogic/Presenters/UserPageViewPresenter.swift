@@ -18,6 +18,8 @@ protocol UserPageViewProtocol: AbstractViewController {
                      creditCard: String,
                      login: String,
                      password: String)
+    func showLoadingScreen()
+    func hideLoadingScreen()
 }
 
 protocol UserPageViewPresenterProtocol: AnyObject {
@@ -90,11 +92,15 @@ extension UserPageViewPresenter {
             logging(.funcEnd)
         }
         
+        self.view?.showLoadingScreen()
+        
         let auth = network.makeAuthRequestFactory()
         auth.logout(id: user.id, token: token) { response in
             logging("[\(self) id: \(self.user.id) token: \(self.token)]")
             
             DispatchQueue.main.async {
+                self.view?.hideLoadingScreen()
+                
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
@@ -152,11 +158,15 @@ extension UserPageViewPresenter {
                                          login: login,
                                          password: password) else { return }
         
+        self.view?.showLoadingScreen()
+        
         let userRequest = network.makeUserRequestFactory()
         userRequest.change(user: newUserData, token: token) { response in
             logging("[\(self) user: \(newUserData) token: \(self.token)]")
             
             DispatchQueue.main.async {
+                self.view?.hideLoadingScreen()
+                
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
