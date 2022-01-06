@@ -12,6 +12,7 @@ import Alamofire
 // MARK: - Mock Entity
 //
 class MockCatalogView: UIViewController, CatalogViewProtocol {
+    
     let fake = FakeData()
     var expectation = XCTestExpectation(description: "[ TEST MockCatalogView ]")
     
@@ -28,7 +29,7 @@ class MockCatalogView: UIViewController, CatalogViewProtocol {
     }
     
     var messageSetCatalog: String?
-    func setCatalog(_ catalog: [Section]) {
+    func setCatalog() {
         self.messageSetCatalog = "success"
         self.expectation.fulfill()
     }
@@ -90,44 +91,6 @@ extension CatalogViewPresenterTests {
         wait(for: [self.view.expectation], timeout: 2.0)
         
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, nil)
-        XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
-        
-        XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
-        XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
-        XCTAssertEqual(router.messageRoot, nil)
-    }
-    
-    func testCatalogViewPresenterGetCatalogSeccess() throws {
-        presenter.fetchCatalog(page: 0)
-        wait(for: [self.view.expectation], timeout: 2.0)
-        
-        XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, nil)
-        XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
-        
-        XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
-        XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
-        XCTAssertEqual(router.messageRoot, nil)
-    }
-    
-    func testCatalogViewPresenterGetCatalogError() throws {
-        presenter.fetchCatalog(page: -1)
-        wait(for: [self.view.expectation], timeout: 2.0)
-        
-        XCTAssertEqual(view.error, "error")
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
         XCTAssertEqual(view.messageUpdateCartIndicator, nil)
@@ -220,7 +183,6 @@ extension CatalogViewPresenterTests {
     }
     
     func testGoToProductView() throws {
-        presenter.fetchCatalog(page: 0)
         wait(for: [self.view.expectation], timeout: 2.0)
         presenter.goToProductView(id: 1)
         wait(for: [self.router.expectation], timeout: 2.0)

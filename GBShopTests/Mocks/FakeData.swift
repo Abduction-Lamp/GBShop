@@ -24,6 +24,14 @@ final class FakeData {
                           description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
                           imageURL: nil)
     
+    let product2 = Product(id: 2,
+                          name: "MacBook Pro",
+                          category: "Ноутбук",
+                          price: 250_000,
+                          description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                          imageURL: nil)
+    
+    
     let catalog: [Section] = [
         Section(id: 1, title: "Ноутбук", items: [
             Product(id: 1,

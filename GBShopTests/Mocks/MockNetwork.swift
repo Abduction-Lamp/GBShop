@@ -254,7 +254,8 @@ class MockProductRequest: ProductRequestFactory {
 //
 class MockCartRequestFactory: CartRequestFactory {
     
-    // MARK: Catalog
+    let fake = FakeData()
+    
     let cartResponse = CartResponse(result: 1, message: "success", cart: [FakeData().catalog[0].items[0]])
     lazy var cartResultSuccess: Result<CartResponse, AFError> = .success(cartResponse)
     lazy var cartResultFailure: Result<CartResponse, AFError> = .failure(.explicitlyCancelled)
@@ -277,7 +278,7 @@ class MockCartRequestFactory: CartRequestFactory {
     }
     
     func add(productId: Int, owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
-        if productId > 0 || owner == 0 {
+        if (productId == fake.product.id) && (owner == fake.user.id) && (token == fake.token) {
             completionHandler(cartResponseSuccess)
         } else {
             completionHandler(cartResponseFailure)
@@ -340,7 +341,7 @@ class MockNetworkReviewRequest: ReviewRequestFactory {
     }
     
     func reviewDelete(reviewId: Int, userId: Int, token: String, completionHandler: @escaping (AFDataResponse<ReviewResponse>) -> Void) {
-        if token == FakeData().token {
+        if (token == FakeData().token) && (userId == FakeData().user.id) {
             completionHandler(reviewResponseSuccess)
         } else {
             completionHandler(reviewResponseFailure)
