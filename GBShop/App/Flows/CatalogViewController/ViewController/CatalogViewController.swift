@@ -11,7 +11,6 @@ import Kingfisher
 final class CatalogViewController: UICollectionViewController {
     
     var cellSize = CGSize.zero
-    var catalog: [Section] = []
 
     var presenret: CatalogViewPresenterProtocol?
     
@@ -73,16 +72,18 @@ final class CatalogViewController: UICollectionViewController {
 extension CatalogViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return catalog.count
+        return presenret?.catalog.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return catalog[section].items.count
+        return presenret?.catalog[section].items.count ?? 0
     }
     
     override  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CatalogViewCell.reuseIdentifier,
-                                                            for: indexPath) as? CatalogViewCell else { return UICollectionViewCell() }
+                                                            for: indexPath) as? CatalogViewCell,
+              let catalog = presenret?.catalog else { return UICollectionViewCell() }
+        
         cell.title.text = catalog[indexPath.section].items[indexPath.row].name
         cell.priceLabel.text = makePriceString(price: catalog[indexPath.section].items[indexPath.row].price)
         if let urlString = catalog[indexPath.section].items[indexPath.row].imageURL,
@@ -101,15 +102,17 @@ extension CatalogViewController {
         guard kind == UICollectionView.elementKindSectionHeader,
               let section = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                             withReuseIdentifier: CatalogHeaderView.reuseIdentifier,
-                                                                            for: indexPath) as? CatalogHeaderView else {
-            return UICollectionReusableView()
-        }
+                                                                            for: indexPath) as? CatalogHeaderView,
+              let catalog = presenret?.catalog else { return UICollectionReusableView() }
+        
         section.title.text = catalog[indexPath.section].title
         return section
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenret?.goToProductView(id: catalog[indexPath.section].items[indexPath.row].id)
+        if let id = presenret?.catalog[indexPath.section].items[indexPath.row].id {
+            presenret?.goToProductView(id: id)
+        }
     }
 }
 
@@ -171,8 +174,7 @@ extension CatalogViewController: CatalogViewProtocol {
         showAlert(message: message, title: "Ошибка")
     }
     
-    func setCatalog(_ catalog: [Section]) {
-        self.catalog = catalog
+    func setCatalog() {
         self.collectionView.reloadData()
     }
     

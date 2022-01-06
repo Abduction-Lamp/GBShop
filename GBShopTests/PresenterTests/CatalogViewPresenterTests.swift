@@ -105,7 +105,7 @@ extension CatalogViewPresenterTests {
     }
     
     func testCatalogViewPresenterGetCatalogSeccess() throws {
-        presenter.getCatalog(page: 0)
+        presenter.fetchCatalog(page: 0)
         wait(for: [self.view.expectation], timeout: 2.0)
         
         XCTAssertEqual(view.error, nil)
@@ -124,7 +124,7 @@ extension CatalogViewPresenterTests {
     }
     
     func testCatalogViewPresenterGetCatalogError() throws {
-        presenter.getCatalog(page: -1)
+        presenter.fetchCatalog(page: -1)
         wait(for: [self.view.expectation], timeout: 2.0)
         
         XCTAssertEqual(view.error, "error")
@@ -220,7 +220,7 @@ extension CatalogViewPresenterTests {
     }
     
     func testGoToProductView() throws {
-        presenter.getCatalog(page: 0)
+        presenter.fetchCatalog(page: 0)
         wait(for: [self.view.expectation], timeout: 2.0)
         presenter.goToProductView(id: 1)
         wait(for: [self.router.expectation], timeout: 2.0)

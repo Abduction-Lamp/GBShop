@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Protools
 //
 protocol CatalogViewProtocol: AbstractViewController {
-    func setCatalog(_ catalog: [Section])
+    func setCatalog()
     func updateCartIndicator(count: Int)
     func updateUserDataInPresenter(user: User, token: String)
 }
@@ -18,7 +18,8 @@ protocol CatalogViewProtocol: AbstractViewController {
 protocol CatalogViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     
-    func getCatalog(page: Int)
+    var catalog: [Section] { get set }
+        
     func addToCart(productId: Int)
     func updateUserData(user: User, token: String)
     
@@ -38,7 +39,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
     private var user: User
     private var token: String
     
-    private var catalog: [Section]?
+    var catalog: [Section] = []
 
     // MARK: Initialization
     required init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
@@ -49,13 +50,13 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
         self.user = user
         self.token = token
         
-        getCatalog(page: 0)
+        fetchCatalog(page: 0)
     }
 }
 
 extension CatalogViewPresenter {
     
-    func getCatalog(page: Int) {
+    private func fetchCatalog(page: Int) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -71,7 +72,7 @@ extension CatalogViewPresenter {
                     if result.result == 1 {
                         if let productList = result.catalog {
                             self.catalog = productList
-                            self.view?.setCatalog(productList)
+                            self.view?.setCatalog()
                         }
                     } else {
                         self.view?.showErrorAlert(message: result.message)
@@ -128,8 +129,8 @@ extension CatalogViewPresenter {
     }
     
     func goToProductView(id: Int) {
-        if let productList = catalog?.flatMap({ $0.items }),
-        let product = productList.first(where: { $0.id == id }) {
+        let productList = catalog.flatMap({ $0.items })
+        if let product = productList.first(where: { $0.id == id }) {
             router?.pushProductViewController(user: user, token: token, product: product)
         }
     }
