@@ -10,14 +10,7 @@ import Kingfisher
 
 final class ProductViewController: UITableViewController {
     
-    var productModel: ProductViewModel?
-    var reviewModel: [ReviewViewModel]? {
-        didSet {
-            self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-        }
-    }
     var reviewThisProduct: String = ""
-    
     var presenret: ProductViewPresenterProtocol?
     
     // MARK: - Lifecycle
@@ -29,7 +22,8 @@ final class ProductViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenret?.getReview()
+        self.title = presenret?.product.category
+        presenret?.fetchReview()
     }
     
     // MARK: - Configure Content
@@ -79,13 +73,8 @@ extension ProductViewController: ProductViewProtocol {
         showAlert(message: message)
     }
     
-    func setProduct(model: ProductViewModel) {
-        self.productModel = model
-        self.title = model.category
-    }
-    
-    func setReview(model: [ReviewViewModel]) {
-        reviewModel = model
+    func setReviews() {
+        self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
     }
 }
 
@@ -100,7 +89,7 @@ extension ProductViewController {
         case 0:
             return 4
         case 1:
-            return reviewModel?.count ?? 0
+            return presenret?.numberOfReviews ?? 0
         default:
             return 0
         }
@@ -111,7 +100,7 @@ extension ProductViewController {
         case 0:
             return getHeightForProductSection(tableView, heightForRowAt: indexPath)
         case 1:
-            guard let reviewModel = self.reviewModel else { return .zero }
+            guard let reviewModel = presenret?.review, !reviewModel.isEmpty else { return .zero }
             return reviewModel[indexPath.row].height
         default:
             return .zero
@@ -156,7 +145,7 @@ extension ProductViewController {
     // MARK: - Support methods
     //
     private func getHeightForProductSection(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let productModel = self.productModel else { return .zero }
+        guard let productModel = self.presenret?.product else { return .zero }
         switch indexPath.row {
         case 0:
             return productModel.titleCell.height
@@ -178,7 +167,7 @@ extension ProductViewController {
                     as? ProductViewTitleCell else {
                 return UITableViewCell()
             }
-            cell.titleLabel.text = productModel?.titleCell.value
+            cell.titleLabel.text = presenret?.product.titleCell.value
             return cell
             
         case 1:
@@ -187,7 +176,7 @@ extension ProductViewController {
                 return UITableViewCell()
             }
             cell.image.kf.indicatorType = .activity
-            cell.image.kf.setImage(with: productModel?.imageCell.value)
+            cell.image.kf.setImage(with: presenret?.product.imageCell.value)
             return cell
             
         case 2:
@@ -195,7 +184,7 @@ extension ProductViewController {
                     as? ProductViewDescriptionCell else {
                 return UITableViewCell()
             }
-            cell.textView.text = productModel?.descriptionCell.value
+            cell.textView.text = presenret?.product.descriptionCell.value
             return cell
             
         case 3:
@@ -203,7 +192,7 @@ extension ProductViewController {
                     as? ProductViewPriceCell else {
                 return UITableViewCell()
             }
-            cell.priceButton.setTitle(productModel?.priceCell.value, for: .normal)
+            cell.priceButton.setTitle(presenret?.product.priceCell.value, for: .normal)
             cell.priceButton.addTarget(self, action: #selector(pressedPriceButton), for: .touchUpInside)
             return cell
             
@@ -214,14 +203,15 @@ extension ProductViewController {
     
     private func getCellForReviewSection(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProductViewCommentCell.reuseIdentifier)
-                as? ProductViewCommentCell else {
+                as? ProductViewCommentCell,
+              let reviewModel = presenret?.review else {
             return UITableViewCell()
         }
-        cell.username.text = reviewModel?[indexPath.row].userLogin
-        cell.date.text = reviewModel?[indexPath.row].date
-        cell.comment.text = reviewModel?[indexPath.row].comment
-        if reviewModel?[indexPath.row].userLogin == presenret?.getUserInfo().login {
-            cell.deleteButton.tag = reviewModel?[indexPath.row].id ?? 0
+        cell.username.text = reviewModel[indexPath.row].userLogin
+        cell.date.text = reviewModel[indexPath.row].date
+        cell.comment.text = reviewModel[indexPath.row].comment
+        if reviewModel[indexPath.row].userLogin == presenret?.getUserInfo().login {
+            cell.deleteButton.tag = reviewModel[indexPath.row].id
             cell.deleteButton.isHidden = false
             cell.deleteButton.addTarget(self, action: #selector(pressedDeleteCommentButton), for: .touchUpInside)
         }

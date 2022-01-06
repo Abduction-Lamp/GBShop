@@ -102,7 +102,7 @@ class ProductViewPresenterTests: XCTestCase {
     }
 
     func testCatalogViewPresenterGetReview() {
-        presenter.getReview()
+        presenter.fetchReview()
         wait(for: [self.view.expectation, self.view.expectationSetReview], timeout: 5.0)
         
         XCTAssertEqual(view.error, nil)

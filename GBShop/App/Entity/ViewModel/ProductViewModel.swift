@@ -11,6 +11,7 @@ struct ProductViewModel {
     
     typealias ProductCell<T> = (value: T, height: CGFloat)
     
+    let id: Int
     let category: String
     
     let titleCell: ProductCell<String>
@@ -18,7 +19,7 @@ struct ProductViewModel {
     let descriptionCell: ProductCell<String>
     let priceCell: ProductCell<String>
     
-    init(bounds: CGRect, title: String, category: String, imageURL: URL?, description: String, price: String) {
+    init(bounds: CGRect, id: Int, title: String, category: String, imageURL: URL?, description: String, price: String) {
         
         let padding = DesignConstants.shared.padding
         let imagePadding = DesignConstants.shared.imagePadding
@@ -30,7 +31,8 @@ struct ProductViewModel {
         titleCell.height = ceil(largeFont.lineHeight * 2)
         
         self.category = category
-
+        self.id = id
+        
         let widthCell = bounds.width - cellPadding.left - cellPadding.right
         let width = widthCell - padding.left - padding.right
         
@@ -52,6 +54,7 @@ struct ProductViewModel {
         }
         let priceString = String(format: "%.0f \u{20BD}", product.price)
         self.init(bounds: bounds,
+                  id: product.id,
                   title: product.name,
                   category: product.category,
                   imageURL: imageURL,
@@ -63,9 +66,10 @@ struct ProductViewModel {
 extension ProductViewModel: Equatable {
     
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return  lhs.titleCell.value == rhs.titleCell.value &&
-                lhs.imageCell.value == rhs.imageCell.value &&
-                lhs.descriptionCell.value == rhs.descriptionCell.value &&
-                lhs.priceCell.value == rhs.priceCell.value
+        return lhs.id == rhs.id &&
+               lhs.titleCell.value == rhs.titleCell.value &&
+               lhs.imageCell.value == rhs.imageCell.value &&
+               lhs.descriptionCell.value == rhs.descriptionCell.value &&
+               lhs.priceCell.value == rhs.priceCell.value
     }
 }
