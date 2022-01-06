@@ -38,6 +38,16 @@ final class ProductViewCommentCell: UITableViewCell {
         return text
     }()
     
+    private(set) var deleteButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.setBackgroundImage(UIImage(systemName: "trash"), for: .normal)
+        button.tintColor = .systemRed
+        button.contentMode = .scaleAspectFit
+        button.isHidden = true
+        return button
+    }()
+    
     // MARK: - Initiation
     //
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -46,6 +56,8 @@ final class ProductViewCommentCell: UITableViewCell {
         self.contentView.addSubview(username)
         self.contentView.addSubview(date)
         self.contentView.addSubview(comment)
+        self.contentView.addSubview(deleteButton)
+        
         self.contentView.backgroundColor = .white
         
         self.setNeedsLayout()
@@ -63,13 +75,20 @@ final class ProductViewCommentCell: UITableViewCell {
         let imagePadding = DesignConstants.shared.imagePadding
         let mediumFont = DesignConstants.shared.mediumFont
         let smallFont = DesignConstants.shared.smallFont
+        let widthDeleteButton = ceil(mediumFont.lineHeight)
+        let heightDeleteButton = ceil(mediumFont.lineHeight)
         
         username.frame = CGRect(x: padding.left,
                                 y: padding.top,
-                                width: bounds.width - padding.left - padding.right,
-                                height: ceil(mediumFont.lineHeight))
+                                width: bounds.width - padding.left - padding.right - widthDeleteButton - padding.right,
+                                height: heightDeleteButton)
         
-        date.frame = CGRect(x: imagePadding.left,
+        deleteButton.frame = CGRect(x: username.frame.maxX + padding.left,
+                                    y: padding.top,
+                                    width: widthDeleteButton,
+                                    height: heightDeleteButton)
+        
+        date.frame = CGRect(x: username.frame.origin.x,
                             y: username.frame.maxY + padding.top,
                             width: bounds.width - imagePadding.left - imagePadding.right,
                             height: ceil(smallFont.lineHeight))
@@ -84,6 +103,7 @@ final class ProductViewCommentCell: UITableViewCell {
         username.text = nil
         date.text = nil
         comment.text = nil
+        deleteButton.isHidden = true
         super.prepareForReuse()
     }
 }

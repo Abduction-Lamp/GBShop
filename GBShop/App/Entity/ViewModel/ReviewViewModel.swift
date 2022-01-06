@@ -8,6 +8,7 @@
 import UIKit
 
 struct ReviewViewModel {
+    let id: Int
     let userLogin: String
     let comment: String
     let assessment: Int
@@ -15,7 +16,8 @@ struct ReviewViewModel {
     
     let height: CGFloat
     
-    init(bounds: CGRect, userLogin: String, comment: String, assessment: Int, date: TimeInterval) {
+    init(bounds: CGRect, id: Int, userLogin: String, comment: String, assessment: Int, date: TimeInterval) {
+        self.id = id
         self.userLogin = userLogin
         self.comment = comment
         self.assessment = assessment
@@ -45,6 +47,7 @@ struct ReviewViewModel {
     
     init(bounds: CGRect, review: Review) {
         self.init(bounds: bounds,
+                  id: review.id,
                   userLogin: review.userLogin ?? "",
                   comment: review.comment ?? "",
                   assessment: review.assessment,
@@ -55,7 +58,8 @@ struct ReviewViewModel {
 extension ReviewViewModel: Equatable {
     
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return  lhs.userLogin == rhs.userLogin &&
+        return  lhs.id == rhs.id &&
+                lhs.userLogin == rhs.userLogin &&
                 lhs.comment == rhs.comment &&
                 lhs.assessment == rhs.assessment &&
                 lhs.date == rhs.date &&

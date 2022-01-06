@@ -220,6 +220,11 @@ extension ProductViewController {
         cell.username.text = reviewModel?[indexPath.row].userLogin
         cell.date.text = reviewModel?[indexPath.row].date
         cell.comment.text = reviewModel?[indexPath.row].comment
+        if reviewModel?[indexPath.row].userLogin == presenret?.getUserInfo().login {
+            cell.deleteButton.tag = reviewModel?[indexPath.row].id ?? 0
+            cell.deleteButton.isHidden = false
+            cell.deleteButton.addTarget(self, action: #selector(pressedDeleteCommentButton), for: .touchUpInside)
+        }
         return cell
     }
 }
@@ -236,6 +241,12 @@ extension ProductViewController {
     @objc
     private func pressedAddCommentButton(_ sender: UIButton) {
         presenret?.addReview(reviewThisProduct)
+        reviewThisProduct = ""
+    }
+    
+    @objc
+    private func pressedDeleteCommentButton(_ sender: UIButton) {
+        presenret?.removeReview(id: sender.tag)
         reviewThisProduct = ""
     }
 }

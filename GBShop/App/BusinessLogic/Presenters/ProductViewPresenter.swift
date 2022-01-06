@@ -25,11 +25,13 @@ protocol ProductViewPresenterProtocol: AnyObject {
          token: String,
          product: Product)
     
+    func getUserInfo() -> User
+    
     func goToCart()
     func addToCart()
     func getReview()
     func addReview(_ review: String)
-    func removeReview()
+    func removeReview(id: Int)
 }
 
 final class ProductViewPresenter: ProductViewPresenterProtocol {
@@ -68,6 +70,10 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
 
 extension ProductViewPresenter {
 
+    func getUserInfo() -> User {
+        return user
+    }
+    
     func goToCart() {
         return
     }
@@ -164,8 +170,32 @@ extension ProductViewPresenter {
         }
     }
     
-    func removeReview() {
-        
+    func removeReview(id: Int) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+
+        let request = network.makeReviewRequestFactory()
+        request.reviewDelete(reviewId: id, userId: user.id, token: token) { response in
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1,
+                       let index = self.review?.firstIndex(where: { $0.id == id }),
+                       self.review?.remove(at: index) != nil {
+                        
+                    } else {
+                        self.view?.showErrorAlert(message: result.message)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
     }
 }
 
