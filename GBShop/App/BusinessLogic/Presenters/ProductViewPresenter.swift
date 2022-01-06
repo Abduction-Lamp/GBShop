@@ -26,7 +26,10 @@ protocol ProductViewPresenterProtocol: AnyObject {
          product: Product)
     
     func goToCart()
+    func addToCart()
     func getReview()
+    func addReview(_ review: String)
+    func removeReview()
 }
 
 final class ProductViewPresenter: ProductViewPresenterProtocol {
@@ -41,9 +44,8 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     private var product: Product
     private var review: [Review]? {
         didSet {
-            var model: [ReviewViewModel] = []
-            if let bounds = view?.bounds {
-                review?.forEach({ model.append(ReviewViewModel(bounds: bounds, review: $0)) })
+            if let bounds = view?.bounds,
+               let model = review?.map({ ReviewViewModel(bounds: bounds, review: $0) }) {
                 DispatchQueue.main.async {
                     self.view?.setReview(model: model)
                 }
@@ -95,6 +97,75 @@ extension ProductViewPresenter {
                 }
             }
         }
+    }
+    
+    func addToCart() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let request = network.makeCartRequestFactory()
+        request.add(productId: product.id, owner: user.id, token: token) { response in
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        self.view?.showErrorAlert(message: "В корзину добавлено: \(self.product.name)")
+                    } else {
+                        self.view?.showErrorAlert(message: result.message)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    func addReview(_ review: String) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        guard !review.isEmpty else {
+            return
+        }
+        let newReview = Review(id: 0,
+                               productId: product.id,
+                               productName: product.name,
+                               userId: user.id,
+                               userLogin: user.login,
+                               comment: review,
+                               assessment: 0,
+                               date: Date().timeIntervalSince1970)
+        
+        let request = network.makeReviewRequestFactory()
+        request.reviewAdd(review: newReview, token: token) { response in
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1,
+                       let newReview = result.review?.first {
+                        self.review?.append(newReview)
+                    } else {
+                        self.view?.showErrorAlert(message: result.message)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    func removeReview() {
+        
     }
 }
 

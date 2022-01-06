@@ -16,9 +16,10 @@ final class ProductViewController: UITableViewController {
             self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
         }
     }
+    var reviewThisProduct: String = ""
     
     var presenret: ProductViewPresenterProtocol?
-
+    
     // MARK: - Lifecycle
     //
     override func loadView() {
@@ -36,7 +37,9 @@ final class ProductViewController: UITableViewController {
     private func configurationView() {
         self.view.backgroundColor = .systemGray6
         configurationNavigationBar()
-
+        
+        self.tableView.register(ProductViewCommentFormCell.self, forHeaderFooterViewReuseIdentifier: ProductViewCommentFormCell.reuseIdentifier)
+        
         self.tableView.register(ProductViewTitleCell.self, forCellReuseIdentifier: ProductViewTitleCell.reuseIdentifier)
         self.tableView.register(ProductViewImageCell.self, forCellReuseIdentifier: ProductViewImageCell.reuseIdentifier)
         self.tableView.register(ProductViewDescriptionCell.self, forCellReuseIdentifier: ProductViewDescriptionCell.reuseIdentifier)
@@ -45,6 +48,7 @@ final class ProductViewController: UITableViewController {
         
         self.tableView.separatorStyle = .none
         self.tableView.isEditing = false
+        self.tableView.keyboardDismissMode = .interactive
     }
     
     private func configurationNavigationBar() {
@@ -72,7 +76,7 @@ extension ProductViewController: ProductViewProtocol {
     }
     
     func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
+        showAlert(message: message)
     }
     
     func setProduct(model: ProductViewModel) {
@@ -113,6 +117,15 @@ extension ProductViewController {
             return .zero
         }
     }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        switch section {
+        case 1:
+            return 200
+        default:
+            return .zero
+        }
+    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
@@ -122,6 +135,21 @@ extension ProductViewController {
             return getCellForReviewSection(tableView, cellForRowAt: indexPath)
         default:
             return UITableViewCell()
+        }
+    }
+    
+    override  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        switch section {
+        case 1:
+            guard let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: ProductViewCommentFormCell.reuseIdentifier)
+                    as? ProductViewCommentFormCell else {
+                return nil
+            }
+            footer.form.delegate = self
+            footer.addCommentButton.addTarget(self, action: #selector(pressedAddCommentButton), for: .touchUpInside)
+            return footer
+        default:
+            return nil
         }
     }
     
@@ -176,6 +204,7 @@ extension ProductViewController {
                 return UITableViewCell()
             }
             cell.priceButton.setTitle(productModel?.priceCell.value, for: .normal)
+            cell.priceButton.addTarget(self, action: #selector(pressedPriceButton), for: .touchUpInside)
             return cell
             
         default:
@@ -192,5 +221,30 @@ extension ProductViewController {
         cell.date.text = reviewModel?[indexPath.row].date
         cell.comment.text = reviewModel?[indexPath.row].comment
         return cell
+    }
+}
+
+// MARK: - Extension Button Actions
+//
+extension ProductViewController {
+    
+    @objc
+    private func pressedPriceButton(_ sender: UIButton) {
+        presenret?.addToCart()
+    }
+    
+    @objc
+    private func pressedAddCommentButton(_ sender: UIButton) {
+        presenret?.addReview(reviewThisProduct)
+        reviewThisProduct = ""
+    }
+}
+
+// MARK: - TextView  Delegate
+//
+extension ProductViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        reviewThisProduct = textView.text
     }
 }

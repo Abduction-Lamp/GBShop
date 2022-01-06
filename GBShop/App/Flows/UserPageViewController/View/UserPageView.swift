@@ -98,7 +98,6 @@ final class UserPageView: UIView {
         return spinner
     }()
 
-    
     //
     //
     override func layoutSubviews() {

@@ -26,6 +26,7 @@ final class CatalogViewController: UICollectionViewController {
     //
     private func configurationView() {
         configurationNavigationBar()
+        
         self.collectionView.backgroundColor = .systemGray6
         self.collectionView.register(CatalogHeaderView.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -155,7 +156,7 @@ extension CatalogViewController {
     }
     
     @objc
-    private func pressedBuyButon(_ sender: UIButton, id: Int) {
+    private func pressedBuyButon(_ sender: UIButton) {
         presenret?.addToCart(productId: sender.tag)
     }
 }

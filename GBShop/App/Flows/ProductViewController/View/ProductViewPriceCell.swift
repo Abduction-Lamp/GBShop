@@ -13,7 +13,7 @@ final class ProductViewPriceCell: UITableViewCell {
     private(set) var priceButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemGreen
-        button.setTitleColor(.systemGray6, for: .highlighted)
+        button.setTitleColor(.systemGray2, for: .highlighted)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = DesignConstants.shared.largeFont
         button.layer.cornerRadius = 5
