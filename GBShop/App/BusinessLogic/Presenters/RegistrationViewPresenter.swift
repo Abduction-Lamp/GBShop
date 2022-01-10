@@ -22,7 +22,7 @@ protocol RegistrationViewPresenterProtocol: AnyObject {
 
 // MARK: - RegistrationView Presenter
 //
-class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
+final class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
     
     private var router: RouterProtocol?
     weak var view: RegistrationViewProtocol?

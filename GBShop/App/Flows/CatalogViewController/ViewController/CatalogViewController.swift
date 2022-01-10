@@ -24,6 +24,7 @@ final class CatalogViewController: UICollectionViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     // MARK: - Configure Content
@@ -40,6 +41,7 @@ final class CatalogViewController: UICollectionViewController {
     }
     
     private func configurationNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.title = "Магазин"
         
         self.navigationController?.isNavigationBarHidden = false
@@ -79,6 +81,8 @@ final class CatalogViewController: UICollectionViewController {
     }
 }
 
+// MARK: - Extension UICollectionViewDelegate & UICollectionViewDataSource
+//
 extension CatalogViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -126,6 +130,8 @@ extension CatalogViewController {
     }
 }
 
+// MARK: - Extension UICollectionViewDelegateFlowLayout
+//
 extension CatalogViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,
@@ -179,6 +185,8 @@ extension CatalogViewController {
     }
 }
 
+// MARK: - CatalogView Protocol
+//
 extension CatalogViewController: CatalogViewProtocol {
     
     func showRequestErrorAlert(error: Error) {

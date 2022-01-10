@@ -33,6 +33,7 @@
 		4E410FAC27823122003AAACF /* ReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E410FAB27823122003AAACF /* ReviewViewModel.swift */; };
 		4E44F7B827777323001F8A2A /* CatalogViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44F7B727777323001F8A2A /* CatalogViewCell.swift */; };
 		4E44F7BA27777372001F8A2A /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44F7B927777372001F8A2A /* CatalogViewController.swift */; };
+		4E695129278CC91500AA7BCB /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E695128278CC91500AA7BCB /* Font.swift */; };
 		4E6A53F72778513400C8137A /* CatalogViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6A53F62778513400C8137A /* CatalogViewPresenter.swift */; };
 		4E6A53F92778720600C8137A /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6A53F82778720600C8137A /* Section.swift */; };
 		4E6A53FB2778A53300C8137A /* SectionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6A53FA2778A53300C8137A /* SectionResponse.swift */; };
@@ -167,6 +168,7 @@
 		4E410FAB27823122003AAACF /* ReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewModel.swift; sourceTree = "<group>"; };
 		4E44F7B727777323001F8A2A /* CatalogViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewCell.swift; sourceTree = "<group>"; };
 		4E44F7B927777372001F8A2A /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
+		4E695128278CC91500AA7BCB /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		4E6A53F62778513400C8137A /* CatalogViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewPresenter.swift; sourceTree = "<group>"; };
 		4E6A53F82778720600C8137A /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		4E6A53FA2778A53300C8137A /* SectionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionResponse.swift; sourceTree = "<group>"; };
@@ -748,6 +750,7 @@
 			children = (
 				4EC02F5027711E9600EACE3D /* Color.swift */,
 				4EC1548927726E6300B30078 /* String.swift */,
+				4E695128278CC91500AA7BCB /* Font.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1164,6 +1167,7 @@
 				4EC02F362770D54800EACE3D /* LoginView.swift in Sources */,
 				4E859D4A275667A600A7F2F1 /* AuthRequest.swift in Sources */,
 				4E9C3E6C277C93AC0056A275 /* DesignConstants.swift in Sources */,
+				4E695129278CC91500AA7BCB /* Font.swift in Sources */,
 				4E6A53F72778513400C8137A /* CatalogViewPresenter.swift in Sources */,
 				4E6A53FD2779197C00C8137A /* CatalogHeaderView.swift in Sources */,
 				4E714F7D27898DB100E47C47 /* CartViewPresenter.swift in Sources */,

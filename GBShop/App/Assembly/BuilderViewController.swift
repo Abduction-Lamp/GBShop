@@ -7,7 +7,10 @@
 
 import UIKit
 
+// MARK: - Protocol
+//
 protocol BuilderProtocol: AnyObject {
+    
     func makeLoginViewController(router: RouterProtocol) -> UIViewController & LoginViewProtocol
     func makeRegistrationViewController(router: RouterProtocol) -> UIViewController & RegistrationViewProtocol
     func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController & UserPageViewProtocol
@@ -23,7 +26,9 @@ protocol BuilderProtocol: AnyObject {
                                 cart: [Product]) -> UITableViewController & CartViewProtocol
 }
 
-class BuilderViewController: BuilderProtocol {
+// MARK: - Assembly
+//
+final class BuilderViewController: BuilderProtocol {
     
     func makeLoginViewController(router: RouterProtocol) -> UIViewController & LoginViewProtocol {
         logging(.funcStart)

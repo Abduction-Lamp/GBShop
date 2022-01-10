@@ -39,7 +39,7 @@ protocol UserPageViewPresenterProtocol: AnyObject {
 
 // MARK: - UserPageView Presenter
 //
-class UserPageViewPresenter: UserPageViewPresenterProtocol {
+final class UserPageViewPresenter: UserPageViewPresenterProtocol {
     private var router: RouterProtocol?
     private weak var view: UserPageViewProtocol?
     private let network: RequestFactoryProtocol
@@ -95,7 +95,8 @@ extension UserPageViewPresenter {
         self.view?.showLoadingScreen()
         
         let auth = network.makeAuthRequestFactory()
-        auth.logout(id: user.id, token: token) { response in
+        auth.logout(id: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
             logging("[\(self) id: \(self.user.id) token: \(self.token)]")
             
             DispatchQueue.main.async {
@@ -161,7 +162,8 @@ extension UserPageViewPresenter {
         self.view?.showLoadingScreen()
         
         let userRequest = network.makeUserRequestFactory()
-        userRequest.change(user: newUserData, token: token) { response in
+        userRequest.change(user: newUserData, token: token) { [weak self] response in
+            guard let self = self else { return }
             logging("[\(self) user: \(newUserData) token: \(self.token)]")
             
             DispatchQueue.main.async {

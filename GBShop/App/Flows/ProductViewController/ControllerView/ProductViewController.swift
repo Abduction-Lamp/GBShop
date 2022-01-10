@@ -21,14 +21,12 @@ final class ProductViewController: UITableViewController {
         super.loadView()
         configurationView()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.title = presenret?.product.category
-    }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+        self.title = presenret?.product.category
         updateCartIndicator(count: presenret?.getCartCoutnItems() ?? 0)
         presenret?.fetchReview()
     }
@@ -53,18 +51,19 @@ final class ProductViewController: UITableViewController {
     }
     
     private func configurationNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(true, animated: false)
     
         let cartIcon = UIImage(systemName: "cart")
-        let chevronLeftIcom = UIImage(systemName: "chevron.left")
+        let chevronLeftIcon = UIImage(systemName: "chevron.left")
         
         rightBarButton.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
         rightBarButton.setImage(cartIcon, for: .normal)
         rightBarButton.contentMode = .scaleToFill
         rightBarButton.addTarget(self, action: #selector(pressedCartButton), for: .touchUpInside)
         
-        let back = UIBarButtonItem(image: chevronLeftIcom, style: .plain, target: self, action: #selector(pressedBackButton))
+        let back = UIBarButtonItem(image: chevronLeftIcon, style: .plain, target: self, action: #selector(pressedBackButton))
         let right = UIBarButtonItem(customView: rightBarButton)
         
         self.navigationItem.leftBarButtonItem = back
@@ -72,29 +71,8 @@ final class ProductViewController: UITableViewController {
     }
 }
 
-extension ProductViewController: ProductViewProtocol {
-    
-    var bounds: CGRect {
-        return UIScreen.main.bounds
-    }
-    
-    func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
-    }
-    
-    func showErrorAlert(message: String) {
-        showAlert(message: message)
-    }
-    
-    func setReviews() {
-        self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-    }
-    
-    func updateCartIndicator(count: Int) {
-        rightBarButton.update(badgeCount: count)
-    }
-}
-
+// MARK: - Extension UITableViewDelegate & UITableViewDataSource
+//
 extension ProductViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -236,6 +214,15 @@ extension ProductViewController {
     }
 }
 
+// MARK: - TextView Delegate
+//
+extension ProductViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        reviewThisProduct = textView.text
+    }
+}
+
 // MARK: - Extension Button Actions
 //
 extension ProductViewController {
@@ -268,11 +255,27 @@ extension ProductViewController {
     }
 }
 
-// MARK: - TextView  Delegate
+// MARK: - ProductView Protocol
 //
-extension ProductViewController: UITextViewDelegate {
+extension ProductViewController: ProductViewProtocol {
     
-    func textViewDidChange(_ textView: UITextView) {
-        reviewThisProduct = textView.text
+    var bounds: CGRect {
+        return UIScreen.main.bounds
+    }
+    
+    func showRequestErrorAlert(error: Error) {
+        showAlert(message: error.localizedDescription, title: "error")
+    }
+    
+    func showErrorAlert(message: String) {
+        showAlert(message: message)
+    }
+    
+    func setReviews() {
+        self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+    }
+    
+    func updateCartIndicator(count: Int) {
+        rightBarButton.update(badgeCount: count)
     }
 }

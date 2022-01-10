@@ -30,7 +30,7 @@ protocol RouterProtocol: AbstractRouterProtocol {
 
 // MARK: - Router
 //
-class Router: RouterProtocol {
+final class Router: RouterProtocol {
     var navigation: UINavigationController?
     var builder: BuilderProtocol?
     

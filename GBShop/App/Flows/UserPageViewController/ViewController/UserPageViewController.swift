@@ -43,7 +43,6 @@ final class UserPageViewController: UIViewController {
     //
     override func loadView() {
         super.loadView()
-        
         configurationView()
     }
     
@@ -52,6 +51,8 @@ final class UserPageViewController: UIViewController {
         
         notifiction.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notifiction.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -75,6 +76,7 @@ final class UserPageViewController: UIViewController {
     }
     
     private func configurationNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.leftBarButtonItem = buckBarButtonItem
@@ -84,42 +86,14 @@ final class UserPageViewController: UIViewController {
     }
 }
 
-// MARK: - Extension UserPageView Protocol
+// MARK: - TextField Delegate
 //
-extension UserPageViewController: UserPageViewProtocol {
-        
-    func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
-    }
+extension UserPageViewController: UITextFieldDelegate {
     
-    func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
-    }
-    
-    func setUserData(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String) {
-        userPageView.firstNameTextField.text = firstName
-        userPageView.lastNameTextField.text = lastName
-        userPageView.genderSegmentControl.selectedSegmentIndex = gender
-        userPageView.emailTextField.text = email
-        userPageView.creditCardTextField.text = creditCard
-        userPageView.loginTextField.text = login
-        userPageView.passwordTextField.text = password
-    }
-    
-    func didChangeUserData() {
-        self.navigationItem.rightBarButtonItem = changeBarButtonItem
-        self.navigationItem.leftBarButtonItem = buckBarButtonItem
-
-        isEditingUserData = false
-        enabledUserDataView(isEnable: isEditingUserData)
-    }
-    
-    func showLoadingScreen() {
-        userPageView.spinner.startAnimating()
-    }
-    
-    func hideLoadingScreen() {
-        userPageView.spinner.stopAnimating()
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField === userPageView.creditCardTextField,
+              let chars = string.cString(using: .utf8) else { return false }
+        return userPageView.creditCardTextField.formatter(chars)
     }
 }
 
@@ -225,13 +199,41 @@ extension UserPageViewController {
     }
 }
 
-// MARK: - TextField Delegate
+// MARK: - UserPageView Protocol
 //
-extension UserPageViewController: UITextFieldDelegate {
+extension UserPageViewController: UserPageViewProtocol {
+        
+    func showRequestErrorAlert(error: Error) {
+        showAlert(message: error.localizedDescription, title: "error")
+    }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard textField === userPageView.creditCardTextField,
-              let chars = string.cString(using: .utf8) else { return false }
-        return userPageView.creditCardTextField.formatter(chars)
+    func showErrorAlert(message: String) {
+        showAlert(message: message, title: "Ошибка")
+    }
+    
+    func setUserData(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String) {
+        userPageView.firstNameTextField.text = firstName
+        userPageView.lastNameTextField.text = lastName
+        userPageView.genderSegmentControl.selectedSegmentIndex = gender
+        userPageView.emailTextField.text = email
+        userPageView.creditCardTextField.text = creditCard
+        userPageView.loginTextField.text = login
+        userPageView.passwordTextField.text = password
+    }
+    
+    func didChangeUserData() {
+        self.navigationItem.rightBarButtonItem = changeBarButtonItem
+        self.navigationItem.leftBarButtonItem = buckBarButtonItem
+
+        isEditingUserData = false
+        enabledUserDataView(isEnable: isEditingUserData)
+    }
+    
+    func showLoadingScreen() {
+        userPageView.spinner.startAnimating()
+    }
+    
+    func hideLoadingScreen() {
+        userPageView.spinner.stopAnimating()
     }
 }

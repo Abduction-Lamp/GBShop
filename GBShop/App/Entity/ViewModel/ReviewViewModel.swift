@@ -39,8 +39,8 @@ struct ReviewViewModel {
         let width = widthCell - imagePadding.left - imagePadding.right
         
         let commentBlockSize = comment.calculationTextBlockSize(width: width, font: mediumFont)
-        let heightTitleReviewComponent: CGFloat = padding.top + ceil(mediumFont.lineHeight)
-        let heightDateReviewComponent: CGFloat = padding.top + ceil(smallFont.lineHeight)
+        let heightTitleReviewComponent: CGFloat = padding.top + mediumFont.getFontHeight()
+        let heightDateReviewComponent: CGFloat = padding.top + smallFont.getFontHeight()
         let heightCommentReviewComponent: CGFloat = imagePadding.top + commentBlockSize.height + imagePadding.bottom
         height = heightTitleReviewComponent + heightDateReviewComponent + heightCommentReviewComponent
     }

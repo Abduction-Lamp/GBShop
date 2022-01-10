@@ -26,17 +26,13 @@ final class LoginViewController: UIViewController {
     //
     override func loadView() {
         super.loadView()
-        
         configurationView()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         notification.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notification.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -51,9 +47,10 @@ final class LoginViewController: UIViewController {
     // MARK: - Configure Content
     //
     private func configurationView() {
-        self.view = LoginView(frame: self.view.frame)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.isNavigationBarHidden = true
-        
+        self.view = LoginView(frame: self.view.frame)
+
         loginView.scrollView.addGestureRecognizer(keyboardHideGesture)
         
         loginView.loginTextField.delegate = self
@@ -70,28 +67,44 @@ final class LoginViewController: UIViewController {
     }
 }
 
-// MARK: - LoginView Protocol
+// MARK: - Extension TextField Delegate
 //
-extension LoginViewController: LoginViewProtocol {
-
-    func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.placeholder = ""
+        return true
     }
     
-    func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
-    }
-    
-    func showLoadingScreen() {
-        spinner?.show()
-    }
-    
-    func hideLoadingScreen() {
-        spinner?.hide()
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField === loginView.loginTextField {
+            textField.placeholder = "Логин"
+        } else {
+            textField.placeholder = "Пароль"
+        }
     }
 }
 
-// MARK: - Keyboard Actions
+// MARK: - Extension Button Actions
+//
+extension LoginViewController {
+    
+    @objc
+    private func pressedLoginButton(_ sender: UIButton) {
+        guard let login = loginView.loginTextField.text,
+              let password = loginView.passwordTextField.text,
+              !login.isEmpty,
+              !password.isEmpty else { return }
+        presenret?.auth(login: login, password: password)
+    }
+    
+    @objc
+    private func pressedRegistrationButton(_ sender: UIButton) {
+        presenret?.goToRegistrationView()
+    }
+}
+
+// MARK: - Extension Keyboard Actions
 //
 extension LoginViewController {
     
@@ -124,39 +137,23 @@ extension LoginViewController {
     }
 }
 
-// MARK: - TextField Delegate
+// MARK: - LoginView Protocol
 //
-extension LoginViewController: UITextFieldDelegate {
-    
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.placeholder = ""
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField === loginView.loginTextField {
-            textField.placeholder = "Логин"
-        } else {
-            textField.placeholder = "Пароль"
-        }
-    }
-}
+extension LoginViewController: LoginViewProtocol {
 
-// MARK: - Button Actions
-//
-extension LoginViewController {
-    
-    @objc
-    private func pressedLoginButton(_ sender: UIButton) {
-        guard let login = loginView.loginTextField.text,
-              let password = loginView.passwordTextField.text,
-              !login.isEmpty,
-              !password.isEmpty else { return }
-        presenret?.auth(login: login, password: password)
+    func showRequestErrorAlert(error: Error) {
+        showAlert(message: error.localizedDescription, title: "error")
     }
     
-    @objc
-    private func pressedRegistrationButton(_ sender: UIButton) {
-        presenret?.goToRegistrationView()
+    func showErrorAlert(message: String) {
+        showAlert(message: message, title: "Ошибка")
+    }
+    
+    func showLoadingScreen() {
+        spinner?.show()
+    }
+    
+    func hideLoadingScreen() {
+        spinner?.hide()
     }
 }

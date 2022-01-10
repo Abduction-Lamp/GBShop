@@ -48,6 +48,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
 
     // MARK: Initialization
     required init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
+        
         self.router = router
         self.view = view
         self.network = network
@@ -69,8 +70,9 @@ extension CatalogViewPresenter {
         }
         
         let request = network.makeProductRequestFactory()
-        request.getCatalog(page: page) { response in
-        
+        request.getCatalog(page: page) { [weak self] response in
+            guard let self = self else { return }
+            
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
@@ -130,7 +132,8 @@ extension CatalogViewPresenter {
         }
         
         let request = network.makeCartRequestFactory()
-        request.add(productId: productId, owner: user.id, token: token) { response in
+        request.add(productId: productId, owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch response.result {

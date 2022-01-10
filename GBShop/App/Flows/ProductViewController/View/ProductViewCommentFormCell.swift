@@ -48,7 +48,7 @@ final class ProductViewCommentFormCell: UITableViewHeaderFooterView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        configureContent()
+        makeLayoutByFrame()
     }
 
     override func prepareForReuse() {
@@ -58,7 +58,7 @@ final class ProductViewCommentFormCell: UITableViewHeaderFooterView {
 
     // MARK: - Configure Content
     //
-    public func configureContent() {
+    private func makeLayoutByFrame() {
         let padding = DesignConstants.shared.imagePadding
         let buttonSize = CGSize(width: 200, height: 40)
         let bounds = self.contentView.bounds

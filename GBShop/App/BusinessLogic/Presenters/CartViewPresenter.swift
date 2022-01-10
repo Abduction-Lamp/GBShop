@@ -20,6 +20,7 @@ protocol CartViewPresenterProtocol: AnyObject {
          cart: [Product])
     
     var cart: [Product] { get set }
+    var totalPrice: String { get }
     
     func fetchCart()
     func removeFromCart(index: Int)
@@ -39,6 +40,11 @@ final class CartViewPresenter: CartViewPresenterProtocol {
     private let token: String
     
     var cart: [Product]
+    var totalPrice: String {
+        var total = Decimal(0)
+        cart.forEach { total += Decimal($0.price) }
+        return "\(total) \u{20BD}"
+    }
 
     init(router: RouterProtocol,
          view: CartViewProtocol,
@@ -46,6 +52,7 @@ final class CartViewPresenter: CartViewPresenterProtocol {
          user: User,
          token: String,
          cart: [Product]) {
+        
         self.router = router
         self.view = view
         self.network = network

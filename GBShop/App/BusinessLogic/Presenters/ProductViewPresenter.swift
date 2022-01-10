@@ -69,11 +69,14 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
          token: String,
          product: Product,
          cart: [Product]) {
+        
         self.router = router
         self.view = view
         self.network = network
+        
         self.user = user
         self.token = token
+        
         self.product = ProductViewModel(bounds: view.bounds, product: product)
         self.cart = cart
     }
@@ -109,7 +112,8 @@ extension ProductViewPresenter {
         }
         
         let request = network.makeCartRequestFactory()
-        request.add(productId: product.id, owner: user.id, token: token) { response in
+        request.add(productId: product.id, owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch response.result {
@@ -142,6 +146,7 @@ extension ProductViewPresenter {
         let request = network.makeReviewRequestFactory()
         request.reviewByProduct(id: product.id) { [weak self] response in
             guard let self = self else { return }
+            
             switch response.result {
             case .success(let result):
                 logging("[\(self) result message: \(result.message)]")
@@ -187,7 +192,8 @@ extension ProductViewPresenter {
                                date: Date().timeIntervalSince1970)
         
         let request = network.makeReviewRequestFactory()
-        request.reviewAdd(review: newReview, token: token) { response in
+        request.reviewAdd(review: newReview, token: token) { [weak self] response in
+            guard let self = self else { return }
             
             switch response.result {
             case .success(let result):
@@ -210,7 +216,6 @@ extension ProductViewPresenter {
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
-            
         }
     }
     
@@ -221,7 +226,8 @@ extension ProductViewPresenter {
         }
         
         let request = network.makeReviewRequestFactory()
-        request.reviewDelete(reviewId: id, userId: user.id, token: token) { response in
+        request.reviewDelete(reviewId: id, userId: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
             
             switch response.result {
             case .success(let result):

@@ -23,7 +23,7 @@ protocol LoginViewPresenterProtocol: AnyObject {
 
 // MARK: - LoginView Presenter
 //
-class LoginViewPresenter: LoginViewPresenterProtocol {
+final class LoginViewPresenter: LoginViewPresenterProtocol {
     
     private var router: RouterProtocol?
     private weak var view: LoginViewProtocol?

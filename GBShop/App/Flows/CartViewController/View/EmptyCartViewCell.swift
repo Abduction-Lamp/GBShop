@@ -36,6 +36,5 @@ final class EmptyCartViewCell: UITableViewHeaderFooterView {
     override func layoutSubviews() {
         super.layoutSubviews()
         titleLabel.frame = contentView.bounds
-        titleLabel.center = contentView.center
     }
 }

@@ -38,7 +38,7 @@ final class ProductViewTitleCell: UITableViewCell {
         
         let padding = DesignConstants.shared.padding
         let bounds = self.contentView.bounds
-        let fontLineHeight: CGFloat = ceil(DesignConstants.shared.largeFont.lineHeight)
+        let fontLineHeight: CGFloat = DesignConstants.shared.largeFont.getFontHeight()
         
         titleLabel.frame = CGRect(x: padding.left,
                                   y: bounds.maxY - padding.bottom - fontLineHeight,

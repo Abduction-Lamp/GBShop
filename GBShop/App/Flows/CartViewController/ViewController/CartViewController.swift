@@ -20,6 +20,11 @@ final class CartViewController: UITableViewController {
         configurationView()
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = presenret?.totalPrice
+    }
+    
     // MARK: - Configure Content
     //
     private func configurationView() {
@@ -37,6 +42,7 @@ final class CartViewController: UITableViewController {
     }
     
     private func configurationNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(true, animated: false)
     
@@ -47,29 +53,8 @@ final class CartViewController: UITableViewController {
     }
 }
 
-extension CartViewController: CartViewProtocol {
-    
-    func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
-    }
-    
-    func showErrorAlert(message: String) {
-        showAlert(message: message)
-    }
-    
-    func updataCart() {
-        self.tableView.reloadData()
-    }
-}
-
-extension CartViewController {
-    
-    @objc
-    private func pressedBackButton(_ sender: UIButton) {
-        presenret?.backTo()
-    }
-}
-
+// MARK: - Extension UITableViewDelegate & UITableViewDataSource
+//
 extension CartViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -127,5 +112,33 @@ extension CartViewController {
         var priceString = String(format: "%.0f", price)
         priceString += " \u{20BD}"
         return priceString
+    }
+}
+
+// MARK: - Extension Button Actions
+//
+extension CartViewController {
+    
+    @objc
+    private func pressedBackButton(_ sender: UIButton) {
+        presenret?.backTo()
+    }
+}
+
+// MARK: - CartView Protocol
+//
+extension CartViewController: CartViewProtocol {
+    
+    func showRequestErrorAlert(error: Error) {
+        showAlert(message: error.localizedDescription, title: "error")
+    }
+    
+    func showErrorAlert(message: String) {
+        showAlert(message: message)
+    }
+    
+    func updataCart() {
+        self.tableView.reloadData()
+        self.title = presenret?.totalPrice
     }
 }

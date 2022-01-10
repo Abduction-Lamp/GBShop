@@ -73,12 +73,12 @@ final class CartViewCell: UITableViewCell {
         titleLabel.frame = CGRect(x: image.frame.maxX + padding.left,
                                   y: padding.top,
                                   width: bounds.width - image.frame.width - padding.left - padding.left - padding.right,
-                                  height: ceil(DesignConstants.shared.largeFont.lineHeight))
+                                  height: DesignConstants.shared.largeFont.getFontHeight())
         
         priceLabel.frame = CGRect(x: image.frame.maxX + padding.left,
                                   y: titleLabel.frame.maxY + DesignConstants.shared.padding.top,
                                   width: bounds.width - image.frame.width - padding.left - padding.left - padding.right,
-                                  height: ceil(DesignConstants.shared.mediumFont.lineHeight))
+                                  height: DesignConstants.shared.mediumFont.getFontHeight())
     }
     
     override func prepareForReuse() {
