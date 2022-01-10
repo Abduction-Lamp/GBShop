@@ -10,7 +10,9 @@ import Kingfisher
 
 final class ProductViewController: UITableViewController {
     
-    var reviewThisProduct: String = ""
+    private var reviewThisProduct: String = ""
+    private var rightBarButton = ButtonWithBadge(type: .system)
+    
     var presenret: ProductViewPresenterProtocol?
     
     // MARK: - Lifecycle
@@ -23,6 +25,11 @@ final class ProductViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = presenret?.product.category
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presenret?.getCartCountItems()
         presenret?.fetchReview()
     }
     
@@ -32,27 +39,31 @@ final class ProductViewController: UITableViewController {
         self.view.backgroundColor = .systemGray6
         configurationNavigationBar()
         
-        self.tableView.register(ProductViewCommentFormCell.self, forHeaderFooterViewReuseIdentifier: ProductViewCommentFormCell.reuseIdentifier)
+        tableView.register(ProductViewCommentFormCell.self, forHeaderFooterViewReuseIdentifier: ProductViewCommentFormCell.reuseIdentifier)
         
-        self.tableView.register(ProductViewTitleCell.self, forCellReuseIdentifier: ProductViewTitleCell.reuseIdentifier)
-        self.tableView.register(ProductViewImageCell.self, forCellReuseIdentifier: ProductViewImageCell.reuseIdentifier)
-        self.tableView.register(ProductViewDescriptionCell.self, forCellReuseIdentifier: ProductViewDescriptionCell.reuseIdentifier)
-        self.tableView.register(ProductViewPriceCell.self, forCellReuseIdentifier: ProductViewPriceCell.reuseIdentifier)
-        self.tableView.register(ProductViewCommentCell.self, forCellReuseIdentifier: ProductViewCommentCell.reuseIdentifier)
+        tableView.register(ProductViewTitleCell.self, forCellReuseIdentifier: ProductViewTitleCell.reuseIdentifier)
+        tableView.register(ProductViewImageCell.self, forCellReuseIdentifier: ProductViewImageCell.reuseIdentifier)
+        tableView.register(ProductViewDescriptionCell.self, forCellReuseIdentifier: ProductViewDescriptionCell.reuseIdentifier)
+        tableView.register(ProductViewPriceCell.self, forCellReuseIdentifier: ProductViewPriceCell.reuseIdentifier)
+        tableView.register(ProductViewCommentCell.self, forCellReuseIdentifier: ProductViewCommentCell.reuseIdentifier)
         
-        self.tableView.separatorStyle = .none
-        self.tableView.isEditing = false
-        self.tableView.keyboardDismissMode = .interactive
+        tableView.separatorStyle = .none
+        tableView.isEditing = false
+        tableView.keyboardDismissMode = .interactive
     }
     
     private func configurationNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(false, animated: false)
-        
+    
         let cartIcon = UIImage(systemName: "cart")
+        rightBarButton.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
+        rightBarButton.setImage(cartIcon, for: .normal)
+        rightBarButton.contentMode = .scaleToFill
+        rightBarButton.addTarget(self, action: #selector(pressedCartButton), for: .touchUpInside)
         
+        let right = UIBarButtonItem(customView: rightBarButton)
         let back = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        let right = UIBarButtonItem(image: cartIcon, style: .plain, target: self, action: nil)
         
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = back
         self.navigationItem.rightBarButtonItem = right
@@ -76,6 +87,10 @@ extension ProductViewController: ProductViewProtocol {
     func setReviews() {
         self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
     }
+    
+    func updateCartIndicator(count: Int) {
+        rightBarButton.update(badgeCount: count)
+    }
 }
 
 extension ProductViewController {
@@ -89,7 +104,7 @@ extension ProductViewController {
         case 0:
             return 4
         case 1:
-            return presenret?.numberOfReviews ?? 0
+            return presenret?.review.count ?? 0
         default:
             return 0
         }
@@ -222,6 +237,11 @@ extension ProductViewController {
 // MARK: - Extension Button Actions
 //
 extension ProductViewController {
+    
+    @objc
+    private func pressedCartButton(_ sender: UIButton) {
+        presenret?.goToCartView()
+    }
     
     @objc
     private func pressedPriceButton(_ sender: UIButton) {

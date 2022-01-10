@@ -12,7 +12,7 @@ struct Cart {
     var cart: [Product] = []
     var totalPrice: Decimal {
         var total = Decimal(0)
-        cart.forEach { item in total += Decimal(item.price) }
+        cart.forEach { total += Decimal($0.price) }
         return total
     }
     

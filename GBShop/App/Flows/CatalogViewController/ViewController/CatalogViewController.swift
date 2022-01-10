@@ -10,7 +10,8 @@ import Kingfisher
 
 final class CatalogViewController: UICollectionViewController {
     
-    var cellSize = CGSize.zero
+    private var cellSize = CGSize.zero
+    private var rightBarButton = ButtonWithBadge(type: .system)
 
     var presenret: CatalogViewPresenterProtocol?
     
@@ -19,6 +20,11 @@ final class CatalogViewController: UICollectionViewController {
     override func loadView() {
         super.loadView()
         configurationView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presenret?.getCartCountItems()
     }
     
     // MARK: - Configure Content
@@ -42,9 +48,14 @@ final class CatalogViewController: UICollectionViewController {
         
         let personIcon = UIImage(systemName: "person")
         let cartIcon = UIImage(systemName: "cart")
+                
+        rightBarButton.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
+        rightBarButton.setImage(cartIcon, for: .normal)
+        rightBarButton.contentMode = .scaleToFill
+        rightBarButton.addTarget(self, action: #selector(pressedCartButton), for: .touchUpInside)
         
         let left = UIBarButtonItem(image: personIcon, style: .plain, target: self, action: #selector(pressedUserPageButton))
-        let right = UIBarButtonItem(image: cartIcon, style: .plain, target: self, action: nil)
+        let right = UIBarButtonItem(customView: rightBarButton)
         
         self.navigationItem.leftBarButtonItem = left
         self.navigationItem.rightBarButtonItem = right
@@ -154,6 +165,11 @@ extension CatalogViewController: UICollectionViewDelegateFlowLayout {
 extension CatalogViewController {
     
     @objc
+    private func pressedCartButton(_ sender: UIButton) {
+        presenret?.goToCartView()
+    }
+    
+    @objc
     private func pressedUserPageButton(_ sender: UIBarButtonItem) {
         presenret?.goToUserPageView()
     }
@@ -179,7 +195,7 @@ extension CatalogViewController: CatalogViewProtocol {
     }
     
     func updateCartIndicator(count: Int) {
-        (count < 1) ? (self.title = "Магазин") : (self.title = "В корзине [\(count)]")
+        rightBarButton.update(badgeCount: count)
     }
     
     func updateUserDataInPresenter(user: User, token: String) {

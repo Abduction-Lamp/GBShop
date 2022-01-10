@@ -19,8 +19,9 @@ protocol CatalogViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     
     var catalog: [Section] { get set }
-        
+    
     func addToCart(productId: Int)
+    func getCartCountItems()
     func updateUserData(user: User, token: String)
     
     func goToUserPageView()
@@ -40,7 +41,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
     private var token: String
     
     var catalog: [Section] = []
-
+    
     // MARK: Initialization
     required init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
         self.router = router
@@ -85,6 +86,41 @@ extension CatalogViewPresenter {
         }
     }
     
+    private func fetchCart() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let request = network.makeCartRequestFactory()
+        request.cart(owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        if let count = result.cart?.count {
+                            self.view?.updateCartIndicator(count: count)
+                        } else {
+                            self.view?.updateCartIndicator(count: 0)
+                        }
+                    } else {
+                        self.view?.updateCartIndicator(count: 0)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    func getCartCountItems() {
+        fetchCart()
+    }
+    
     func addToCart(productId: Int) {
         logging(.funcStart)
         defer {
@@ -121,11 +157,11 @@ extension CatalogViewPresenter {
     }
     
     func goToUserPageView() {
-        self.router?.pushUserPageViewController(user: user, token: token)
+        router?.pushUserPageViewController(user: user, token: token)
     }
     
     func goToCartView() {
-        return
+        router?.pushCartViewController(user: user, token: token)
     }
     
     func goToProductView(id: Int) {

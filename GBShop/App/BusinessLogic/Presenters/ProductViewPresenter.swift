@@ -14,6 +14,7 @@ protocol ProductViewProtocol: AbstractViewController {
     var bounds: CGRect { get }
     
     func setReviews()
+    func updateCartIndicator(count: Int)
 }
 
 protocol ProductViewPresenterProtocol: AnyObject {
@@ -26,11 +27,11 @@ protocol ProductViewPresenterProtocol: AnyObject {
     
     var product: ProductViewModel { get set }
     var review: [ReviewViewModel] { get set }
-    var numberOfReviews: Int { get }
     
     func getUserInfo() -> User
+    func getCartCountItems()
     
-    func goToCart()
+    func goToCartView()
     func addToCart()
     
     func fetchReview()
@@ -51,7 +52,6 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     
     var product: ProductViewModel
     var review: [ReviewViewModel] = []
-    var numberOfReviews: Int { review.count }
 
     // MARK: Initialization
     init(router: RouterProtocol, view: ProductViewProtocol, network: RequestFactoryProtocol, user: User, token: String, product: Product) {
@@ -70,8 +70,8 @@ extension ProductViewPresenter {
         return user
     }
     
-    func goToCart() {
-        return
+    func goToCartView() {
+        router?.pushCartViewController(user: user, token: token)
     }
     
     func addToCart() {
@@ -88,7 +88,11 @@ extension ProductViewPresenter {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        self.view?.showErrorAlert(message: "В корзину добавлено: \(self.product.titleCell.value)")
+                        if let count = result.cart?.count {
+                            self.view?.updateCartIndicator(count: count)
+                        } else {
+                            self.view?.updateCartIndicator(count: 0)
+                        }
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }
@@ -100,6 +104,41 @@ extension ProductViewPresenter {
         }
     }
     
+    private func fetchCart() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let request = network.makeCartRequestFactory()
+        request.cart(owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        if let count = result.cart?.count {
+                            self.view?.updateCartIndicator(count: count)
+                        } else {
+                            self.view?.updateCartIndicator(count: 0)
+                        }
+                    } else {
+                        self.view?.updateCartIndicator(count: 0)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    func getCartCountItems() {
+        fetchCart()
+    }
+  
     func fetchReview() {
         logging(.funcStart)
         defer {

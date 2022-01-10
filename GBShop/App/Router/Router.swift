@@ -21,6 +21,7 @@ protocol RouterProtocol: AbstractRouterProtocol {
     func pushCatalogViewController(user: User, token: String)
     func popToCatalogViewController(user: User, token: String)
     func pushProductViewController(user: User, token: String, product: Product)
+    func pushCartViewController(user: User, token: String)
     
     func popToRootViewController()
 }
@@ -127,6 +128,21 @@ class Router: RouterProtocol {
         
         logging("[\(self) navigation: pushProductViewController]")
         navigation.pushViewController(productViewController, animated: true)
+    }
+    
+    func pushCartViewController(user: User, token: String) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        guard let navigation = self.navigation,
+              let cartViewController = builder?.makeCartViewController(router: self, user: user, token: token) else {
+                  return
+              }
+        
+        logging("[\(self) navigation: pushCartViewController]")
+        navigation.pushViewController(cartViewController, animated: true)
     }
     
     func popToRootViewController() {
