@@ -59,6 +59,17 @@ final class ButtonWithBadge: UIButton {
             self.layer.addSublayer(canvas)
             self.layer.addSublayer(badgeLayer)
         }
+        
+        let springAnimation = CASpringAnimation(keyPath: "transform.scale")
+        springAnimation.fromValue = 0
+        springAnimation.toValue = 1
+        springAnimation.stiffness = 150
+        springAnimation.mass = 1
+        springAnimation.duration = 2
+        
+        canvas.add(springAnimation, forKey: nil)
+        badgeLayer.add(springAnimation, forKey: nil)
+        
         badgeLayer.string = String(count)
     }
     
