@@ -29,7 +29,7 @@ final class ProductViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        presenret?.getCartCountItems()
+        updateCartIndicator(count: presenret?.getCartCoutnItems() ?? 0)
         presenret?.fetchReview()
     }
     
@@ -54,18 +54,20 @@ final class ProductViewController: UITableViewController {
     
     private func configurationNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.setHidesBackButton(false, animated: false)
+        self.navigationItem.setHidesBackButton(true, animated: false)
     
         let cartIcon = UIImage(systemName: "cart")
+        let chevronLeftIcom = UIImage(systemName: "chevron.left")
+        
         rightBarButton.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
         rightBarButton.setImage(cartIcon, for: .normal)
         rightBarButton.contentMode = .scaleToFill
         rightBarButton.addTarget(self, action: #selector(pressedCartButton), for: .touchUpInside)
         
+        let back = UIBarButtonItem(image: chevronLeftIcom, style: .plain, target: self, action: #selector(pressedBackButton))
         let right = UIBarButtonItem(customView: rightBarButton)
-        let back = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = back
+        self.navigationItem.leftBarButtonItem = back
         self.navigationItem.rightBarButtonItem = right
     }
 }
@@ -241,6 +243,11 @@ extension ProductViewController {
     @objc
     private func pressedCartButton(_ sender: UIButton) {
         presenret?.goToCartView()
+    }
+    
+    @objc
+    private func pressedBackButton(_ sender: UIButton) {
+        presenret?.backToCatalog()
     }
     
     @objc

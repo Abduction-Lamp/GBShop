@@ -24,7 +24,6 @@ final class CatalogViewController: UICollectionViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        presenret?.getCartCountItems()
     }
     
     // MARK: - Configure Content
@@ -196,9 +195,5 @@ extension CatalogViewController: CatalogViewProtocol {
     
     func updateCartIndicator(count: Int) {
         rightBarButton.update(badgeCount: count)
-    }
-    
-    func updateUserDataInPresenter(user: User, token: String) {
-        presenret?.updateUserData(user: user, token: token)
     }
 }

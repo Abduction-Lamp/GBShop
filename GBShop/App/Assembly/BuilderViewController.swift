@@ -15,8 +15,12 @@ protocol BuilderProtocol: AnyObject {
     func makeProductViewController(router: RouterProtocol,
                                    user: User,
                                    token: String,
-                                   product: Product) -> UITableViewController & ProductViewProtocol
-    func makeCartViewController(router: RouterProtocol, user: User, token: String) -> UITableViewController & CartViewProtocol
+                                   product: Product,
+                                   cart: [Product]) -> UITableViewController & ProductViewProtocol
+    func makeCartViewController(router: RouterProtocol,
+                                user: User,
+                                token: String,
+                                cart: [Product]) -> UITableViewController & CartViewProtocol
 }
 
 class BuilderViewController: BuilderProtocol {
@@ -85,7 +89,8 @@ class BuilderViewController: BuilderProtocol {
     func makeProductViewController(router: RouterProtocol,
                                    user: User,
                                    token: String,
-                                   product: Product) -> UITableViewController & ProductViewProtocol {
+                                   product: Product,
+                                   cart: [Product]) -> UITableViewController & ProductViewProtocol {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -97,14 +102,15 @@ class BuilderViewController: BuilderProtocol {
                                              view: viewController,
                                              network: network,
                                              user: user, token: token,
-                                             product: product)
+                                             product: product,
+                                             cart: cart)
         viewController.presenret = presenter
         
         logging("[\(self) MAKE ProductView Module]")
         return viewController
     }
     
-    func makeCartViewController(router: RouterProtocol, user: User, token: String) -> UITableViewController & CartViewProtocol {
+    func makeCartViewController(router: RouterProtocol, user: User, token: String, cart: [Product]) -> UITableViewController & CartViewProtocol {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -112,7 +118,7 @@ class BuilderViewController: BuilderProtocol {
         
         let viewController = CartViewController(style: .insetGrouped)
         let network = RequestFactory()
-        let presenter = CartViewPresenter(router: router, view: viewController, network: network, user: user, token: token)
+        let presenter = CartViewPresenter(router: router, view: viewController, network: network, user: user, token: token, cart: cart)
         viewController.presenret = presenter
         
         logging("[\(self) MAKE CartView Module]")

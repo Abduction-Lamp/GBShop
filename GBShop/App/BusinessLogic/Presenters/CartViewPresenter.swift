@@ -16,12 +16,15 @@ protocol CartViewPresenterProtocol: AnyObject {
          view: CartViewProtocol,
          network: RequestFactoryProtocol,
          user: User,
-         token: String)
+         token: String,
+         cart: [Product])
     
-    var cart: Cart { get set }
+    var cart: [Product] { get set }
     
     func fetchCart()
     func removeFromCart(index: Int)
+    
+    func backTo()
 }
 
 // MARK: - CartView Presenter
@@ -35,9 +38,14 @@ final class CartViewPresenter: CartViewPresenterProtocol {
     private let user: User
     private let token: String
     
-    var cart: Cart
+    var cart: [Product]
 
-    init(router: RouterProtocol, view: CartViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
+    init(router: RouterProtocol,
+         view: CartViewProtocol,
+         network: RequestFactoryProtocol,
+         user: User,
+         token: String,
+         cart: [Product]) {
         self.router = router
         self.view = view
         self.network = network
@@ -45,7 +53,7 @@ final class CartViewPresenter: CartViewPresenterProtocol {
         self.user = user
         self.token = token
         
-        self.cart = Cart(owner: user.id)
+        self.cart = cart
     }
 }
 
@@ -67,7 +75,7 @@ extension CartViewPresenter {
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
                         if let newCart = result.cart {
-                            self.cart.cart = newCart
+                            self.cart = newCart
                             self.view?.updataCart()
                         }
                     } else {
@@ -87,14 +95,14 @@ extension CartViewPresenter {
             logging(.funcEnd)
         }
         
-        guard (0 ..< cart.cart.count).contains(index) else {
-            logging("[\(self) index не входит в диапазон (0 - \(cart.cart.count - 1)]")
+        guard (0 ..< cart.count).contains(index) else {
+            logging("[\(self) index не входит в диапазон (0 - \(cart.count - 1)]")
             view?.showErrorAlert(message: "Не удалось удалить товар из карзины")
             return
         }
         
         let request = network.makeCartRequestFactory()
-        request.delete(productId: cart.cart[index].id, owner: user.id, token: token) { [weak self] response in
+        request.delete(productId: cart[index].id, owner: user.id, token: token) { [weak self] response in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -102,7 +110,7 @@ extension CartViewPresenter {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        self.cart.cart.remove(at: index)
+                        self.cart.remove(at: index)
                         self.view?.updataCart()
                     } else {
                         self.view?.showErrorAlert(message: result.message)
@@ -113,6 +121,10 @@ extension CartViewPresenter {
                 }
             }
         }
+    }
+    
+    func backTo() {
+        router?.popToBackFromCartViewController(cart: cart)
     }
 }
 

@@ -12,7 +12,8 @@ import Foundation
 protocol CatalogViewProtocol: AbstractViewController {
     func setCatalog()
     func updateCartIndicator(count: Int)
-    func updateUserDataInPresenter(user: User, token: String)
+    
+    var presenret: CatalogViewPresenterProtocol? { get set }
 }
 
 protocol CatalogViewPresenterProtocol: AnyObject {
@@ -21,8 +22,9 @@ protocol CatalogViewPresenterProtocol: AnyObject {
     var catalog: [Section] { get set }
     
     func addToCart(productId: Int)
-    func getCartCountItems()
+    
     func updateUserData(user: User, token: String)
+    func updateCart(cart: [Product])
     
     func goToUserPageView()
     func goToCartView()
@@ -40,8 +42,10 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
     private var user: User
     private var token: String
     
-    var catalog: [Section] = []
+    private var cart: [Product] = []
     
+    var catalog: [Section] = []
+
     // MARK: Initialization
     required init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
         self.router = router
@@ -52,6 +56,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
         self.token = token
         
         fetchCatalog(page: 0)
+        fetchCart()
     }
 }
 
@@ -101,8 +106,9 @@ extension CatalogViewPresenter {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        if let count = result.cart?.count {
-                            self.view?.updateCartIndicator(count: count)
+                        if let cart = result.cart {
+                            self.cart = cart
+                            self.view?.updateCartIndicator(count: cart.count)
                         } else {
                             self.view?.updateCartIndicator(count: 0)
                         }
@@ -117,11 +123,7 @@ extension CatalogViewPresenter {
         }
     }
     
-    func getCartCountItems() {
-        fetchCart()
-    }
-    
-    func addToCart(productId: Int) {
+    public func addToCart(productId: Int) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -135,8 +137,9 @@ extension CatalogViewPresenter {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        if let count = result.cart?.count {
-                            self.view?.updateCartIndicator(count: count)
+                        if let cart = result.cart {
+                            self.cart = cart
+                            self.view?.updateCartIndicator(count: self.cart.count)
                         } else {
                             self.view?.showErrorAlert(message: "Карзина пуста")
                         }
@@ -151,24 +154,29 @@ extension CatalogViewPresenter {
         }
     }
     
-    func updateUserData(user: User, token: String) {
+    public func updateUserData(user: User, token: String) {
         self.user = user
         self.token = token
     }
     
-    func goToUserPageView() {
+    func updateCart(cart: [Product]) {
+        self.cart = cart
+        view?.updateCartIndicator(count: cart.count)
+    }
+    
+    public func goToUserPageView() {
         router?.pushUserPageViewController(user: user, token: token)
     }
     
-    func goToCartView() {
-        router?.pushCartViewController(user: user, token: token)
-    }
-    
-    func goToProductView(id: Int) {
+    public func goToProductView(id: Int) {
         let productList = catalog.flatMap({ $0.items })
         if let product = productList.first(where: { $0.id == id }) {
-            router?.pushProductViewController(user: user, token: token, product: product)
+            router?.pushProductViewController(user: user, token: token, product: product, cart: cart)
         }
+    }
+    
+    public func goToCartView() {
+        router?.pushCartViewController(user: user, token: token, cart: cart)
     }
 }
 

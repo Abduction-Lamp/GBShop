@@ -20,11 +20,6 @@ final class CartViewController: UITableViewController {
         configurationView()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        presenret?.fetchCart()
-    }
-    
     // MARK: - Configure Content
     //
     private func configurationView() {
@@ -43,10 +38,12 @@ final class CartViewController: UITableViewController {
     
     private func configurationNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.setHidesBackButton(false, animated: false)
-        
-        let back = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = back
+        self.navigationItem.setHidesBackButton(true, animated: false)
+    
+        let chevronLeftIcom = UIImage(systemName: "chevron.left")
+        let back = UIBarButtonItem(image: chevronLeftIcom, style: .plain, target: self, action: #selector(pressedBackButton))
+
+        self.navigationItem.leftBarButtonItem = back
     }
 }
 
@@ -67,12 +64,20 @@ extension CartViewController: CartViewProtocol {
 
 extension CartViewController {
     
+    @objc
+    private func pressedBackButton(_ sender: UIButton) {
+        presenret?.backTo()
+    }
+}
+
+extension CartViewController {
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenret?.cart.cart.count ?? 0
+        return presenret?.cart.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -80,7 +85,7 @@ extension CartViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if let count = presenret?.cart.cart.count, count > 0 {
+        if let count = presenret?.cart.count, count > 0 {
             return .zero
         }
         return 450
@@ -88,7 +93,7 @@ extension CartViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CartViewCell.reuseIdentifier) as? CartViewCell,
-              let model = presenret?.cart.cart else {
+              let model = presenret?.cart else {
             return UITableViewCell()
         }
         
