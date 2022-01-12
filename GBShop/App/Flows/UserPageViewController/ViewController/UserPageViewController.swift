@@ -9,6 +9,8 @@ import UIKit
 
 final class UserPageViewController: UIViewController {
     
+    private let desing = DesignConstants.shared
+    
     private var userPageView: UserPageView {
         guard let view = self.view as? UserPageView else {
             return UserPageView(frame: self.view.frame)
@@ -16,7 +18,8 @@ final class UserPageViewController: UIViewController {
         return view
     }
     
-    private let desing = DesignConstants.shared
+    private var spinner: LoadingScreenWithSpinner?
+    
     private let notifiction = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
     
@@ -73,6 +76,8 @@ final class UserPageViewController: UIViewController {
         userPageView.logoutButton.addTarget(self, action: #selector(pressedLogOutButton), for: .touchUpInside)
         
         enabledUserDataView(isEnable: isEditingUserData)
+        
+        spinner = LoadingScreenWithSpinner(view: userPageView)
     }
     
     private func configurationNavigationBar() {
@@ -230,10 +235,10 @@ extension UserPageViewController: UserPageViewProtocol {
     }
     
     func showLoadingScreen() {
-        userPageView.spinner.startAnimating()
+        spinner?.show()
     }
     
     func hideLoadingScreen() {
-        userPageView.spinner.stopAnimating()
+        spinner?.hide()
     }
 }
