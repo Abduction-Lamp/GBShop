@@ -10,6 +10,8 @@ import Kingfisher
 
 final class ProductViewController: UITableViewController {
     
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
     private var reviewThisProduct: String = ""
     private var rightBarButton = ButtonWithBadge(type: .system)
     
@@ -47,6 +49,8 @@ final class ProductViewController: UITableViewController {
         tableView.register(ProductViewDescriptionCell.self, forCellReuseIdentifier: ProductViewDescriptionCell.reuseIdentifier)
         tableView.register(ProductViewPriceCell.self, forCellReuseIdentifier: ProductViewPriceCell.reuseIdentifier)
         tableView.register(ProductViewCommentCell.self, forCellReuseIdentifier: ProductViewCommentCell.reuseIdentifier)
+        
+        tableView.addGestureRecognizer(keyboardHideGesture)
         
         tableView.separatorStyle = .none
         tableView.isEditing = false
@@ -255,6 +259,11 @@ extension ProductViewController {
     private func pressedDeleteCommentButton(_ sender: UIButton) {
         presenret?.removeReview(id: sender.tag)
         reviewThisProduct = ""
+    }
+    
+    @objc
+    private func keyboardHide(_ sender: Any?) {
+        self.tableView.endEditing(true)
     }
 }
 
