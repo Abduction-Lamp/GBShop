@@ -11,8 +11,6 @@ import UIKit
 // MARK: - Protools
 //
 protocol ProductViewProtocol: AbstractViewController {
-    var bounds: CGRect { get }
-    
     func setReviews()
     func updateCartIndicator(count: Int)
     
@@ -30,9 +28,9 @@ protocol ProductViewPresenterProtocol: AnyObject {
     
     var product: ProductViewModel { get set }
     var review: [ReviewViewModel] { get set }
+    var cartCoutn: Int { get }
     
     func getUserInfo() -> User
-    func getCartCoutnItems() -> Int
     func updateCart(cart: [Product])
     
     func backToCatalog()
@@ -57,6 +55,9 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     private let token: String
     
     private var cart: [Product]
+    var cartCoutn: Int {
+        return cart.count
+    }
     
     var product: ProductViewModel
     var review: [ReviewViewModel] = []
@@ -77,7 +78,7 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
         self.user = user
         self.token = token
         
-        self.product = ProductViewModel(bounds: view.bounds, product: product)
+        self.product = ProductViewModel(bounds: UIScreen.main.bounds, product: product)
         self.cart = cart
     }
 }
@@ -86,10 +87,6 @@ extension ProductViewPresenter {
 
     func getUserInfo() -> User {
         return user
-    }
-    
-    func getCartCoutnItems() -> Int {
-        return cart.count
     }
     
     func updateCart(cart: [Product]) {
@@ -152,9 +149,8 @@ extension ProductViewPresenter {
                 logging("[\(self) result message: \(result.message)]")
                 
                 if result.result == 1 {
-                    if let reviews = result.review,
-                       let bounds = self.view?.bounds {
-                        self.review = reviews.map({ ReviewViewModel(bounds: bounds, review: $0) })
+                    if let reviews = result.review {
+                        self.review = reviews.map({ ReviewViewModel(bounds: UIScreen.main.bounds, review: $0) })
                         DispatchQueue.main.async {
                             self.view?.setReviews()
                         }
@@ -199,9 +195,8 @@ extension ProductViewPresenter {
             case .success(let result):
                 logging("[\(self) result message: \(result.message)]")
                 if result.result == 1,
-                   let newReview = result.review?.first,
-                   let bounds = self.view?.bounds {
-                    self.review.append(ReviewViewModel(bounds: bounds, review: newReview))
+                   let newReview = result.review?.first {
+                    self.review.append(ReviewViewModel(bounds: UIScreen.main.bounds, review: newReview))
                     DispatchQueue.main.async {
                         self.view?.setReviews()
                     }

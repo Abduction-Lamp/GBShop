@@ -29,10 +29,14 @@ final class LoginViewController: UIViewController {
         configurationView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.navigationController?.navigationBar.prefersLargeTitles = false
         notification.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notification.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -61,9 +65,8 @@ final class LoginViewController: UIViewController {
         
         loginView.loginTextField.text = "Username"
         loginView.passwordTextField.text = "UserPassword"
-        
-        let point = CGPoint(x: loginView.frame.width/2, y: loginView.frame.height/3)
-        spinner = LoadingScreenWithSpinner(view: loginView, center: point)
+
+        spinner = LoadingScreenWithSpinner(view: loginView)
     }
 }
 

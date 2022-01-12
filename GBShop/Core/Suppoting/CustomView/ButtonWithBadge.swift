@@ -17,12 +17,12 @@ final class ButtonWithBadge: UIButton {
         return canvas
     }()
     
-    private var badgeLayer: CATextLayer = {
+    private(set) var badgeLayer: CATextLayer = {
         let label = CATextLayer()
-        label.alignmentMode = .center
-        label.isWrapped = false
         label.truncationMode = .end
         label.contentsGravity = .center
+        label.alignmentMode = .center
+        label.isWrapped = false
         label.fontSize = 12
         label.foregroundColor = UIColor.white.cgColor
         label.contentsScale = UIScreen.main.scale
@@ -30,51 +30,47 @@ final class ButtonWithBadge: UIButton {
         return label
     }()
     
-    private var size: CGSize = CGSize(width: 18, height: 18)
-    private lazy var origin: CGPoint = CGPoint(x: frame.maxX - size.width/2, y: frame.minY - size.height/3)
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        let offsetOrigin = CGPoint(x: origin.x, y: origin.y + 1)
-        canvas.path = UIBezierPath(ovalIn: CGRect(origin: origin, size: size)).cgPath
-        badgeLayer.frame = CGRect(origin: offsetOrigin, size: size)
-    }
-    
     public func update(badgeCount: Int) {
-        if badgeCount < 1 {
-            removeBadge()
-        } else {
-            addDadge(count: badgeCount)
-        }
+        (badgeCount < 1) ? removeBadge() : setBadge(count: badgeCount)
     }
     
-    private func addDadge(count: Int) {
-        if let shapeLayer = self.layer.sublayers?.filter({ $0 is CAShapeLayer }),
-           let textLayer = self.layer.sublayers?.filter({ $0 is CATextLayer }),
-           (shapeLayer.isEmpty && textLayer.isEmpty) {
-            
-            canvas.removeFromSuperlayer()
-            badgeLayer.removeFromSuperlayer()
-            self.layer.addSublayer(canvas)
-            self.layer.addSublayer(badgeLayer)
-        }
-        
+    public func setBadgeWithoutAnimation(count: Int) {
+        addBadge()
+        badgeLayer.string = String(count)
+    }
+    
+    public func setBadge(count: Int) {
+        addBadge()
         let springAnimation = CASpringAnimation(keyPath: "transform.scale")
         springAnimation.fromValue = 0
         springAnimation.toValue = 1
         springAnimation.stiffness = 150
         springAnimation.mass = 1
         springAnimation.duration = 2
-        
         canvas.add(springAnimation, forKey: nil)
-        badgeLayer.add(springAnimation, forKey: nil)
-        
         badgeLayer.string = String(count)
     }
-    
+ 
     private func removeBadge() {
-        canvas.removeFromSuperlayer()
         badgeLayer.removeFromSuperlayer()
+        canvas.removeFromSuperlayer()
+    }
+    
+    private func addBadge() {
+        if let shapeLayer = self.layer.sublayers?.filter({ $0 is CAShapeLayer }),
+           let textLayer = self.layer.sublayers?.filter({ $0 is CATextLayer }),
+           (shapeLayer.isEmpty && textLayer.isEmpty) {
+            
+            self.layer.addSublayer(canvas)
+            canvas.addSublayer(badgeLayer)
+            
+            let size: CGSize = CGSize(width: 18, height: 18)
+            let origin: CGPoint = CGPoint(x: frame.maxX - size.width/2, y: frame.minY - size.height/3)
+            let offsetOrigin = CGPoint(x: 0, y: 1)
+            
+            canvas.frame = CGRect(origin: origin, size: size)
+            canvas.path = UIBezierPath(ovalIn: CGRect(origin: .zero, size: size)).cgPath
+            badgeLayer.frame = CGRect(origin: offsetOrigin, size: size)
+        }
     }
 }

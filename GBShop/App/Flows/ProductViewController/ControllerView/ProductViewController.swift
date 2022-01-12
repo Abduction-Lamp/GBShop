@@ -22,13 +22,16 @@ final class ProductViewController: UITableViewController {
         configurationView()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.title = presenret?.product.category
-        updateCartIndicator(count: presenret?.getCartCoutnItems() ?? 0)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        updateCartIndicator(count: presenret?.cartCoutn ?? 0)
         presenret?.fetchReview()
+        super.viewDidAppear(animated)
     }
     
     // MARK: - Configure Content
@@ -258,11 +261,7 @@ extension ProductViewController {
 // MARK: - ProductView Protocol
 //
 extension ProductViewController: ProductViewProtocol {
-    
-    var bounds: CGRect {
-        return UIScreen.main.bounds
-    }
-    
+
     func showRequestErrorAlert(error: Error) {
         showAlert(message: error.localizedDescription, title: "error")
     }
