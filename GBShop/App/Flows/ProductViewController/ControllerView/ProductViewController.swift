@@ -10,6 +10,7 @@ import Kingfisher
 
 final class ProductViewController: UITableViewController {
     
+    private let notification = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
     
     private var reviewThisProduct: String = ""
@@ -33,7 +34,14 @@ final class ProductViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         updateCartIndicator(count: presenret?.cartCoutn ?? 0)
         presenret?.fetchReview()
+        notification.addObserver(self, selector: #selector(keyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
         super.viewDidAppear(animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        notification.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
     // MARK: - Configure Content
@@ -224,7 +232,7 @@ extension ProductViewController {
 // MARK: - TextView Delegate
 //
 extension ProductViewController: UITextViewDelegate {
-    
+
     func textViewDidChange(_ textView: UITextView) {
         reviewThisProduct = textView.text
     }
@@ -260,7 +268,21 @@ extension ProductViewController {
         presenret?.removeReview(id: sender.tag)
         reviewThisProduct = ""
     }
+}
+
+// MARK: - Extension Keyboard Actions
+//
+extension ProductViewController {
     
+    @objc
+    private func keyboardDidShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else { return }
+        let keyboardFramRect: CGRect = keyboardFram.cgRectValue
+        let yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height + keyboardFramRect.height
+        self.tableView.setContentOffset(CGPoint(x: .zero, y: yOffset), animated: true)
+    }
+        
     @objc
     private func keyboardHide(_ sender: Any?) {
         self.tableView.endEditing(true)

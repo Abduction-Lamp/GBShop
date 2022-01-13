@@ -122,12 +122,14 @@ extension LoginViewController {
         var contentInset: UIEdgeInsets = loginView.scrollView.contentInset
         contentInset.bottom = keyboardFramRect.size.height
         loginView.scrollView.contentInset = contentInset
+        loginView.scrollView.scrollIndicatorInsets = contentInset
     }
     
     @objc
     private func keyboardWillHide(notification: NSNotification) {
         let contentInset: UIEdgeInsets = UIEdgeInsets.zero
         loginView.scrollView.contentInset = contentInset
+        loginView.scrollView.scrollIndicatorInsets = contentInset
     }
     
     @objc
