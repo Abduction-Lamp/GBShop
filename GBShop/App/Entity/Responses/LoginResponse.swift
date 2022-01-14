@@ -12,20 +12,15 @@ struct LoginResponse: Codable {
     let message: String
     let user: User?
     let token: String?
-    
-    
-    // MARK: - Description
-    //
+
     var description: String {
         var output =    """
                         result:  \(result)
-                        message: \(message)
-                        
+                        message: \(message)\n
                         """
         if let token = self.token {
             output +=   """
-                        token:   \(token)
-                        
+                        token:   \(token)\n
                         """
         }
         if let user = self.user {
@@ -36,8 +31,7 @@ struct LoginResponse: Codable {
                                  lastName:   \(user.lastName)
                                  email:      \(user.email)
                                  gender:     \(user.gender)
-                                 creditCard: \(user.creditCard)
-                        
+                                 creditCard: \(user.creditCard)\n
                         """
         }
         return output

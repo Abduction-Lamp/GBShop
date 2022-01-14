@@ -24,20 +24,24 @@ class UserRequest: AbstractRequestFactory {
 }
 
 extension UserRequest: UserRequestFactory {
-    
-    func register(user: User, password: String, completionHandler: @escaping (AFDataResponse<UserRegisterResponse>) -> Void) {
+
+    func register(user: User,
+                  password: String,
+                  completionHandler: @escaping (AFDataResponse<UserRegisterResponse>) -> Void) {
         let requestModel = Register(baseUrl: baseUrl, user: user, password: password)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
-    
-    func change(user: User, token: String, completionHandler: @escaping (AFDataResponse<UserDataChangeResponse>) -> Void) {
+
+    func change(user: User,
+                token: String,
+                completionHandler: @escaping (AFDataResponse<UserDataChangeResponse>) -> Void) {
         let requestModel = Change(baseUrl: baseUrl, user: user, token: token)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
 }
 
 extension UserRequest {
-    
+
     struct Register: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .post
@@ -57,7 +61,7 @@ extension UserRequest {
             ]
         }
     }
-    
+
     struct Change: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .post

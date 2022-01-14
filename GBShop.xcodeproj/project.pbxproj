@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E027FD42766214900326158 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD32766214900326158 /* Review.swift */; };
+		4E027FD62766224800326158 /* ReviewResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD52766224800326158 /* ReviewResponse.swift */; };
+		4E027FD82766274400326158 /* ReviewRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD72766274400326158 /* ReviewRequest.swift */; };
+		4E027FDA276627F700326158 /* ReviewRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FD9276627F700326158 /* ReviewRequestFactory.swift */; };
+		4E027FDC27662C0700326158 /* ReviewResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */; };
 		4E22569627526863008E52F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E22569527526863008E52F8 /* AppDelegate.swift */; };
 		4E22569827526863008E52F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E22569727526863008E52F8 /* SceneDelegate.swift */; };
 		4E22569A27526863008E52F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E22569927526863008E52F8 /* ViewController.swift */; };
@@ -63,6 +68,11 @@
 /* Begin PBXFileReference section */
 		3528E615E659985AB35B0433 /* Pods_GBShop_GBShopUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GBShop_GBShopUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ECA94BE0430B6C437201305 /* Pods_GBShopTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GBShopTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E027FD32766214900326158 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		4E027FD52766224800326158 /* ReviewResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewResponse.swift; sourceTree = "<group>"; };
+		4E027FD72766274400326158 /* ReviewRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequest.swift; sourceTree = "<group>"; };
+		4E027FD9276627F700326158 /* ReviewRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestFactory.swift; sourceTree = "<group>"; };
+		4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewResponseCodableTests.swift; sourceTree = "<group>"; };
 		4E22569227526863008E52F8 /* GBShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E22569527526863008E52F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E22569727526863008E52F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -192,6 +202,7 @@
 				4E901BE3275E3B0300E6160F /* AuthResponseCodableTests.swift */,
 				4E901BE5275E3B1800E6160F /* UserResponseCodableTests.swift */,
 				4E901BE7275E3B2600E6160F /* ProductResponseCodableTests.swift */,
+				4E027FDB27662C0700326158 /* ReviewResponseCodableTests.swift */,
 			);
 			path = GBShopTests;
 			sourceTree = "<group>";
@@ -223,10 +234,12 @@
 				4E859D472756674C00A7F2F1 /* AuthRequestFactory.swift */,
 				4E859D4D2756711C00A7F2F1 /* UserRequestFactory.swift */,
 				4E901BDF275E383700E6160F /* ProductRequestFactory.swift */,
+				4E027FD9276627F700326158 /* ReviewRequestFactory.swift */,
 				4E859D4B2756699300A7F2F1 /* RequestFactory.swift */,
 				4E859D49275667A600A7F2F1 /* AuthRequest.swift */,
 				4E859D5927567DF100A7F2F1 /* UserRequest.swift */,
 				4E901BE1275E3A2C00E6160F /* ProductRequest.swift */,
+				4E027FD72766274400326158 /* ReviewRequest.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -240,6 +253,7 @@
 				4E859D5727567B3C00A7F2F1 /* UserDataChangeResponse.swift */,
 				4E901BDD275E35D700E6160F /* ProductResponse.swift */,
 				4EBF951F2763B22F00B9B0F0 /* CatalogResponse.swift */,
+				4E027FD52766224800326158 /* ReviewResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -306,6 +320,7 @@
 				4E859D5627567A9000A7F2F1 /* Responses */,
 				4E859D44275666C100A7F2F1 /* User.swift */,
 				4E901BDB275E2D9700E6160F /* Product.swift */,
+				4E027FD32766214900326158 /* Review.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -346,6 +361,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4E2256BC27526867008E52F8 /* Build configuration list for PBXNativeTarget "GBShop" */;
 			buildPhases = (
+				4E839F9127674A9F00F6B05C /* ShellScript */,
 				F1316CF8ECDF59F8EEC4ED9B /* [CP] Check Pods Manifest.lock */,
 				4E22568E27526863008E52F8 /* Sources */,
 				4E22568F27526863008E52F8 /* Frameworks */,
@@ -470,6 +486,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4E839F9127674A9F00F6B05C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
 		7CE1914EB9BEB9082FB85BB2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -582,7 +615,10 @@
 				4E859D412756641900A7F2F1 /* RequestRouter.swift in Sources */,
 				4E859D3F275662E100A7F2F1 /* AbstractRequestFactory.swift in Sources */,
 				4E901BE0275E383700E6160F /* ProductRequestFactory.swift in Sources */,
+				4E027FD82766274400326158 /* ReviewRequest.swift in Sources */,
 				4E859D5827567B3C00A7F2F1 /* UserDataChangeResponse.swift in Sources */,
+				4E027FDA276627F700326158 /* ReviewRequestFactory.swift in Sources */,
+				4E027FD62766224800326158 /* ReviewResponse.swift in Sources */,
 				4E859D5527567A4C00A7F2F1 /* UserRegisterResponse.swift in Sources */,
 				4EBF95202763B22F00B9B0F0 /* CatalogResponse.swift in Sources */,
 				4E859D4C2756699300A7F2F1 /* RequestFactory.swift in Sources */,
@@ -594,6 +630,7 @@
 				4E859D432756669900A7F2F1 /* LoginResponse.swift in Sources */,
 				4E859D5A27567DF100A7F2F1 /* UserRequest.swift in Sources */,
 				4E22569827526863008E52F8 /* SceneDelegate.swift in Sources */,
+				4E027FD42766214900326158 /* Review.swift in Sources */,
 				4E859D45275666C100A7F2F1 /* User.swift in Sources */,
 				4E901BE2275E3A2C00E6160F /* ProductRequest.swift in Sources */,
 				4E859D3827565B1B00A7F2F1 /* AbstractErrorParser.swift in Sources */,
@@ -611,6 +648,7 @@
 				4E901BE6275E3B1800E6160F /* UserResponseCodableTests.swift in Sources */,
 				4E901BDA275CEB9200E6160F /* ErrorParserTests.swift in Sources */,
 				4E901BE4275E3B0300E6160F /* AuthResponseCodableTests.swift in Sources */,
+				4E027FDC27662C0700326158 /* ReviewResponseCodableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

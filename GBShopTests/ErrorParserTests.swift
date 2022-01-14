@@ -15,9 +15,8 @@ class ErrorParserTests: XCTestCase {
         case сrushTest
     }
     let fakeError: ErrorStub = ErrorStub.fatalError
-    
+
     var errorParser: ErrorParser?
-    
     
     override func setUpWithError() throws {
         errorParser = ErrorParser()
@@ -27,7 +26,6 @@ class ErrorParserTests: XCTestCase {
         errorParser = nil
     }
 
-    
     func testParseError() throws {
         if let result = (errorParser!.parse(fakeError) as? ErrorStub) {
             let exp = ErrorStub.fatalError
@@ -36,7 +34,7 @@ class ErrorParserTests: XCTestCase {
             XCTFail("Result does not match ErrorStub")
         }
     }
-    
+
     func testParseErrorWithData() throws {
         if let result = (errorParser!.parse(response: nil, data: nil, error: fakeError) as? ErrorStub) {
             let exp = ErrorStub.fatalError

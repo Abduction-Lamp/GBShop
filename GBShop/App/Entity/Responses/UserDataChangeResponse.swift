@@ -11,15 +11,11 @@ struct UserDataChangeResponse: Codable {
     let result: Int
     let message: String
     let user: User?
-    
-    
-    // MARK: - Description
-    //
+
     var description: String {
         var output =    """
                         result:  \(result)
-                        message: \(message)
-                        
+                        message: \(message)\n
                         """
         if let user = self.user {
             output +=   """
@@ -29,8 +25,7 @@ struct UserDataChangeResponse: Codable {
                                  lastName:   \(user.lastName)
                                  email:      \(user.email)
                                  gender:     \(user.gender)
-                                 creditCard: \(user.creditCard)
-                        
+                                 creditCard: \(user.creditCard)\n
                         """
         }
         return output
