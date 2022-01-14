@@ -66,8 +66,8 @@ final class UserPageViewController: UIViewController {
     private func configurationView() {
         self.view = UserPageView(frame: self.view.frame)
         
+        self.navigationItem.setHidesBackButton(false, animated: false)
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         
         saveBarButtonItem.tintColor = .systemRed
@@ -105,7 +105,8 @@ extension UserPageViewController: UserPageViewProtocol {
     func didChangeUserData() {
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         self.navigationItem.leftBarButtonItem = nil
-        
+        self.navigationItem.setHidesBackButton(false, animated: true)
+
         isEditingUserData = false
         enabledUserDataView(isEnable: isEditingUserData)
     }
@@ -122,6 +123,7 @@ extension UserPageViewController {
     
     @objc
     private func pressedСhangeButton(_ sender: UIBarButtonItem) {
+        self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.rightBarButtonItem = saveBarButtonItem
         self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         
@@ -150,6 +152,7 @@ extension UserPageViewController {
     
     @objc
     private func pressedCancelButton(_ sender: UIBarButtonItem) {
+        self.navigationItem.setHidesBackButton(false, animated: false)
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         self.navigationItem.leftBarButtonItem = nil
         
@@ -174,7 +177,7 @@ extension UserPageViewController {
         let font20 = UIFont(name: "NewYork-Regular", size: 20)
         
         textField.isEnabled = isEnable
-        textField.backgroundColor = isEnable ? .systemGray6 : .white
+        textField.backgroundColor = isEnable ? .white : .systemGray6
         textField.borderStyle = isEnable ? .roundedRect : .none
         textField.font = isEnable ? font17 : font20
     }
@@ -215,22 +218,7 @@ extension UserPageViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard textField === userPageView.creditCardTextField,
-              let count = textField.text?.count,
-              let char = string.cString(using: String.Encoding.utf8) else {
-                  return false
-              }
-        
-        let backSpace = strcmp(char, "\\b")
-        if backSpace == -92 && count > 0 {
-            textField.text?.removeLast()
-            return false
-        }
-        
-        switch count {
-        case 0, 1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 18: break
-        case 4, 9, 14: textField.text?.append("-")
-        default: return false
-        }
-        return true
+              let chars = string.cString(using: .utf8) else { return false }
+        return userPageView.creditCardTextField.formatter(chars)
     }
 }

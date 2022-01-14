@@ -26,7 +26,8 @@ extension ProductResponse: CustomStringConvertible {
                                 name:        \(product.name)
                                 category:    \(product.category)
                                 price:       \(product.price)
-                                description: \(product.description ?? "")\n
+                                description: \(product.description ?? "")
+                                imageURL:    \(product.imageURL ?? "")\n
                       """
         }
         return output

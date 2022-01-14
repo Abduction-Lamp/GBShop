@@ -13,6 +13,7 @@ struct Product: Codable {
     let category: String
     let price: Double
     let description: String?
+    let imageURL: String?
 }
 
 extension Product: Equatable {

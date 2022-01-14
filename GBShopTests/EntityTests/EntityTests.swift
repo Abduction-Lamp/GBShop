@@ -13,8 +13,8 @@ class EntityTests: XCTestCase {
     let user1 = User(id: 1, firstName: "test", lastName: "test", gender: "test", email: "test", creditCard: "test", login: "test", password: "test")
     let user2 = User(id: 2, firstName: "test", lastName: "test", gender: "test", email: "test", creditCard: "test", login: "test", password: "test")
     
-    let product1 = Product(id: 1, name: "test", category: "test", price: 100.0, description: "test")
-    let product2 = Product(id: 2, name: "test", category: "test", price: 200.0, description: "test")
+    let product1 = Product(id: 1, name: "test", category: "test", price: 100.0, description: "test", imageURL: "imageURL")
+    let product2 = Product(id: 2, name: "test", category: "test", price: 200.0, description: "test", imageURL: "imageURL")
     
     let review1 = Review(id: 1, productId: 1, productName: "test", userId: 1, userLogin: "test", comment: "test", assessment: 1, date: 1.0)
     let review2 = Review(id: 2, productId: 2, productName: "test", userId: 2, userLogin: "test", comment: "test", assessment: 2, date: 2.0)

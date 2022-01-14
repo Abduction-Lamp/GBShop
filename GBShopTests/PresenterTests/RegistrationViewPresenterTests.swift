@@ -10,7 +10,7 @@ import Alamofire
 @testable import GBShop
 
 class MockRegistrationView: UIViewController, RegistrationViewProtocol {
-    var expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
+    var expectation = XCTestExpectation(description: "[ TEST MockRegistrationView ]")
     
     var error: String?
     func showRequestErrorAlert(error: Error) {
