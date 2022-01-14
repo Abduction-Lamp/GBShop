@@ -12,6 +12,7 @@ import Alamofire
 // MARK: - Mock Entity
 //
 class MockCatalogView: UIViewController, CatalogViewProtocol {
+    var presenret: CatalogViewPresenterProtocol?
     
     let fake = FakeData()
     var expectation = XCTestExpectation(description: "[ TEST MockCatalogView ]")
@@ -58,7 +59,7 @@ class CatalogViewPresenterTests: XCTestCase {
     var router: MockRouter!
     var view: MockCatalogView!
     var network: RequestFactoryProtocol!
-    var presenter: CatalogViewPresenter!
+    var presenter: CatalogViewPresenterProtocol!
     
 //    var request = RequestFactory()
     
@@ -68,6 +69,7 @@ class CatalogViewPresenterTests: XCTestCase {
         network = MockNetworkRequest()
 
         presenter = CatalogViewPresenter(router: router, view: view, network: network, user: fake.user, token: fake.token)
+        view.presenret = presenter
     }
 
     override func tearDownWithError() throws {
@@ -97,11 +99,14 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
         XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -112,15 +117,18 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, 1)
+        XCTAssertEqual(view.messageUpdateCartIndicator, 3)
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
         XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -135,11 +143,14 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
         XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -155,11 +166,36 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, "success")
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
         XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+    }
+    
+    func testUpdateCartSeccess() throws {
+        presenter.updateCart(cart: fake.cart)
+        wait(for: [self.view.expectation], timeout: 2.0)
+        
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, nil)
+        XCTAssertEqual(view.messageSetCatalog, nil)
+        XCTAssertEqual(view.messageUpdateCartIndicator, 3)
+        XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -174,11 +210,14 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, "success")
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, "success")
         XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -194,11 +233,36 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
         XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, "success")
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, "success")
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+    }
+    
+    func testGoToCartView() throws {
+        presenter.goToCartView()
+        wait(for: [self.view.expectation], timeout: 2.0)
+        
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, nil)
+        XCTAssertEqual(view.messageSetCatalog, "success")
+        XCTAssertEqual(view.messageUpdateCartIndicator, nil)
+        XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, "success")
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
 }

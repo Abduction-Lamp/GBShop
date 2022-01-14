@@ -12,6 +12,12 @@ struct CartItem: Codable {
     let quantity: Int
 }
 
+extension CartItem: Equatable {
+    static func == (lhs: CartItem, rhs: CartItem) -> Bool {
+        return (lhs.product == rhs.product) && (lhs.quantity == rhs.quantity)
+    }
+}
+
 struct Cart: Codable {
     
     var items: [CartItem] = []
@@ -26,5 +32,20 @@ struct Cart: Codable {
         var total: Double = 0
         items.forEach { total += $0.product.price * Double($0.quantity) }
         return total
+    }
+}
+
+extension Cart: Equatable {
+    
+    static func == (lhs: Cart, rhs: Cart) -> Bool {
+        guard lhs.items.count == rhs.items.count else { return false }
+        
+        for index in 0 ..< lhs.items.count {
+            if lhs.items[index] == rhs.items[index] {
+                continue
+            }
+            return false
+        }
+        return true
     }
 }

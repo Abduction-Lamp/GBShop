@@ -51,7 +51,7 @@ class CartResponseCodableTests: XCTestCase {
     // MARK: - SUPPORT: Добовляет тавар в корзину
     private func addItemInCart(productId: Int, owner: Int, token: String) {
         let expectationAddToCart = XCTestExpectation(description: "[ ADD ITEM TO CART ]")
-        request.add(productId: productId, owner: owner, token: token) { response in
+        request.addProduct(productId: productId, owner: owner, token: token) { response in
             switch response.result {
             case .success: break
             case .failure(let error):
@@ -96,19 +96,22 @@ extension CartResponseCodableTests {
         let tokenToId2 = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
         let expression = CartResponse(result: 1,
                                       message: "Количество товаров в казине: 2, на сумму: 340003",
-                                      cart: [ Product(id: 1,
-                                                      name: "MacBook Pro",
-                                                      category: "Ноутбук",
-                                                      price: 250000,
-                                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
-                                                      imageURL: nil),
-                                              Product(id: 3,
-                                                      name: "PlayStation 5",
-                                                      category: "Игровая приставка",
-                                                      price: 90003,
-                                                      description: "825 ГБ SSD, белый",
-                                                      imageURL: nil)
-                                            ])
+                                      cart: [
+                                        CartItem(product: Product(id: 1,
+                                                                  name: "MacBook Pro",
+                                                                  category: "Ноутбук",
+                                                                  price: 250000,
+                                                                  description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                                                  imageURL: nil),
+                                                 quantity: 1),
+                                        CartItem(product: Product(id: 3,
+                                                                  name: "PlayStation 5",
+                                                                  category: "Игровая приставка",
+                                                                  price: 90003,
+                                                                  description: "825 ГБ SSD, белый",
+                                                                  imageURL: nil),
+                                                 quantity: 1)
+                                      ])
 
         addItemInCart(productId: 1, owner: 2, token: tokenToId2)
         addItemInCart(productId: 3, owner: 2, token: tokenToId2)
@@ -161,16 +164,17 @@ extension CartResponseCodableTests {
         let expression = CartResponse(result: 1,
                                       message: "В карзину добавлен: MacBook Pro",
                                       cart: [
-                                        Product(id: 1,
-                                                name: "MacBook Pro",
-                                                category: "Ноутбук",
-                                                price: 250000,
-                                                description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
-                                                imageURL: nil)
+                                        CartItem(product: Product(id: 1,
+                                                                  name: "MacBook Pro",
+                                                                  category: "Ноутбук",
+                                                                  price: 250000,
+                                                                  description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                                                  imageURL: nil),
+                                                 quantity: 1)
                                       ])
 
         print(" - [TEST START]: testAddToCartResponseSuccess()\n")
-        request.add(productId: 1, owner: 2, token: tokenToId2) { response in
+        request.addProduct(productId: 1, owner: 2, token: tokenToId2) { response in
             switch response.result {
             case .success(let cart):
                 XCTAssertEqual(cart.result, expression.result)
@@ -192,7 +196,7 @@ extension CartResponseCodableTests {
                                       cart: nil)
 
         print(" - [TEST START]: testAddToCartResponseFailureToken()\n")
-        request.add(productId: 1, owner: 2, token: tokenToId2) { response in
+        request.addProduct(productId: 1, owner: 2, token: tokenToId2) { response in
             switch response.result {
             case .success(let cart):
                 XCTAssertEqual(cart.result, expression.result)
@@ -214,7 +218,7 @@ extension CartResponseCodableTests {
                                       cart: nil)
 
         print(" - [TEST START]: testAddToCartResponseFailureProductID()\n")
-        request.add(productId: 15, owner: 2, token: tokenToId2) { response in
+        request.addProduct(productId: 15, owner: 2, token: tokenToId2) { response in
             switch response.result {
             case .success(let cart):
                 XCTAssertEqual(cart.result, expression.result)
@@ -240,18 +244,21 @@ extension CartResponseCodableTests {
         let tokenToId2 = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
         let expression = CartResponse(result: 1,
                                       message: "Товар MacBook Pro удален из карзины",
-                                      cart: [ Product(id: 3,
-                                                      name: "PlayStation 5",
-                                                      category: "Игровая приставка",
-                                                      price: 90003,
-                                                      description: "825 ГБ SSD, белый",
-                                                      imageURL: nil) ])
+                                      cart: [
+                                        CartItem(product: Product(id: 3,
+                                                                  name: "PlayStation 5",
+                                                                  category: "Игровая приставка",
+                                                                  price: 90003,
+                                                                  description: "825 ГБ SSD, белый",
+                                                                  imageURL: nil),
+                                                 quantity: 1)
+                                            ])
 
         addItemInCart(productId: 1, owner: 2, token: tokenToId2)
         addItemInCart(productId: 3, owner: 2, token: tokenToId2)
 
         print(" - [TEST START]: testDeleteFromeCartResponseSuccess()\n")
-        request.delete(productId: 1, owner: 2, token: tokenToId2) {response in
+        request.deleteProduct(productId: 1, owner: 2, token: tokenToId2) {response in
             switch response.result {
             case .success(let cart):
                 XCTAssertEqual(cart.result, expression.result)
@@ -275,7 +282,7 @@ extension CartResponseCodableTests {
         addItemInCart(productId: 1, owner: 2, token: tokenToId2)
         
         print(" - [TEST START]: testDeleteFromCartResponseFailureToken()\n")
-        request.delete(productId: 1, owner: 2, token: tokenToId2) { response in
+        request.deleteProduct(productId: 1, owner: 2, token: tokenToId2) { response in
             switch response.result {
             case .success(let cart):
                 XCTAssertEqual(cart.result, expression.result)
@@ -299,7 +306,7 @@ extension CartResponseCodableTests {
         addItemInCart(productId: 1, owner: 2, token: tokenToId2)
         
         print(" - [TEST START]: testDeleteFromCartResponseFailureProductID()\n")
-        request.delete(productId: 15, owner: 2, token: tokenToId2) { response in
+        request.deleteProduct(productId: 15, owner: 2, token: tokenToId2) { response in
             switch response.result {
             case .success(let cart):
                 XCTAssertEqual(cart.result, expression.result)
@@ -321,7 +328,55 @@ extension CartResponseCodableTests {
                                       cart: nil)
         
         print(" - [TEST START]: testDeleteFromEmptyCartResponseFailure()\n")
-        request.delete(productId: 1, owner: 2, token: tokenToId2) { response in
+        request.deleteProduct(productId: 1, owner: 2, token: tokenToId2) { response in
+            switch response.result {
+            case .success(let cart):
+                XCTAssertEqual(cart.result, expression.result)
+                XCTAssertEqual(cart.message, expression.message)
+                XCTAssertEqual(cart.cart, expression.cart)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [self.expectation], timeout: 10.0)
+    }
+    
+    // MARK: Удаления группы товаров из корзины
+    //       - Добовляет 2 одинаковых товара в корзину
+    //       - Удаляем целую группу
+    func testDeleteAllByProductFromeCartResponseSuccess() throws {
+        let tokenToId2 = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
+        let expression = CartResponse(result: 1, message: "Товары PlayStation 5 удалены из карзины", cart: [])
+
+        addItemInCart(productId: 3, owner: 2, token: tokenToId2)
+        addItemInCart(productId: 3, owner: 2, token: tokenToId2)
+
+        print(" - [TEST START]: testDeleteFromeCartResponseSuccess()\n")
+        request.deleteAllByProduct(productId: 3, owner: 2, token: tokenToId2) {response in
+            switch response.result {
+            case .success(let cart):
+                XCTAssertEqual(cart.result, expression.result)
+                XCTAssertEqual(cart.message, expression.message)
+                XCTAssertEqual(cart.cart, expression.cart)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [self.expectation], timeout: 10.0)
+    }
+    
+    func testDeleteAllFromeCartResponseSuccess() throws {
+        let tokenToId2 = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
+        let expression = CartResponse(result: 1, message: "Все товар удалены из карзины", cart: nil)
+
+        addItemInCart(productId: 3, owner: 2, token: tokenToId2)
+        addItemInCart(productId: 3, owner: 2, token: tokenToId2)
+        addItemInCart(productId: 1, owner: 2, token: tokenToId2)
+
+        print(" - [TEST START]: testDeleteFromeCartResponseSuccess()\n")
+        request.deleteAll(owner: 2, token: tokenToId2) {response in
             switch response.result {
             case .success(let cart):
                 XCTAssertEqual(cart.result, expression.result)
@@ -420,25 +475,29 @@ extension CartResponseCodableTests {
         let tokenToId2 = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
         let expression = CartResponse(result: 0,
                                       message: "Недостаточно денег на сету. Баланс: 330000. К оплате: 409773",
-                                      cart: [ Product(id: 1,
-                                                      name: "MacBook Pro",
-                                                      category: "Ноутбук",
-                                                      price: 250000,
-                                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
-                                                      imageURL: nil),
-                                              Product(id: 3,
-                                                      name: "PlayStation 5",
-                                                      category: "Игровая приставка",
-                                                      price: 90003,
-                                                      description: "825 ГБ SSD, белый",
-                                                      imageURL: nil),
-                                              Product(id: 5,
-                                                      name: "XBox Series X",
-                                                      category: "Игровая приставка",
-                                                      price: 69770,
-                                                      description: "1000 ГБ SSD, черный",
-                                                      imageURL: nil)
-                                            ])
+                                      cart: [
+                                        CartItem(product: Product(id: 1,
+                                                                  name: "MacBook Pro",
+                                                                  category: "Ноутбук",
+                                                                  price: 250000,
+                                                                  description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                                                  imageURL: nil),
+                                                 quantity: 1),
+                                        CartItem(product: Product(id: 3,
+                                                                  name: "PlayStation 5",
+                                                                  category: "Игровая приставка",
+                                                                  price: 90003,
+                                                                  description: "825 ГБ SSD, белый",
+                                                                  imageURL: nil),
+                                                 quantity: 1),
+                                        CartItem(product: Product(id: 5,
+                                                                  name: "XBox Series X",
+                                                                  category: "Игровая приставка",
+                                                                  price: 69770,
+                                                                  description: "1000 ГБ SSD, черный",
+                                                                  imageURL: nil),
+                                                 quantity: 1)
+                                      ])
         
         addItemInCart(productId: 1, owner: 2, token: tokenToId2)
         addItemInCart(productId: 3, owner: 2, token: tokenToId2)

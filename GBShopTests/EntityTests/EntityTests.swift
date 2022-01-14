@@ -19,13 +19,18 @@ class EntityTests: XCTestCase {
     let review1 = Review(id: 1, productId: 1, productName: "test", userId: 1, userLogin: "test", comment: "test", assessment: 1, date: 1.0)
     let review2 = Review(id: 2, productId: 2, productName: "test", userId: 2, userLogin: "test", comment: "test", assessment: 2, date: 2.0)
     
-    let cart1 = Cart(owner: 1)
-    let cart2 = Cart(owner: 2)
+    var cart1: Cart!
+    var cart2: Cart!
     
-    var cart = Cart(owner: 1)
-    
-    override func setUpWithError() throws {}
-    override func tearDownWithError() throws {}
+        
+    override func setUpWithError() throws {
+        cart1 = Cart()
+        cart2 = Cart()
+    }
+    override func tearDownWithError() throws {
+        cart1 = nil
+        cart2 = nil
+    }
 
     func testEntityUser() throws {
         XCTAssertFalse(user1 == user2)
@@ -52,6 +57,9 @@ class EntityTests: XCTestCase {
     }
     
     func testEntityCart() throws {
+        cart1.items = [CartItem(product: product1, quantity: 1)]
+        cart2.items = [CartItem(product: product2, quantity: 1)]
+        
         XCTAssertFalse(cart1 == cart2)
         
         let equal = cart1
@@ -60,9 +68,12 @@ class EntityTests: XCTestCase {
     }
     
     func testEntityCartTotalPrice() throws {
-        cart.cart.append(product1)
-        cart.cart.append(product2)
-
-        XCTAssertEqual(cart.totalPrice, 300.0)
+        cart1.items = [CartItem(product: product1, quantity: 1), CartItem(product: product2, quantity: 1)]
+        XCTAssertEqual(cart1.totalPrice, 300.0)
+    }
+    
+    func testEntityCartTotalCount() throws {
+        cart1.items = [CartItem(product: product1, quantity: 9), CartItem(product: product2, quantity: 4)]
+        XCTAssertEqual(cart1.totalCartCount, 13)
     }
 }

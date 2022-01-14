@@ -122,7 +122,5 @@ final class CatalogViewCell: UICollectionViewCell {
                                   y: buyButon.frame.minY,
                                   width: bounds.width - padding.left - padding.right - buyButon.frame.width,
                                   height: heightButton)
-        
-        print(priceLabel.intrinsicContentSize)
     }
 }
