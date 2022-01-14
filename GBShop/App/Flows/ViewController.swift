@@ -17,20 +17,22 @@ class ViewController: UIViewController {
     private let tokenToId2 = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
     
     private let newUser = User(id: 3,
-                               login: "King",
-                               firstName: "Дима",
-                               lastName: "Сидоров",
+                               firstName: "King",
+                               lastName: "Дима",
+                               gender: "Сидоров",
                                email: "sidorov@mail.ru",
-                               gender: "m",
-                               creditCard: "9876-5432-1000-0000")
+                               creditCard: "m",
+                               login: "9876-5432-1000-0000",
+                               password: "qwertyuiop")
     
     private let userDataChange = User(id: 2,
-                                      login: "Queen",
-                                      firstName: "Маша",
-                                      lastName: "Петрова",
+                                      firstName: "Queen",
+                                      lastName: "Маша",
+                                      gender: "Петрова",
                                       email: "petrova@mail.ru",
-                                      gender: "w",
-                                      creditCard: "5555-6666-7777-8888")
+                                      creditCard: "w",
+                                      login: "5555-6666-7777-8888",
+                                      password: "UserPassword")
     
     private let newReview = Review(id: 0,
                                    productId: 1,
@@ -45,10 +47,12 @@ class ViewController: UIViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.view.backgroundColor = .systemBrown
+        
 //        login(login: "Username", password: "UserPassword")
 //        logout(id: 1, token: tokenToId1)
-//        register(user: newUser, password: "mypassword")
+//        register(user: newUser)
 //        change(user: userDataChange, token: tokenToId2)
 //        getProduct(id: 1)
 //        getCatalog(id: 2, page: 1)
@@ -96,9 +100,9 @@ extension ViewController {
         }
     }
 
-    private func register(user: User, password: String) {
+    private func register(user: User) {
         let userRequest = request.makeUserRequestFactory()
-        userRequest.register(user: user, password: password) { response in
+        userRequest.register(user: user) { response in
             switch response.result {
             case .success(let result):
                 print("--- USER REGISTER RESULT: ---\n\(result)")

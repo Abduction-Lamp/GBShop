@@ -17,8 +17,8 @@ extension CartResponse: CustomStringConvertible {
     
     var description: String {
         var output = """
-                     result:   \(result)
-                     message:  \(message)\n
+                     result:    \(result)
+                     message:   \(message)\n
                      """
         if let cart = self.cart {
             

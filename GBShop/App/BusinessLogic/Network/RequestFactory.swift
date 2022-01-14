@@ -8,7 +8,12 @@
 import Foundation
 import Alamofire
 
-class RequestFactory {
+protocol RequestFactoryProtocol {
+    func makeAuthRequestFatory() -> AuthRequestFactory
+    func makeUserRequestFactory() -> UserRequestFactory
+}
+
+class RequestFactory: RequestFactoryProtocol {
 
     func makeErrorParser() -> AbstractErrorParser {
         return ErrorParser()

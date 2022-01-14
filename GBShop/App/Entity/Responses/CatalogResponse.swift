@@ -17,8 +17,8 @@ extension CatalogResponse: CustomStringConvertible {
     
     var description: String {
         var output = """
-                     result:   \(result)
-                     message:  \(message)\n
+                     result:    \(result)
+                     message:   \(message)\n
                      """
         if let catalog = self.catalog {
             catalog.forEach { item in
