@@ -32,7 +32,7 @@ final class ProductViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        updateCartIndicator(count: presenret?.cartCoutn ?? 0)
+        presenret?.getCartIndicator()
         presenret?.fetchReview()
         notification.addObserver(self, selector: #selector(keyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
         super.viewDidAppear(animated)

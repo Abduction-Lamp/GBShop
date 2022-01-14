@@ -17,13 +17,14 @@ protocol CartViewPresenterProtocol: AnyObject {
          network: RequestFactoryProtocol,
          user: User,
          token: String,
-         cart: [Product])
+         cart: Cart)
     
-    var cart: [Product] { get set }
-    var totalPrice: String { get }
+    var cart: Cart { get set }
     
     func fetchCart()
-    func removeFromCart(index: Int)
+    func removeProductFromCart(id: Int)
+    func removeItemFromCart(index: Int)
+    func removeAll()
     
     func backTo()
 }
@@ -39,19 +40,14 @@ final class CartViewPresenter: CartViewPresenterProtocol {
     private let user: User
     private let token: String
     
-    var cart: [Product]
-    var totalPrice: String {
-        var total = Decimal(0)
-        cart.forEach { total += Decimal($0.price) }
-        return "\(total) \u{20BD}"
-    }
+    var cart: Cart
 
     init(router: RouterProtocol,
          view: CartViewProtocol,
          network: RequestFactoryProtocol,
          user: User,
          token: String,
-         cart: [Product]) {
+         cart: Cart) {
         
         self.router = router
         self.view = view
@@ -82,7 +78,7 @@ extension CartViewPresenter {
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
                         if let newCart = result.cart {
-                            self.cart = newCart
+                            self.cart.items = newCart
                             self.view?.updataCart()
                         }
                     } else {
@@ -96,20 +92,51 @@ extension CartViewPresenter {
         }
     }
     
-    func removeFromCart(index: Int) {
+    func removeProductFromCart(id: Int) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
         }
-        
-        guard (0 ..< cart.count).contains(index) else {
-            logging("[\(self) index не входит в диапазон (0 - \(cart.count - 1)]")
+
+        let request = network.makeCartRequestFactory()
+        request.deleteProduct(productId: id, owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        if let newCart = result.cart {
+                            self.cart.items = newCart
+                            self.view?.updataCart()
+                        } else {
+                            self.view?.showErrorAlert(message: result.message)
+                        }
+                    } else {
+                        self.view?.showErrorAlert(message: result.message)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    func removeItemFromCart(index: Int) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        guard (0 ..< cart.items.count).contains(index) else {
+            logging("[\(self) index не входит в диапазон (0 - \(cart.items.count - 1)]")
             view?.showErrorAlert(message: "Не удалось удалить товар из карзины")
             return
         }
         
         let request = network.makeCartRequestFactory()
-        request.delete(productId: cart[index].id, owner: user.id, token: token) { [weak self] response in
+        request.deleteAllByProduct(productId: cart.items[index].product.id, owner: user.id, token: token) { [weak self] response in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -117,7 +144,39 @@ extension CartViewPresenter {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        self.cart.remove(at: index)
+                        if let newCart = result.cart {
+                            self.cart.items = newCart
+                            self.view?.updataCart()
+                        } else {
+                            self.view?.showErrorAlert(message: result.message)
+                        }
+                    } else {
+                        self.view?.showErrorAlert(message: result.message)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    func removeAll() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let request = network.makeCartRequestFactory()
+        request.deleteAll(owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        self.cart.items = []
                         self.view?.updataCart()
                     } else {
                         self.view?.showErrorAlert(message: result.message)

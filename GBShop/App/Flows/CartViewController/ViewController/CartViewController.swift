@@ -22,7 +22,7 @@ final class CartViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = presenret?.totalPrice
+        self.title = makePriceString(price: presenret?.cart.totalPrice ?? 0)
     }
     
     // MARK: - Configure Content
@@ -62,7 +62,7 @@ extension CartViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenret?.cart.count ?? 0
+        return presenret?.cart.items.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -70,7 +70,7 @@ extension CartViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if let count = presenret?.cart.count, count > 0 {
+        if let count = presenret?.cart.items.count, count > 0 {
             return .zero
         }
         return 450
@@ -78,23 +78,23 @@ extension CartViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CartViewCell.reuseIdentifier) as? CartViewCell,
-              let model = presenret?.cart else {
+              let model = presenret?.cart.items else {
             return UITableViewCell()
         }
         
-        if let urlString = model[indexPath.row].imageURL,
+        if let urlString = model[indexPath.row].product.imageURL,
            let url = URL(string: urlString) {
             cell.image.kf.indicatorType = .activity
             cell.image.kf.setImage(with: url)
         }
-        cell.titleLabel.text = model[indexPath.row].name
-        cell.priceLabel.text = makePriceString(price: model[indexPath.row].price)
+        cell.titleLabel.text = model[indexPath.row].product.name
+        cell.priceLabel.text = makePriceString(price: model[indexPath.row].product.price)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            presenret?.removeFromCart(index: indexPath.row)
+            presenret?.removeItemFromCart(index: indexPath.row)
         }
     }
     
@@ -139,6 +139,6 @@ extension CartViewController: CartViewProtocol {
     
     func updataCart() {
         self.tableView.reloadData()
-        self.title = presenret?.totalPrice
+        self.title = makePriceString(price: presenret?.cart.totalPrice ?? 0)
     }
 }

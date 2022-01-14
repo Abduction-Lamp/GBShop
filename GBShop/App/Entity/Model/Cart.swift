@@ -7,21 +7,24 @@
 
 import Foundation
 
-struct Cart {
-    let owner: Int
-    var cart: [Product] = []
-    var totalPrice: Decimal {
-        var total = Decimal(0)
-        cart.forEach { total += Decimal($0.price) }
+struct CartItem: Codable {
+    let product: Product
+    let quantity: Int
+}
+
+struct Cart: Codable {
+    
+    var items: [CartItem] = []
+    
+    var totalCartCount: Int {
+        var total = 0
+        items.forEach { total += $0.quantity }
         return total
     }
     
-    init(owner: Int) {
-        self.owner = owner
+    var totalPrice: Double {
+        var total: Double = 0
+        items.forEach { total += $0.product.price * Double($0.quantity) }
+        return total
     }
-}
-
-extension Cart: Equatable {
-
-    static func == (lhs: Self, rhs: Self) -> Bool { lhs.owner == rhs.owner }
 }

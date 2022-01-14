@@ -19,11 +19,11 @@ protocol BuilderProtocol: AnyObject {
                                    user: User,
                                    token: String,
                                    product: Product,
-                                   cart: [Product]) -> UITableViewController & ProductViewProtocol
+                                   cart: Cart) -> UITableViewController & ProductViewProtocol
     func makeCartViewController(router: RouterProtocol,
                                 user: User,
                                 token: String,
-                                cart: [Product]) -> UITableViewController & CartViewProtocol
+                                cart: Cart) -> UITableViewController & CartViewProtocol
 }
 
 // MARK: - Assembly
@@ -95,7 +95,7 @@ final class BuilderViewController: BuilderProtocol {
                                    user: User,
                                    token: String,
                                    product: Product,
-                                   cart: [Product]) -> UITableViewController & ProductViewProtocol {
+                                   cart: Cart) -> UITableViewController & ProductViewProtocol {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -115,7 +115,10 @@ final class BuilderViewController: BuilderProtocol {
         return viewController
     }
     
-    func makeCartViewController(router: RouterProtocol, user: User, token: String, cart: [Product]) -> UITableViewController & CartViewProtocol {
+    func makeCartViewController(router: RouterProtocol,
+                                user: User,
+                                token: String,
+                                cart: Cart) -> UITableViewController & CartViewProtocol {
         logging(.funcStart)
         defer {
             logging(.funcEnd)

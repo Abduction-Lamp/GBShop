@@ -20,10 +20,10 @@ protocol RouterProtocol: AbstractRouterProtocol {
     func pushUserPageViewController(user: User, token: String)
     func pushCatalogViewController(user: User, token: String)
     func popToCatalogViewController(user: User, token: String)
-    func pushProductViewController(user: User, token: String, product: Product, cart: [Product])
-    func popToCatalogViewController(cart: [Product])
-    func pushCartViewController(user: User, token: String, cart: [Product])
-    func popToBackFromCartViewController(cart: [Product])
+    func pushProductViewController(user: User, token: String, product: Product, cart: Cart)
+    func popToCatalogViewController(cart: Cart)
+    func pushCartViewController(user: User, token: String, cart: Cart)
+    func popToBackFromCartViewController(cart: Cart)
     
     func popToRootViewController()
 }
@@ -117,7 +117,7 @@ final class Router: RouterProtocol {
         }
     }
     
-    func pushProductViewController(user: User, token: String, product: Product, cart: [Product]) {
+    func pushProductViewController(user: User, token: String, product: Product, cart: Cart) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -133,7 +133,7 @@ final class Router: RouterProtocol {
         navigation.pushViewController(productViewController, animated: true)
     }
     
-    func pushCartViewController(user: User, token: String, cart: [Product]) {
+    func pushCartViewController(user: User, token: String, cart: Cart) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -148,7 +148,7 @@ final class Router: RouterProtocol {
         navigation.pushViewController(cartViewController, animated: true)
     }
     
-    func popToCatalogViewController(cart: [Product]) {
+    func popToCatalogViewController(cart: Cart) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -166,7 +166,7 @@ final class Router: RouterProtocol {
         }
     }
     
-    func popToBackFromCartViewController(cart: [Product]) {
+    func popToBackFromCartViewController(cart: Cart) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)

@@ -116,9 +116,13 @@ final class CatalogViewCell: UICollectionViewCell {
                                 width: widthButton,
                                 height: heightButton)
         
+        print(priceLabel.intrinsicContentSize)
+        
         priceLabel.frame = CGRect(x: padding.left,
                                   y: buyButon.frame.minY,
                                   width: bounds.width - padding.left - padding.right - buyButon.frame.width,
                                   height: heightButton)
+        
+        print(priceLabel.intrinsicContentSize)
     }
 }

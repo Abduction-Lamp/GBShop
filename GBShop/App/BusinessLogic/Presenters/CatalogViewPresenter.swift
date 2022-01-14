@@ -24,7 +24,7 @@ protocol CatalogViewPresenterProtocol: AnyObject {
     func addToCart(productId: Int)
     
     func updateUserData(user: User, token: String)
-    func updateCart(cart: [Product])
+    func updateCart(cart: Cart)
     
     func goToUserPageView()
     func goToCartView()
@@ -42,7 +42,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
     private var user: User
     private var token: String
     
-    private var cart: [Product] = []
+    private var cart: Cart = Cart()
     
     var catalog: [Section] = []
 
@@ -108,9 +108,9 @@ extension CatalogViewPresenter {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        if let cart = result.cart {
-                            self.cart = cart
-                            self.view?.updateCartIndicator(count: cart.count)
+                        if let newCart = result.cart {
+                            self.cart.items = newCart
+                            self.view?.updateCartIndicator(count: self.cart.totalCartCount)
                         } else {
                             self.view?.updateCartIndicator(count: 0)
                         }
@@ -132,7 +132,7 @@ extension CatalogViewPresenter {
         }
         
         let request = network.makeCartRequestFactory()
-        request.add(productId: productId, owner: user.id, token: token) { [weak self] response in
+        request.addProduct(productId: productId, owner: user.id, token: token) { [weak self] response in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -140,9 +140,9 @@ extension CatalogViewPresenter {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        if let cart = result.cart {
-                            self.cart = cart
-                            self.view?.updateCartIndicator(count: self.cart.count)
+                        if let newCart = result.cart {
+                            self.cart.items = newCart
+                            self.view?.updateCartIndicator(count: self.cart.totalCartCount)
                         } else {
                             self.view?.showErrorAlert(message: "Карзина пуста")
                         }
@@ -162,9 +162,9 @@ extension CatalogViewPresenter {
         self.token = token
     }
     
-    func updateCart(cart: [Product]) {
+    func updateCart(cart: Cart) {
         self.cart = cart
-        view?.updateCartIndicator(count: cart.count)
+        view?.updateCartIndicator(count: cart.totalCartCount)
     }
     
     public func goToUserPageView() {
