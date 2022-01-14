@@ -46,16 +46,25 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        login(login: "Username", password: "UserPassword")
-        logout(id: 1, token: tokenToId1)
-        register(user: newUser, password: "mypassword")
-        change(user: userDataChange, token: tokenToId2)
-        getProduct(id: 1)
-        getCatalog(id: 2, page: 1)
-        reviewByProduct(id: 1)
-        reviewByUser(id: 2)
-        reviewAdd(newReview, token: tokenToId2)
-        reviewDelete(id: 2, userId: 2, token: tokenToId2)
+//        login(login: "Username", password: "UserPassword")
+//        logout(id: 1, token: tokenToId1)
+//        register(user: newUser, password: "mypassword")
+//        change(user: userDataChange, token: tokenToId2)
+//        getProduct(id: 1)
+//        getCatalog(id: 2, page: 1)
+//        reviewByProduct(id: 1)
+//        reviewByUser(id: 2)
+//        reviewAdd(newReview, token: tokenToId2)
+//        reviewDelete(id: 2, userId: 2, token: tokenToId2)
+        
+        productAddToCart(productId: 1, owner: 1, token: tokenToId1)
+        productAddToCart(productId: 4, owner: 1, token: tokenToId1)
+        
+        cart(owner: 1, token: tokenToId1)
+        
+        productDeleteFromCart(productId: 1, owner: 1, token: tokenToId1)
+
+        pay(owner: 1, token: tokenToId1)
     }
 }
 
@@ -68,7 +77,7 @@ extension ViewController {
         auth.login(login: login, password: password) { response in
             switch response.result {
             case .success(let result):
-                print("--- LOGIN RESULT: ---\n\(result.description)")
+                print("--- LOGIN RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -80,7 +89,7 @@ extension ViewController {
         auth.logout(id: id, token: token) { response in
             switch response.result {
             case .success(let result):
-                print("--- LOGOUT RESULT: ---\n\(result.description)")
+                print("--- LOGOUT RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -92,7 +101,7 @@ extension ViewController {
         userRequest.register(user: user, password: password) { response in
             switch response.result {
             case .success(let result):
-                print("--- USER REGISTER RESULT: ---\n\(result.description)")
+                print("--- USER REGISTER RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -104,7 +113,7 @@ extension ViewController {
         userRequest.change(user: user, token: token) { response in
             switch response.result {
             case .success(let result):
-                print("--- USER DATA CHANGE RESULT: ---\n\(result.description)")
+                print("--- USER DATA CHANGE RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -116,7 +125,7 @@ extension ViewController {
         catalog.getCatalog(id: id, page: page) { response in
             switch response.result {
             case .success(let result):
-                print("--- CATALOG ID=\(id) RESULT: ---\n\(result.description)")
+                print("--- CATALOG ID=\(id) RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -128,7 +137,7 @@ extension ViewController {
         product.getProduct(id: id) { response in
             switch response.result {
             case .success(let result):
-                print("--- PRODUCT RESULT: ---\n\(result.description)")
+                print("--- PRODUCT RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -140,7 +149,7 @@ extension ViewController {
         review.reviewByProduct(id: id) { response in
             switch response.result {
             case .success(let result):
-                print("--- REVIEW BY PRODUCT RESULT: ---\n\(result.description)")
+                print("--- REVIEW BY PRODUCT RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -152,7 +161,7 @@ extension ViewController {
         review.reviewByUser(id: id) { response in
             switch response.result {
             case .success(let result):
-                print("--- REVIEW BY USER RESULT: ---\n\(result.description)")
+                print("--- REVIEW BY USER RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -164,7 +173,7 @@ extension ViewController {
         review.reviewAdd(review: new, token: token) { response in
             switch response.result {
             case .success(let result):
-                print("--- ADD NEW REVIEW RESULT: ---\n\(result.description)")
+                print("--- ADD NEW REVIEW RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -176,7 +185,55 @@ extension ViewController {
         review.reviewDelete(reviewId: id, userId: userId, token: token) { response in
             switch response.result {
             case .success(let result):
-                print("--- DELETE REVIEW RESULT: ---\n\(result.description)")
+                print("--- DELETE REVIEW RESULT: ---\n\(result)")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func cart(owner: Int, token: String) {
+        let cart = request.makeCartRequestFactory()
+        cart.cart(owner: owner, token: token) { response in
+            switch response.result {
+            case .success(let result):
+                print("--- USER ID = \(owner) SHOPPING CART RESULT: ---\n\(result)")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func productAddToCart(productId: Int, owner: Int, token: String) {
+        let cart = request.makeCartRequestFactory()
+        cart.add(productId: productId, owner: owner, token: token) { response in
+            switch response.result {
+            case .success(let result):
+                print("--- ADD'S PRODUCT TO CART RESULT: ---\n\(result)")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func productDeleteFromCart(productId: Int, owner: Int, token: String) {
+        let cart = request.makeCartRequestFactory()
+        cart.delete(productId: productId, owner: owner, token: token) { response in
+            switch response.result {
+            case .success(let result):
+                print("--- DELETE'S PRODUCT FROM CART RESULT: ---\n\(result)")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func pay(owner: Int, token: String) {
+        let cart = request.makeCartRequestFactory()
+        cart.pay(owner: owner, token: token) { response in
+            switch response.result {
+            case .success(let result):
+                print("--- PAY RESULT: ---\n\(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }

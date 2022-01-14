@@ -6,3 +6,4 @@ disabled_rules:
   - trailing_whitespace
   
 line_length: 150
+file_length: 500

@@ -10,7 +10,10 @@ import Foundation
 struct LogoutResponse: Codable {
     let result: Int
     let message: String
+}
 
+extension LogoutResponse: CustomStringConvertible {
+    
     var description: String {
         return  """
                 result:  \(result)
