@@ -46,8 +46,20 @@ final class RegistrationView: UIView {
         return makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
     }()
 
-    private(set) lazy var creditCardTextField: UITextField = {
-        return makeTextFildView(placeholder: "Кредитная карта", keyboardType: .numberPad)
+    private(set) var creditCardTextField: CreditCardTextField = {
+        let textfield = CreditCardTextField()
+        textfield.translatesAutoresizingMaskIntoConstraints = false
+        textfield.font = UIFont(name: "NewYork-Regular", size: 17)
+        textfield.autocapitalizationType = .none
+        textfield.autocorrectionType = .no
+        textfield.clearButtonMode = .whileEditing
+        textfield.textAlignment = .left
+        textfield.textColor = .black
+        textfield.backgroundColor = .systemGray6
+        textfield.borderStyle = .roundedRect
+        textfield.keyboardType = .numberPad
+        textfield.placeholder = "Кредитная карта"
+        return textfield
     }()
 
     private(set) lazy var loginTextField: UITextField = {
@@ -79,8 +91,7 @@ final class RegistrationView: UIView {
     private let registrationButtonSize = CGSize(width: 200, height: 40)
     private let registrationButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, leading: .zero, trailing: .zero)
 
-    // MARK: - Initiation
-    //
+    // MARK: Initiation
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

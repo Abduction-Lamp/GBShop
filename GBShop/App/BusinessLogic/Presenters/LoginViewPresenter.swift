@@ -51,7 +51,7 @@ class LoginViewPresenter: LoginViewPresenterProtool {
                                self.view?.showErrorAlert(message: result.message)
                                   return
                               }
-                        self.router?.pushUserPageViewController(user: user, token: token)
+                        self.router?.pushCatalogViewController(user: user, token: token)
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }

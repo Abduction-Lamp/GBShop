@@ -10,7 +10,7 @@ import Alamofire
 @testable import GBShop
 
 class MockUserPageView: UIViewController, UserPageViewProtocol {
-    var expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
+    var expectation = XCTestExpectation(description: "[ TEST MockUserPageView ]")
     
     var error: String?
     func showRequestErrorAlert(error: Error) {
@@ -58,11 +58,7 @@ class UserPageViewPresenterTests: XCTestCase {
         view = MockUserPageView()
         network = MockNetworkRequest()
 
-        presenter = UserPageViewPresenter(router: router,
-                                          view: view,
-                                          network: network,
-                                          user: MockNetworkUserRequest.fakeUser,
-                                          token: "")
+        presenter = UserPageViewPresenter(router: router, view: view, network: network, user: MockNetworkUserRequest.fakeUser, token: "")
     }
 
     override func tearDownWithError() throws {
@@ -94,6 +90,7 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messageCatalog, nil)
         XCTAssertEqual(router.messageRoot, "success")
     }
     
@@ -109,6 +106,7 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messageCatalog, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -130,6 +128,7 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messageCatalog, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -151,6 +150,7 @@ extension UserPageViewPresenterTests {
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messageCatalog, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
 }

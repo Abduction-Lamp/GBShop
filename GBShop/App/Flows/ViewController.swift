@@ -77,7 +77,7 @@ class ViewController: UIViewController {
 extension ViewController {
     
     private func login(login: String, password: String) {
-        let auth = request.makeAuthRequestFatory()
+        let auth = request.makeAuthRequestFactory()
         auth.login(login: login, password: password) { response in
             switch response.result {
             case .success(let result):
@@ -89,7 +89,7 @@ extension ViewController {
     }
 
     private func logout(id: Int, token: String) {
-        let auth = request.makeAuthRequestFatory()
+        let auth = request.makeAuthRequestFactory()
         auth.logout(id: id, token: token) { response in
             switch response.result {
             case .success(let result):
@@ -126,7 +126,7 @@ extension ViewController {
 
     private func getCatalog(id: Int, page: Int) {
         let catalog = request.makeProductRequestFactory()
-        catalog.getCatalog(id: id, page: page) { response in
+        catalog.getCatalog(page: page) { response in
             switch response.result {
             case .success(let result):
                 print("--- CATALOG ID=\(id) RESULT: ---\n\(result)")

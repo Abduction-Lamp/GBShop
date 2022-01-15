@@ -100,12 +100,14 @@ extension CartResponseCodableTests {
                                                       name: "MacBook Pro",
                                                       category: "Ноутбук",
                                                       price: 250000,
-                                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ"),
+                                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                                      imageURL: nil),
                                               Product(id: 3,
                                                       name: "PlayStation 5",
                                                       category: "Игровая приставка",
                                                       price: 90003,
-                                                      description: "825 ГБ SSD, белый")
+                                                      description: "825 ГБ SSD, белый",
+                                                      imageURL: nil)
                                             ])
 
         addItemInCart(productId: 1, owner: 2, token: tokenToId2)
@@ -163,7 +165,8 @@ extension CartResponseCodableTests {
                                                 name: "MacBook Pro",
                                                 category: "Ноутбук",
                                                 price: 250000,
-                                                description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ")
+                                                description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                                imageURL: nil)
                                       ])
 
         print(" - [TEST START]: testAddToCartResponseSuccess()\n")
@@ -241,7 +244,8 @@ extension CartResponseCodableTests {
                                                       name: "PlayStation 5",
                                                       category: "Игровая приставка",
                                                       price: 90003,
-                                                      description: "825 ГБ SSD, белый") ])
+                                                      description: "825 ГБ SSD, белый",
+                                                      imageURL: nil) ])
 
         addItemInCart(productId: 1, owner: 2, token: tokenToId2)
         addItemInCart(productId: 3, owner: 2, token: tokenToId2)
@@ -420,17 +424,20 @@ extension CartResponseCodableTests {
                                                       name: "MacBook Pro",
                                                       category: "Ноутбук",
                                                       price: 250000,
-                                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ"),
+                                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                                      imageURL: nil),
                                               Product(id: 3,
                                                       name: "PlayStation 5",
                                                       category: "Игровая приставка",
                                                       price: 90003,
-                                                      description: "825 ГБ SSD, белый"),
+                                                      description: "825 ГБ SSD, белый",
+                                                      imageURL: nil),
                                               Product(id: 5,
                                                       name: "XBox Series X",
                                                       category: "Игровая приставка",
                                                       price: 69770,
-                                                      description: "1000 ГБ SSD, черный")
+                                                      description: "1000 ГБ SSD, черный",
+                                                      imageURL: nil)
                                             ])
         
         addItemInCart(productId: 1, owner: 2, token: tokenToId2)

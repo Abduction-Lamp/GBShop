@@ -19,6 +19,7 @@ protocol RouterProtocol: AbstractRouterProtocol {
     func pushRegistrationViewController()
     func pushUserPageViewController(user: User, token: String)
     func popToRootViewController()
+    func pushCatalogViewController(user: User, token: String)
 }
 
 // MARK: - Router
@@ -74,6 +75,21 @@ class Router: RouterProtocol {
               }
         
         logging("[\(self) navigation: pushUserPageViewController]")
+        navigation.pushViewController(userPageViewController, animated: true)
+    }
+    
+    func pushCatalogViewController(user: User, token: String) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        guard let navigation = self.navigation,
+              let userPageViewController = builder?.makeCatalogViewController(router: self, user: user, token: token) else {
+                  return
+              }
+        
+        logging("[\(self) navigation: pushCatalogViewController]")
         navigation.pushViewController(userPageViewController, animated: true)
     }
     

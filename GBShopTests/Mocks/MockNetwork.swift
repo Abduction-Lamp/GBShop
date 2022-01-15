@@ -11,11 +11,17 @@ import Alamofire
 
 class MockNetworkRequest: RequestFactoryProtocol {
     
-    func makeAuthRequestFatory() -> AuthRequestFactory {
+    func makeAuthRequestFactory() -> AuthRequestFactory {
         return MockNetworkAuthRequest()
     }
     func makeUserRequestFactory() -> UserRequestFactory {
         return MockNetworkUserRequest()
+    }
+    func makeProductRequestFactory() -> ProductRequestFactory {
+        return MockProductRequest()
+    }
+    func makeCartRequestFactory() -> CartRequestFactory {
+        return MockCartRequestFactory()
     }
 }
 
@@ -122,5 +128,149 @@ class MockNetworkUserRequest: UserRequestFactory {
         } else {
             completionHandler(changeResponseFailure)
         }
+    }
+}
+
+class MockProductRequest: ProductRequestFactory {
+    
+    static let catalog: [Section] = [
+        
+        Section(id: 1, title: "Ноутбук", items: [
+            Product(id: 1,
+                    name: "MacBook Pro",
+                    category: "Ноутбук",
+                    price: 250_000,
+                    description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                    imageURL: nil),
+            Product(id: 2,
+                    name: "Microsoft Surface Laptop",
+                    category: "Ноутбук",
+                    price: 130_000,
+                    description: "Экран 13.5 дюймов, Core i5, 8GB, SSD‑накопитель 512GB",
+                    imageURL: nil)
+        ]),
+        
+        Section(id: 2, title: "Игровая приставка", items: [
+            Product(id: 3,
+                    name: "PlayStation 5",
+                    category: "Игровая приставка",
+                    price: 90_003,
+                    description: "825 ГБ SSD, белый",
+                    imageURL: nil),
+            Product(id: 4,
+                    name: "PlayStation 4 Slim",
+                    category: "Игровая приставка",
+                    price: 44_500,
+                    description: "500 ГБ HDD, черный",
+                    imageURL: nil),
+            Product(id: 5,
+                    name: "XBox Series X",
+                    category: "Игровая приставка",
+                    price: 69_770,
+                    description: "1000 ГБ SSD, черный",
+                    imageURL: nil)
+        ])
+    ]
+    
+    // MARK: Catalog
+    lazy var catalogResultSuccess: Result<CatalogResponse, AFError> = .success(CatalogResponse(result: 1, message: "success",
+                                                                                               catalog: MockProductRequest.catalog))
+    lazy var catalogResultFailure: Result<CatalogResponse, AFError> = .failure(.explicitlyCancelled)
+          
+    lazy var catalogResponseSuccess = AFDataResponse<CatalogResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: catalogResultSuccess)
+    lazy var catalogResponseFailure = AFDataResponse<CatalogResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: catalogResultFailure)
+    
+    // MARK: Section
+    lazy var sectionResultSuccess: Result<SectionResponse, AFError> = .success(SectionResponse(result: 1, message: "success",
+                                                                                               section: MockProductRequest.catalog[0]))
+    lazy var sectionResultFailure: Result<SectionResponse, AFError> = .failure(.explicitlyCancelled)
+          
+    lazy var sectionResponseSuccess = AFDataResponse<SectionResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: sectionResultSuccess)
+    lazy var sectionResponseFailure = AFDataResponse<SectionResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: sectionResultFailure)
+    // MARK: Product
+    lazy var productResultSuccess: Result<ProductResponse, AFError> = .success(ProductResponse(result: 1, message: "success",
+                                                                                               product: MockProductRequest.catalog[0].items[0]))
+    lazy var productResultFailure: Result<ProductResponse, AFError> = .failure(.explicitlyCancelled)
+          
+    lazy var productResponseSuccess = AFDataResponse<ProductResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: productResultSuccess)
+    lazy var productResponseFailure = AFDataResponse<ProductResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: productResultFailure)
+    
+    func getCatalog(page: Int, completionHandler: @escaping (AFDataResponse<CatalogResponse>) -> Void) {
+        if page >= 0 {
+            completionHandler(catalogResponseSuccess)
+        } else {
+            completionHandler(catalogResponseFailure)
+        }
+    }
+    
+    func getSection(id: Int, page: Int, completionHandler: @escaping (AFDataResponse<SectionResponse>) -> Void) {
+        if id == 0 {
+            completionHandler(sectionResponseSuccess)
+        } else {
+            completionHandler(sectionResponseFailure)
+        }
+    }
+    
+    func getProduct(id: Int, completionHandler: @escaping (AFDataResponse<ProductResponse>) -> Void) {
+        if id == 0 {
+            completionHandler(productResponseSuccess)
+        } else {
+            completionHandler(productResponseFailure)
+        }
+    }
+}
+
+class MockCartRequestFactory: CartRequestFactory {
+    
+    // MARK: Catalog
+    lazy var cartResultSuccess: Result<CartResponse, AFError> = .success(CartResponse(result: 1,
+                                                                                      message: "success",
+                                                                                      cart: [
+                                                                                        Product(id: 1,
+                                                                                                name: "MacBook Pro",
+                                                                                                category: "Ноутбук",
+                                                                                                price: 250_000,
+                                                                                                description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                                                                                imageURL: nil)
+                                                                                      ]))
+    lazy var cartResultFailure: Result<CartResponse, AFError> = .failure(.explicitlyCancelled)
+          
+    lazy var cartResponseSuccess = AFDataResponse<CartResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: cartResultSuccess)
+    lazy var cartResponseFailure = AFDataResponse<CartResponse>(request: nil, response: nil, data: nil, metrics: nil,
+                                                                      serializationDuration: 1,
+                                                                      result: cartResultFailure)
+    
+    func cart(owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        return
+    }
+    
+    func add(productId: Int, owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        if productId > 0 || owner == 0 {
+            completionHandler(cartResponseSuccess)
+        } else {
+            completionHandler(cartResponseFailure)
+        }
+    }
+    
+    func delete(productId: Int, owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        return
+    }
+    
+    func pay(owner: Int, token: String, completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        return
     }
 }
