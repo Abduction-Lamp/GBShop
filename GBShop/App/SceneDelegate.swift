@@ -23,6 +23,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         router.initialViewController()
         
         window = UIWindow(windowScene: windowScene)
+        if #available(iOS 13.0, *) {
+            window?.overrideUserInterfaceStyle = .light
+        }
         window?.rootViewController = navigation
         window?.makeKeyAndVisible()
     }

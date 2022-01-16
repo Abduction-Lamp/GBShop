@@ -27,8 +27,22 @@ final class CartViewCell: UITableViewCell {
     private(set) var priceLabel: UILabel = {
         let label = UILabel()
         label.font = DesignConstants.shared.mediumFont
-        label.textAlignment = .left
-        label.textColor = .systemGray
+        label.textAlignment = .center
+        label.textColor = .black
+        label.backgroundColor = .systemGreen.withAlphaComponent(0.2)
+        label.layer.cornerRadius = DesignConstants.shared.mediumFont.getFontHeight()/2
+        label.layer.masksToBounds = true
+        return label
+    }()
+    
+    private(set) var multiplierLabel: UILabel = {
+        let label = UILabel()
+        label.font = DesignConstants.shared.mediumFont
+        label.textAlignment = .center
+        label.textColor = .black
+        label.backgroundColor = .systemYellow.withAlphaComponent(0.2)
+        label.layer.cornerRadius = DesignConstants.shared.mediumFont.getFontHeight()/2
+        label.layer.masksToBounds = true
         return label
     }()
     
@@ -49,6 +63,7 @@ final class CartViewCell: UITableViewCell {
         self.contentView.addSubview(image)
         self.contentView.addSubview(titleLabel)
         self.contentView.addSubview(priceLabel)
+        self.contentView.addSubview(multiplierLabel)
         
         self.contentView.backgroundColor = .white
         
@@ -75,10 +90,17 @@ final class CartViewCell: UITableViewCell {
                                   width: bounds.width - image.frame.width - padding.left - padding.left - padding.right,
                                   height: DesignConstants.shared.largeFont.getFontHeight())
         
+        let widthPriceLabel = priceLabel.intrinsicContentSize.width + 16
         priceLabel.frame = CGRect(x: image.frame.maxX + padding.left,
                                   y: titleLabel.frame.maxY + DesignConstants.shared.padding.top,
-                                  width: bounds.width - image.frame.width - padding.left - padding.left - padding.right,
+                                  width: widthPriceLabel,
                                   height: DesignConstants.shared.mediumFont.getFontHeight())
+        
+        let widthMultiplierLabel = multiplierLabel.intrinsicContentSize.width + 16
+        multiplierLabel.frame = CGRect(x: priceLabel.frame.maxX,
+                                       y: titleLabel.frame.maxY + DesignConstants.shared.padding.top,
+                                       width: widthMultiplierLabel,
+                                       height: DesignConstants.shared.mediumFont.getFontHeight())
     }
     
     override func prepareForReuse() {

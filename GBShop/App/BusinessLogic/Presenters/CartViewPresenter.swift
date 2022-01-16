@@ -9,6 +9,7 @@ import Foundation
 
 protocol CartViewProtocol: AbstractViewController {
     func updataCart()
+    func updataCart(index: Int)
 }
 
 protocol CartViewPresenterProtocol: AnyObject {
@@ -22,7 +23,8 @@ protocol CartViewPresenterProtocol: AnyObject {
     var cart: Cart { get set }
     
     func fetchCart()
-    func removeProductFromCart(id: Int)
+    func removeProductFromCart(index: Int)
+    func addProductToCart(index: Int)
     func removeItemFromCart(index: Int)
     func removeAll()
     
@@ -92,14 +94,59 @@ extension CartViewPresenter {
         }
     }
     
-    func removeProductFromCart(id: Int) {
+    func addProductToCart(index: Int) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        guard (0 ..< cart.items.count).contains(index) else {
+            logging("[\(self) (0 ..< cart.items.count).contains(index) = \((0 ..< cart.items.count).contains(index))]")
+            view?.showErrorAlert(message: "Что-то пошло не так")
+            return
+        }
+        let productId = cart.items[index].product.id
+        
+        let request = network.makeCartRequestFactory()
+        request.addProduct(productId: productId, owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        if let newCart = result.cart {
+                            self.cart.items = newCart
+                            self.view?.updataCart(index: index)
+                        } else {
+                            self.view?.showErrorAlert(message: "Что-то пошло не так")
+                        }
+                    } else {
+                        self.view?.showErrorAlert(message: result.message)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    func removeProductFromCart(index: Int) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
         }
 
+        guard (0 ..< cart.items.count).contains(index) else {
+            logging("[\(self) (0 ..< cart.items.count).contains(index) = \((0 ..< cart.items.count).contains(index))]")
+            view?.showErrorAlert(message: "Что-то пошло не так")
+            return
+        }
+        let productId = cart.items[index].product.id
+        
         let request = network.makeCartRequestFactory()
-        request.deleteProduct(productId: id, owner: user.id, token: token) { [weak self] response in
+        request.deleteProduct(productId: productId, owner: user.id, token: token) { [weak self] response in
             guard let self = self else { return }
 
             DispatchQueue.main.async {
@@ -109,9 +156,9 @@ extension CartViewPresenter {
                     if result.result == 1 {
                         if let newCart = result.cart {
                             self.cart.items = newCart
-                            self.view?.updataCart()
+                            self.view?.updataCart(index: index)
                         } else {
-                            self.view?.showErrorAlert(message: result.message)
+                            self.view?.showErrorAlert(message: "Что-то пошло не так")
                         }
                     } else {
                         self.view?.showErrorAlert(message: result.message)

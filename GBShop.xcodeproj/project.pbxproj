@@ -98,6 +98,7 @@
 		4EC02F4E2770EFEB00EACE3D /* LoginViewPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F4D2770EFEB00EACE3D /* LoginViewPresenterTests.swift */; };
 		4EC02F5127711E9600EACE3D /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC02F5027711E9600EACE3D /* Color.swift */; };
 		4EC1548A27726E6300B30078 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC1548927726E6300B30078 /* String.swift */; };
+		4EC4B1D12794768100EE16C2 /* CartViewToolsFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4B1D02794768100EE16C2 /* CartViewToolsFooter.swift */; };
 		4EC4DCE227749CB100165F77 /* StringExtensionsValidEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4DCE127749CB100165F77 /* StringExtensionsValidEmailTests.swift */; };
 		4EC4DCE42774A05300165F77 /* StringExtensionsValidCreditCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4DCE32774A05300165F77 /* StringExtensionsValidCreditCardTests.swift */; };
 		4EC4DCE62774BD2700165F77 /* RegistrationViewPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC4DCE52774BD2700165F77 /* RegistrationViewPresenterTests.swift */; };
@@ -237,6 +238,7 @@
 		4EC02F4D2770EFEB00EACE3D /* LoginViewPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewPresenterTests.swift; sourceTree = "<group>"; };
 		4EC02F5027711E9600EACE3D /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		4EC1548927726E6300B30078 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		4EC4B1D02794768100EE16C2 /* CartViewToolsFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewToolsFooter.swift; sourceTree = "<group>"; };
 		4EC4DCE127749CB100165F77 /* StringExtensionsValidEmailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionsValidEmailTests.swift; sourceTree = "<group>"; };
 		4EC4DCE32774A05300165F77 /* StringExtensionsValidCreditCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionsValidCreditCardTests.swift; sourceTree = "<group>"; };
 		4EC4DCE52774BD2700165F77 /* RegistrationViewPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewPresenterTests.swift; sourceTree = "<group>"; };
@@ -497,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				4E714F7E2789CA2700E47C47 /* CartViewCell.swift */,
+				4EC4B1D02794768100EE16C2 /* CartViewToolsFooter.swift */,
 				4ED330D7278B10F30056E175 /* EmptyCartViewCell.swift */,
 				4ED330D9278B111C0056E175 /* PaymentCartViewCell.swift */,
 			);
@@ -1148,6 +1151,7 @@
 				4E9C3E6A277C92BD0056A275 /* ProductViewTitleCell.swift in Sources */,
 				4E027FDA276627F700326158 /* ReviewRequestFactory.swift in Sources */,
 				4EC02F5127711E9600EACE3D /* Color.swift in Sources */,
+				4EC4B1D12794768100EE16C2 /* CartViewToolsFooter.swift in Sources */,
 				4E3D3A56277B275200E1D222 /* ProductViewPresenter.swift in Sources */,
 				4E027FD62766224800326158 /* ReviewResponse.swift in Sources */,
 				4E3246BB276B7F2A00F77BF2 /* CartRequestFactory.swift in Sources */,
