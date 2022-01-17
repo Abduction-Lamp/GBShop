@@ -171,4 +171,39 @@ final class FakeData {
         ]
         return newCart
     }()
+    
+    var cartPlusOneProduct: Cart = {
+        var newCart = Cart()
+        newCart.items = [
+            CartItem(product: Product(id: 4,
+                                      name: "PlayStation 4 Slim",
+                                      category: "Игровая приставка",
+                                      price: 44_500,
+                                      description: "500 ГБ HDD, черный",
+                                      imageURL: nil),
+                     quantity: 2),
+            CartItem(product: Product(id: 1,
+                                      name: "MacBook Pro",
+                                      category: "Ноутбук",
+                                      price: 250_000,
+                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                      imageURL: nil),
+                     quantity: 2)
+        ]
+        return newCart
+    }()
+    
+    var cartMinusOneProduct: Cart = {
+        var newCart = Cart()
+        newCart.items = [
+            CartItem(product: Product(id: 4,
+                                      name: "PlayStation 4 Slim",
+                                      category: "Игровая приставка",
+                                      price: 44_500,
+                                      description: "500 ГБ HDD, черный",
+                                      imageURL: nil),
+                     quantity: 2)
+        ]
+        return newCart
+    }()
 }

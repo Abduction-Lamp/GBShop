@@ -95,7 +95,7 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, nil)
+        XCTAssertEqual(view.messageUpdateCartIndicator, 3)
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
@@ -117,7 +117,7 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, 3)
+        XCTAssertEqual(view.messageUpdateCartIndicator, 4)
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
@@ -139,7 +139,7 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.error, "error")
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, nil)
+        XCTAssertEqual(view.messageUpdateCartIndicator, 3)
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
@@ -206,7 +206,7 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, nil)
+        XCTAssertEqual(view.messageUpdateCartIndicator, 3)
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
@@ -229,7 +229,7 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, nil)
+        XCTAssertEqual(view.messageUpdateCartIndicator, 3)
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
@@ -251,7 +251,7 @@ extension CatalogViewPresenterTests {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.messageSetCatalog, "success")
-        XCTAssertEqual(view.messageUpdateCartIndicator, nil)
+        XCTAssertEqual(view.messageUpdateCartIndicator, 3)
         XCTAssertEqual(view.messageUpdateUserDataInPresenter, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
