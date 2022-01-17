@@ -23,10 +23,12 @@ protocol CartViewPresenterProtocol: AnyObject {
     var cart: Cart { get set }
     
     func fetchCart()
-    func removeProductFromCart(index: Int)
     func addProductToCart(index: Int)
+    func removeProductFromCart(index: Int)
     func removeItemFromCart(index: Int)
     func removeAll()
+    
+    func buy()
     
     func backTo()
 }
@@ -195,7 +197,7 @@ extension CartViewPresenter {
                             self.cart.items = newCart
                             self.view?.updataCart()
                         } else {
-                            self.view?.showErrorAlert(message: result.message)
+                            self.view?.showErrorAlert(message: "Что-то пошло не так")
                         }
                     } else {
                         self.view?.showErrorAlert(message: result.message)
@@ -225,6 +227,35 @@ extension CartViewPresenter {
                     if result.result == 1 {
                         self.cart.items = []
                         self.view?.updataCart()
+                    } else {
+                        self.view?.showErrorAlert(message: "Что-то пошло не так")
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    func buy() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let request = network.makeCartRequestFactory()
+        request.pay(owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        self.cart.items = []
+                        self.view?.updataCart()
+                        self.view?.showErrorAlert(message: result.message)
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }

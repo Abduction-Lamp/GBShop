@@ -9,9 +9,46 @@ import UIKit
 
 final class CartViewController: UITableViewController {
     
-    var presenret: CartViewPresenterProtocol?
+    private lazy var buyButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemYellow
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.systemGray2, for: .highlighted)
+        button.titleLabel?.font = DesignConstants.shared.mediumFont
+        button.setTitle("Оплатить", for: .normal)
+        button.addTarget(self, action: #selector(pressedBuyButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private func addBuyButton() {
+        guard let navigation = self.navigationController else { return }
+        let width: CGFloat = 100
+        let height: CGFloat = 36
+        navigation.navigationBar.addSubview(buyButton)
+        NSLayoutConstraint.activate([
+            buyButton.rightAnchor.constraint(equalTo: navigation.navigationBar.rightAnchor, constant: -16),
+            buyButton.bottomAnchor.constraint(equalTo: navigation.navigationBar.bottomAnchor, constant: -10),
+            buyButton.heightAnchor.constraint(equalToConstant: height),
+            buyButton.widthAnchor.constraint(equalToConstant: width)
+        ])
+        buyButton.layer.cornerRadius = height/2
+        buyButton.layer.masksToBounds = true
+    }
+    
+    private func releaseBuyButton() {
+        buyButton.removeFromSuperview()
+    }
+    
+    private func isHideBuyButton(_ hide: Bool) {
+        UIView.animate(withDuration: 0.2) {
+            self.buyButton.alpha = hide ? 0.0 : 1.0
+        }
+    }
     
     private var heightForRowAt: CGFloat = .zero
+    
+    var presenret: CartViewPresenterProtocol?
     
     // MARK: - Lifecycle
     //
@@ -25,9 +62,15 @@ final class CartViewController: UITableViewController {
         self.title = makePriceString(price: presenret?.cart.totalPrice ?? 0)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addBuyButton()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = false
+        releaseBuyButton()
     }
     
     // MARK: - Configure Content
@@ -50,8 +93,9 @@ final class CartViewController: UITableViewController {
     }
     
     private func configurationNavigationBar() {
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.isNavigationBarHidden = false
+        guard let navigation = self.navigationController else { return }
+        navigation.navigationBar.prefersLargeTitles = true
+        navigation.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(true, animated: false)
     
         let chevronLeftIcom = UIImage(systemName: "chevron.left")
@@ -87,6 +131,7 @@ extension CartViewController {
         if let count = presenret?.cart.items.count, count > 0 {
             return 40
         }
+        isHideBuyButton(true)
         return 450
     }
     
@@ -116,7 +161,7 @@ extension CartViewController {
         }
     }
         
-    override  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let count = presenret?.cart.items.count, count > 0 {
             guard let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: CartViewToolsFooter.reuseIdentifier)
                     as? CartViewToolsFooter else {
@@ -141,13 +186,25 @@ extension CartViewController {
             } else {
                 footer.plusButton.isEnabled = true
             }
+            buyButton.isHidden = false
             return footer
         } else {
             guard let footerEmpty = tableView.dequeueReusableHeaderFooterView(withIdentifier: EmptyCartViewCell.reuseIdentifier)
                     as? EmptyCartViewCell else {
                         return nil
                     }
+            buyButton.isHidden = true
             return footerEmpty
+        }
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let height = navigationController?.navigationBar.frame.height else { return }
+
+        if height > 80 {
+            isHideBuyButton(false)
+        } else {
+            isHideBuyButton(true)
         }
     }
     
@@ -192,6 +249,11 @@ extension CartViewController {
     @objc
     private func pressedPlusButton(_ sender: UIButton) {
         presenret?.addProductToCart(index: sender.tag)
+    }
+    
+    @objc
+    private func pressedBuyButton(_ sender: UIButton) {
+        presenret?.buy()
     }
 }
 
