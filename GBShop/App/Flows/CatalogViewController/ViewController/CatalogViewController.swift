@@ -30,6 +30,7 @@ final class CatalogViewController: UICollectionViewController {
     // MARK: - Configure Content
     //
     private func configurationView() {
+        self.collectionView.accessibilityIdentifier = "CatalogViewControllerCollectionView"
         configurationNavigationBar()
         
         self.collectionView.backgroundColor = .systemGray6

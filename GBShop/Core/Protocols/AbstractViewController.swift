@@ -20,6 +20,7 @@ extension AbstractViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
         alert.addAction(action)
+        alert.accessibilityLabel = "Alert"
         present(alert, animated: true, completion: nil)
     }
 }

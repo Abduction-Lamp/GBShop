@@ -27,11 +27,15 @@ final class RegistrationView: UIView {
     }()
     
     private(set) lazy var firstNameTextField: UITextField = {
-        return design.makeTextFildView(placeholder: "Имя")
+        let textField = design.makeTextFildView(placeholder: "Имя")
+        textField.accessibilityIdentifier = "firstNameTextField"
+        return textField
     }()
 
     private(set) lazy var lastNameTextField: UITextField = {
-        return design.makeTextFildView(placeholder: "Фамилия")
+        let textField = design.makeTextFildView(placeholder: "Фамилия")
+        textField.accessibilityIdentifier = "lastNameTextField"
+        return textField
     }()
     
     private(set) var genderSegmentControl: UISegmentedControl = {
@@ -41,37 +45,44 @@ final class RegistrationView: UIView {
         segment.insertSegment(withTitle: "Мужчина", at: 0, animated: false)
         segment.insertSegment(withTitle: "Женщина", at: 1, animated: false)
         segment.selectedSegmentIndex = 0
+        segment.accessibilityIdentifier = "genderSegmentControl"
         return segment
     }()
     
     private(set) lazy var emailTextField: UITextField = {
-        return design.makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
+        let textField = design.makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
+        textField.accessibilityIdentifier = "emailTextField"
+        return textField
     }()
 
     private(set) lazy var creditCardTextField: CreditCardTextField = {
-        let textfield = CreditCardTextField()
-        textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = design.mediumFont
-        textfield.autocapitalizationType = .none
-        textfield.autocorrectionType = .no
-        textfield.clearButtonMode = .whileEditing
-        textfield.textAlignment = .left
-        textfield.textColor = .black
-        textfield.backgroundColor = .white
-        textfield.borderStyle = .roundedRect
-        textfield.keyboardType = .numberPad
-        textfield.placeholder = "Кредитная карта"
-        return textfield
+        let textField = CreditCardTextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = design.mediumFont
+        textField.autocapitalizationType = .none
+        textField.autocorrectionType = .no
+        textField.clearButtonMode = .whileEditing
+        textField.textAlignment = .left
+        textField.textColor = .black
+        textField.backgroundColor = .white
+        textField.borderStyle = .roundedRect
+        textField.keyboardType = .numberPad
+        textField.placeholder = "Кредитная карта"
+        textField.accessibilityIdentifier = "creditCardTextField"
+        return textField
     }()
 
     private(set) lazy var loginTextField: UITextField = {
-        return design.makeTextFildView(placeholder: "Логин")
+        let textField = design.makeTextFildView(placeholder: "Логин")
+        textField.accessibilityIdentifier = "RegistrationViewLoginTextField"
+        return textField
     }()
 
     private(set) lazy var passwordTextField: UITextField = {
         let textField = design.makeTextFildView(placeholder: "Пароль")
         textField.isSecureTextEntry = false
         textField.textContentType = .init(rawValue: "")
+        textField.accessibilityIdentifier = "RegistrationViewPasswordTextField"
         return textField
     }()
     
@@ -84,6 +95,7 @@ final class RegistrationView: UIView {
         button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
         button.setTitle("Зарегистрироваться ", for: .normal)
+        button.accessibilityIdentifier = "RegistrationViewRegistrationButton"
         return button
     }()
     
@@ -105,6 +117,8 @@ final class RegistrationView: UIView {
     // MARK: - Configure Content
     //
     private func configureContent() {
+        self.accessibilityIdentifier = "RegistrationView"
+        
         self.backgroundColor = .systemGray6
         
         self.addSubview(scrollView)
