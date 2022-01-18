@@ -59,6 +59,8 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     var product: ProductViewModel
     var review: [ReviewViewModel] = []
 
+    private let reportExceptions = CrashlyticsReportExceptions()
+    
     // MARK: Initialization
     init(router: RouterProtocol,
          view: ProductViewProtocol,
@@ -117,18 +119,24 @@ extension ProductViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "cart": result.cart ?? "nil"]
                     if result.result == 1 {
                         if let newCart = result.cart {
                             self.cart.items = newCart
                             self.view?.updateCartIndicator(count: self.cart.totalCartCount)
                         } else {
+                            self.reportExceptions.report(code: -1002)
                             self.view?.showErrorAlert(message: "Карзина пуста")
                         }
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -148,21 +156,25 @@ extension ProductViewPresenter {
             switch response.result {
             case .success(let result):
                 logging("[\(self) result message: \(result.message)]")
-                
+                self.reportExceptions.userInfo = [ "result": result.result,
+                                                   "message": result.message,
+                                                   "review": result.review ?? "nil"]
                 if result.result == 1 {
                     if let reviews = result.review {
                         self.review = reviews.map({ ReviewViewModel(bounds: UIScreen.main.bounds, review: $0) })
                         DispatchQueue.main.async {
                             self.view?.setReviews()
                         }
-                    }
+                    } else { self.reportExceptions.report(code: -1002) }
                 } else {
+                    self.reportExceptions.report(code: -1001)
                     DispatchQueue.main.async {
                         self.view?.showErrorAlert(message: result.message)
                     }
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
+                self.reportExceptions.report(error: error.localizedDescription)
                 DispatchQueue.main.async {
                     self.view?.showRequestErrorAlert(error: error)
                 }
@@ -195,6 +207,9 @@ extension ProductViewPresenter {
             switch response.result {
             case .success(let result):
                 logging("[\(self) result message: \(result.message)]")
+                self.reportExceptions.userInfo = [ "result": result.result,
+                                                   "message": result.message,
+                                                   "review": newReview]
                 if result.result == 1,
                    let newReview = result.review?.first {
                     self.review.append(ReviewViewModel(bounds: UIScreen.main.bounds, review: newReview))
@@ -202,12 +217,14 @@ extension ProductViewPresenter {
                         self.view?.setReviews()
                     }
                 } else {
+                    self.reportExceptions.report(code: -1001)
                     DispatchQueue.main.async {
                         self.view?.showErrorAlert(message: result.message)
                     }
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
+                self.reportExceptions.report(error: error.localizedDescription)
                 DispatchQueue.main.async {
                     self.view?.showRequestErrorAlert(error: error)
                 }
@@ -228,6 +245,9 @@ extension ProductViewPresenter {
             switch response.result {
             case .success(let result):
                 logging("[\(self) result message: \(result.message)]")
+                self.reportExceptions.userInfo = [ "result": result.result,
+                                                   "message": result.message,
+                                                   "reviewId": id]
                 if result.result == 1,
                    let index = self.review.firstIndex(where: { $0.id == id }) {
                     self.review.remove(at: index)
@@ -235,12 +255,14 @@ extension ProductViewPresenter {
                         self.view?.setReviews()
                     }
                 } else {
+                    self.reportExceptions.report(code: -1001)
                     DispatchQueue.main.async {
                         self.view?.showErrorAlert(message: result.message)
                     }
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
+                self.reportExceptions.report(error: error.localizedDescription)
                 DispatchQueue.main.async {
                     self.view?.showRequestErrorAlert(error: error)
                 }

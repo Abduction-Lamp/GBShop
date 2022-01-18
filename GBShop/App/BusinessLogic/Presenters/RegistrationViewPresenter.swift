@@ -31,6 +31,8 @@ final class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
     private var newUser: User?
     private var token: String?
     
+    private let reportExceptions = CrashlyticsReportExceptions()
+    
     required init(router: RouterProtocol, view: RegistrationViewProtocol, network: UserRequestFactory) {
         self.router = router
         self.view = view
@@ -75,16 +77,21 @@ extension RegistrationViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "user": user ]
                     if result.result == 1,
                        let newUser = result.user,
                        let token = result.token {
                         self.newUser = newUser
                         self.router?.pushCatalogViewController(user: newUser, token: token)
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }

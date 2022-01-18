@@ -56,6 +56,8 @@ final class UserPageViewPresenter: UserPageViewPresenterProtocol {
     }
     private let token: String
 
+    private let reportExceptions = CrashlyticsReportExceptions()
+    
     // MARK: Initialization
     required init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
         self.router = router
@@ -105,13 +107,18 @@ extension UserPageViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "user": self.user ]
                     if result.result == 1 {
                         self.router?.popToRootViewController()
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -172,14 +179,19 @@ extension UserPageViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "user": newUserData ]
                     if let resultNewUserData = result.user {
                         self.user = resultNewUserData
                         self.view?.didChangeUserData()
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }

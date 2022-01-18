@@ -30,6 +30,8 @@ final class LoginViewPresenter: LoginViewPresenterProtocol {
     private weak var view: LoginViewProtocol?
     private let network: AuthRequestFactory
 
+    private let reportExceptions = CrashlyticsReportExceptions()
+    
     required init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory) {
         self.router = router
         self.view = view
@@ -41,7 +43,7 @@ final class LoginViewPresenter: LoginViewPresenterProtocol {
         defer {
             logging(.funcEnd)
         }
-        
+
         self.view?.showLoadingScreen()
         
         network.login(login: login, password: password) { [weak self] response in
@@ -55,19 +57,25 @@ final class LoginViewPresenter: LoginViewPresenterProtocol {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "login": login ]
                     if result.result == 1 {
                         guard let user = result.user,
                               let token = result.token else {
+                            self.reportExceptions.report(code: -1001)
                             self.view?.showErrorAlert(message: result.message)
                             return
                         }
                         Crashlytics.crashlytics().setUserID("\(user.id)")
                         self.router?.pushCatalogViewController(user: user, token: token)
                     } else {
+                        self.reportExceptions.report(code: -1002)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }

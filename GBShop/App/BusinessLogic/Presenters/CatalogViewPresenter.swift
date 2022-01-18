@@ -46,6 +46,8 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
     
     var catalog: [Section] = []
 
+    private let reportExceptions = CrashlyticsReportExceptions()
+    
     // MARK: Initialization
     required init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
         
@@ -77,16 +79,21 @@ extension CatalogViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "page": page ]
                     if result.result == 1 {
                         if let productList = result.catalog {
                             self.catalog = productList
                             self.view?.setCatalog()
-                        }
+                        } else {  self.reportExceptions.report(code: -1002) }
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -107,18 +114,24 @@ extension CatalogViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "cart": result.cart ?? "nil"]
                     if result.result == 1 {
                         if let newCart = result.cart {
                             self.cart.items = newCart
                             self.view?.updateCartIndicator(count: self.cart.totalCartCount)
                         } else {
+                            self.reportExceptions.report(code: -1002)
                             self.view?.updateCartIndicator(count: 0)
                         }
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.updateCartIndicator(count: 0)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -139,18 +152,24 @@ extension CatalogViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "cart": result.cart ?? "nil"]
                     if result.result == 1 {
                         if let newCart = result.cart {
                             self.cart.items = newCart
                             self.view?.updateCartIndicator(count: self.cart.totalCartCount)
                         } else {
+                            self.reportExceptions.report(code: -1002)
                             self.view?.showErrorAlert(message: "Карзина пуста")
                         }
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }

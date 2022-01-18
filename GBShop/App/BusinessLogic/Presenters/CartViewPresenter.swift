@@ -45,7 +45,10 @@ final class CartViewPresenter: CartViewPresenterProtocol {
     private let token: String
     
     var cart: Cart
+    
+    private let reportExceptions = CrashlyticsReportExceptions()
 
+    // MARK: Initialization
     init(router: RouterProtocol,
          view: CartViewProtocol,
          network: RequestFactoryProtocol,
@@ -80,16 +83,21 @@ extension CartViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "cart": result.cart ?? "nil"]
                     if result.result == 1 {
                         if let newCart = result.cart {
                             self.cart.items = newCart
                             self.view?.updataCart()
-                        }
+                        } else { self.reportExceptions.report(code: -1002) }
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -116,18 +124,24 @@ extension CartViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "cart": result.cart ?? "nil"]
                     if result.result == 1 {
                         if let newCart = result.cart {
                             self.cart.items = newCart
                             self.view?.updataCart(index: index)
                         } else {
+                            self.reportExceptions.report(code: -1002)
                             self.view?.showErrorAlert(message: "Что-то пошло не так")
                         }
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -142,6 +156,8 @@ extension CartViewPresenter {
 
         guard (0 ..< cart.items.count).contains(index) else {
             logging("[\(self) (0 ..< cart.items.count).contains(index) = \((0 ..< cart.items.count).contains(index))]")
+            self.reportExceptions.userInfo = [ "message": "(0 ..< cart.items.count).contains(index) = \((0 ..< cart.items.count).contains(index))" ]
+            self.reportExceptions.report(code: -1003)
             view?.showErrorAlert(message: "Что-то пошло не так")
             return
         }
@@ -155,18 +171,24 @@ extension CartViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "cart": result.cart ?? "nil"]
                     if result.result == 1 {
                         if let newCart = result.cart {
                             self.cart.items = newCart
                             self.view?.updataCart(index: index)
                         } else {
+                            self.reportExceptions.report(code: -1002)
                             self.view?.showErrorAlert(message: "Что-то пошло не так")
                         }
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -180,6 +202,8 @@ extension CartViewPresenter {
         }
         guard (0 ..< cart.items.count).contains(index) else {
             logging("[\(self) index не входит в диапазон (0 - \(cart.items.count - 1)]")
+            self.reportExceptions.userInfo = [ "message": "index не входит в диапазон (0 - \(cart.items.count - 1)" ]
+            self.reportExceptions.report(code: -1003)
             view?.showErrorAlert(message: "Не удалось удалить товар из карзины")
             return
         }
@@ -192,18 +216,24 @@ extension CartViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message,
+                                                       "cart": result.cart ?? "nil"]
                     if result.result == 1 {
                         if let newCart = result.cart {
                             self.cart.items = newCart
                             self.view?.updataCart()
                         } else {
+                            self.reportExceptions.report(code: -1002)
                             self.view?.showErrorAlert(message: "Что-то пошло не так")
                         }
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -224,14 +254,18 @@ extension CartViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message ]
                     if result.result == 1 {
                         self.cart.items = []
                         self.view?.updataCart()
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: "Что-то пошло не так")
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -252,15 +286,19 @@ extension CartViewPresenter {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
+                    self.reportExceptions.userInfo = [ "result": result.result,
+                                                       "message": result.message ]
                     if result.result == 1 {
                         self.cart.items = []
                         self.view?.updataCart()
                         self.view?.showErrorAlert(message: result.message)
                     } else {
+                        self.reportExceptions.report(code: -1001)
                         self.view?.showErrorAlert(message: result.message)
                     }
                 case .failure(let error):
                     logging("[\(self) error: \(error.localizedDescription)]")
+                    self.reportExceptions.report(error: error.localizedDescription)
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
