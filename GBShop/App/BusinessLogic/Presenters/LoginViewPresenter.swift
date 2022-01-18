@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 // MARK: - Protools
 //
@@ -60,6 +61,7 @@ final class LoginViewPresenter: LoginViewPresenterProtocol {
                             self.view?.showErrorAlert(message: result.message)
                             return
                         }
+                        Crashlytics.crashlytics().setUserID("\(user.id)")
                         self.router?.pushCatalogViewController(user: user, token: token)
                     } else {
                         self.view?.showErrorAlert(message: result.message)
