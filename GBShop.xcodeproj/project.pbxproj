@@ -81,6 +81,7 @@
 		4E9C3E6C277C93AC0056A275 /* DesignConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9C3E6B277C93AC0056A275 /* DesignConstants.swift */; };
 		4E9C3E6F277CD1740056A275 /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9C3E6E277CD1740056A275 /* ProductViewModel.swift */; };
 		4E9E0EB8278C386B0035925D /* ButtonWithBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9E0EB7278C386B0035925D /* ButtonWithBadge.swift */; };
+		4EA480A12796F3B000DC32FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4EA480A02796F3B000DC32FC /* GoogleService-Info.plist */; };
 		4EB06FDA2784A5B700A8C299 /* EntityViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB06FD92784A5B700A8C299 /* EntityViewModelTests.swift */; };
 		4EB06FDC2784DFA700A8C299 /* LoadingScreenWithSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB06FDB2784DFA700A8C299 /* LoadingScreenWithSpinner.swift */; };
 		4EB846AE277378A8004F5E16 /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB846AD277378A8004F5E16 /* AbstractViewController.swift */; };
@@ -228,6 +229,7 @@
 		4E9C3E6B277C93AC0056A275 /* DesignConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignConstants.swift; sourceTree = "<group>"; };
 		4E9C3E6E277CD1740056A275 /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
 		4E9E0EB7278C386B0035925D /* ButtonWithBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithBadge.swift; sourceTree = "<group>"; };
+		4EA480A02796F3B000DC32FC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4EB06FD92784A5B700A8C299 /* EntityViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityViewModelTests.swift; sourceTree = "<group>"; };
 		4EB06FDB2784DFA700A8C299 /* LoadingScreenWithSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingScreenWithSpinner.swift; sourceTree = "<group>"; };
 		4EB846AD277378A8004F5E16 /* AbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 			isa = PBXGroup;
 			children = (
 				4E2256A327526866008E52F8 /* Info.plist */,
+				4EA480A02796F3B000DC32FC /* GoogleService-Info.plist */,
 			);
 			path = Environments;
 			sourceTree = "<group>";
@@ -984,6 +987,7 @@
 			files = (
 				4EC02F452770DA1300EACE3D /* NewYork.ttf in Resources */,
 				4E2256A227526866008E52F8 /* LaunchScreen.storyboard in Resources */,
+				4EA480A12796F3B000DC32FC /* GoogleService-Info.plist in Resources */,
 				4EC02F482770DA1300EACE3D /* NewYorkItalic.ttf in Resources */,
 				4E22569F27526866008E52F8 /* Assets.xcassets in Resources */,
 			);
@@ -1025,7 +1029,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		7CE1914EB9BEB9082FB85BB2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1317,7 +1321,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
