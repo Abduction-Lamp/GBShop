@@ -57,6 +57,7 @@ final class UserPageViewPresenter: UserPageViewPresenterProtocol {
     private let token: String
 
     private let reportExceptions = CrashlyticsReportExceptions()
+    private let analytics = AnalyticsLog()
     
     // MARK: Initialization
     required init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
@@ -101,24 +102,27 @@ extension UserPageViewPresenter {
             guard let self = self else { return }
             logging("[\(self) id: \(self.user.id) token: \(self.token)]")
             
-            DispatchQueue.main.async {
-                self.view?.hideLoadingScreen()
-                
-                switch response.result {
-                case .success(let result):
-                    logging("[\(self) result message: \(result.message)]")
-                    self.reportExceptions.userInfo = [ "result": result.result,
-                                                       "message": result.message,
-                                                       "user": self.user ]
-                    if result.result == 1 {
+            switch response.result {
+            case .success(let result):
+                logging("[\(self) result message: \(result.message)]")
+                if result.result == 1 {
+                    self.analytics.logout(user: self.user)
+                    DispatchQueue.main.async {
+                        self.view?.hideLoadingScreen()
                         self.router?.popToRootViewController()
-                    } else {
-                        self.reportExceptions.report(code: -1001)
+                    }
+                } else {
+                    self.reportExceptions.report(login: self.user.login, code: .rejectionResult, result: result)
+                    DispatchQueue.main.async {
+                        self.view?.hideLoadingScreen()
                         self.view?.showErrorAlert(message: result.message)
                     }
-                case .failure(let error):
-                    logging("[\(self) error: \(error.localizedDescription)]")
-                    self.reportExceptions.report(error: error.localizedDescription)
+                }
+            case .failure(let error):
+                logging("[\(self) error: \(error.localizedDescription)]")
+                self.reportExceptions.report(error: error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.view?.hideLoadingScreen()
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
@@ -173,25 +177,28 @@ extension UserPageViewPresenter {
             guard let self = self else { return }
             logging("[\(self) user: \(newUserData) token: \(self.token)]")
             
-            DispatchQueue.main.async {
-                self.view?.hideLoadingScreen()
-                
-                switch response.result {
-                case .success(let result):
-                    logging("[\(self) result message: \(result.message)]")
-                    self.reportExceptions.userInfo = [ "result": result.result,
-                                                       "message": result.message,
-                                                       "user": newUserData ]
-                    if let resultNewUserData = result.user {
-                        self.user = resultNewUserData
+            switch response.result {
+            case .success(let result):
+                logging("[\(self) result message: \(result.message)]")
+                if let resultNewUserData = result.user {
+                    self.analytics.changeUser(old: self.user, new: resultNewUserData)
+                    self.user = resultNewUserData
+                    DispatchQueue.main.async {
+                        self.view?.hideLoadingScreen()
                         self.view?.didChangeUserData()
-                    } else {
-                        self.reportExceptions.report(code: -1001)
+                    }
+                } else {
+                    self.reportExceptions.report(user: newUserData, code: .rejectionResult, result: result)
+                    DispatchQueue.main.async {
+                        self.view?.hideLoadingScreen()
                         self.view?.showErrorAlert(message: result.message)
                     }
-                case .failure(let error):
-                    logging("[\(self) error: \(error.localizedDescription)]")
-                    self.reportExceptions.report(error: error.localizedDescription)
+                }
+            case .failure(let error):
+                logging("[\(self) error: \(error.localizedDescription)]")
+                self.reportExceptions.report(error: error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.view?.hideLoadingScreen()
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }

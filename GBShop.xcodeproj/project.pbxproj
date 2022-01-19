@@ -118,6 +118,9 @@
 		4EDB8119277329D5001BB693 /* UserPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDB8118277329D5001BB693 /* UserPageViewController.swift */; };
 		4EDB811B27732A2B001BB693 /* UserPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDB811A27732A2B001BB693 /* UserPageView.swift */; };
 		4EDB811E277334F6001BB693 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDB811D277334F6001BB693 /* Router.swift */; };
+		4EEB7AB2279818DE00F6054E /* AbstructResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB7AB1279818DE00F6054E /* AbstructResponse.swift */; };
+		4EEB7AB62798356D00F6054E /* AnalyticsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB7AB52798356D00F6054E /* AnalyticsLog.swift */; };
+		4EEB7AB8279843F800F6054E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB7AB7279843F800F6054E /* Dictionary.swift */; };
 		4EF416A82773B79C006D908C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF416A72773B79C006D908C /* Logger.swift */; };
 		4EFE1EF2277DCB8F007A60DF /* ProductViewImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFE1EF1277DCB8F007A60DF /* ProductViewImageCell.swift */; };
 		4EFE1EF4277DE127007A60DF /* ProductViewDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFE1EF3277DE127007A60DF /* ProductViewDescriptionCell.swift */; };
@@ -263,6 +266,9 @@
 		4EDB8118277329D5001BB693 /* UserPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageViewController.swift; sourceTree = "<group>"; };
 		4EDB811A27732A2B001BB693 /* UserPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageView.swift; sourceTree = "<group>"; };
 		4EDB811D277334F6001BB693 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		4EEB7AB1279818DE00F6054E /* AbstructResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstructResponse.swift; sourceTree = "<group>"; };
+		4EEB7AB52798356D00F6054E /* AnalyticsLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsLog.swift; sourceTree = "<group>"; };
+		4EEB7AB7279843F800F6054E /* Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		4EF416A72773B79C006D908C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4EFE1EF1277DCB8F007A60DF /* ProductViewImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewImageCell.swift; sourceTree = "<group>"; };
 		4EFE1EF3277DE127007A60DF /* ProductViewDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewDescriptionCell.swift; sourceTree = "<group>"; };
@@ -526,6 +532,7 @@
 				4E859D3C27565FD100A7F2F1 /* ResponseCodable.swift */,
 				4E859D3E275662E100A7F2F1 /* AbstractRequestFactory.swift */,
 				4E859D402756641900A7F2F1 /* RequestRouter.swift */,
+				4EEB7AB1279818DE00F6054E /* AbstructResponse.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -599,6 +606,8 @@
 		4E9859FF275276020009538C /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				4EEB7AB42798352C00F6054E /* Analytics */,
+				4EEB7AB32798301700F6054E /* Crashlytics */,
 				4EF416A62773B78E006D908C /* Logger */,
 				4EC02F4F27711E7600EACE3D /* Extensions */,
 				4EC02F3C2770D77500EACE3D /* Suppoting */,
@@ -791,6 +800,7 @@
 				4EC02F5027711E9600EACE3D /* Color.swift */,
 				4EC1548927726E6300B30078 /* String.swift */,
 				4E695128278CC91500AA7BCB /* Font.swift */,
+				4EEB7AB7279843F800F6054E /* Dictionary.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -857,11 +867,26 @@
 			path = Router;
 			sourceTree = "<group>";
 		};
+		4EEB7AB32798301700F6054E /* Crashlytics */ = {
+			isa = PBXGroup;
+			children = (
+				4EA480A32797121000DC32FC /* CrashlyticsReportExceptions.swift */,
+			);
+			path = Crashlytics;
+			sourceTree = "<group>";
+		};
+		4EEB7AB42798352C00F6054E /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				4EEB7AB52798356D00F6054E /* AnalyticsLog.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		4EF416A62773B78E006D908C /* Logger */ = {
 			isa = PBXGroup;
 			children = (
 				4EF416A72773B79C006D908C /* Logger.swift */,
-				4EA480A32797121000DC32FC /* CrashlyticsReportExceptions.swift */,
 			);
 			path = Logger;
 			sourceTree = "<group>";
@@ -1147,6 +1172,7 @@
 				4E859D482756674C00A7F2F1 /* AuthRequestFactory.swift in Sources */,
 				4ED330D8278B10F30056E175 /* EmptyCartViewCell.swift in Sources */,
 				4E7BF0A8278361ED005A74C4 /* ProductViewCommentCell.swift in Sources */,
+				4EEB7AB8279843F800F6054E /* Dictionary.swift in Sources */,
 				4EFE1EF4277DE127007A60DF /* ProductViewDescriptionCell.swift in Sources */,
 				4EC1548A27726E6300B30078 /* String.swift in Sources */,
 				4EDB8119277329D5001BB693 /* UserPageViewController.swift in Sources */,
@@ -1190,6 +1216,7 @@
 				4E714F7B27898CDA00E47C47 /* CartViewController.swift in Sources */,
 				4E22569627526863008E52F8 /* AppDelegate.swift in Sources */,
 				4ED330DA278B111C0056E175 /* PaymentCartViewCell.swift in Sources */,
+				4EEB7AB62798356D00F6054E /* AnalyticsLog.swift in Sources */,
 				4E44F7B827777323001F8A2A /* CatalogViewCell.swift in Sources */,
 				4E859D432756669900A7F2F1 /* LoginResponse.swift in Sources */,
 				4E3D3A54277B262200E1D222 /* ProductViewController.swift in Sources */,
@@ -1212,6 +1239,7 @@
 				4EB06FDC2784DFA700A8C299 /* LoadingScreenWithSpinner.swift in Sources */,
 				4EC02F362770D54800EACE3D /* LoginView.swift in Sources */,
 				4E859D4A275667A600A7F2F1 /* AuthRequest.swift in Sources */,
+				4EEB7AB2279818DE00F6054E /* AbstructResponse.swift in Sources */,
 				4E9C3E6C277C93AC0056A275 /* DesignConstants.swift in Sources */,
 				4E695129278CC91500AA7BCB /* Font.swift in Sources */,
 				4E6A53F72778513400C8137A /* CatalogViewPresenter.swift in Sources */,

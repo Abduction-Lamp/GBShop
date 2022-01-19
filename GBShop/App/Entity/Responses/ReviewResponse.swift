@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ReviewResponse: Codable {
+struct ReviewResponse: AbstructResponse, Codable {
     let result: Int
     let message: String
     let review: [Review]?

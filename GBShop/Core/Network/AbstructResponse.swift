@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+protocol AbstructResponse {
+    var result: Int { get }
+    var message: String { get }
+}

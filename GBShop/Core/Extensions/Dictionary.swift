@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+extension Dictionary {
+    
+    mutating func merge(dict: [Key: Value]) {
+        for (key, value) in dict {
+            self.updateValue(value, forKey: key)
+        }
+    }
+}
