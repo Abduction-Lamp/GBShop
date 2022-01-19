@@ -66,15 +66,6 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
 
 extension CatalogViewPresenter {
     
-    private func catalogSearch(id: Int) -> Product? {
-        var product: Product?
-        for index in 0 ..< catalog.count {
-            product = catalog[index].items.first(where: { $0.id == id })
-            if product != nil { break }
-        }
-        return product
-    }
-    
     private func fetchCatalog(page: Int) {
         logging(.funcStart)
         defer {
@@ -188,8 +179,6 @@ extension CatalogViewPresenter {
     }
     
     public func goToProductView(id: Int) {
-//        let productList = catalog.flatMap({ $0.items })
-//        if let product = productList.first(where: { $0.id == id }) {
         if let product = catalogSearch(id: id) {
             router?.pushProductViewController(user: user, token: token, product: product, cart: cart)
         }
@@ -197,6 +186,15 @@ extension CatalogViewPresenter {
     
     public func goToCartView() {
         router?.pushCartViewController(user: user, token: token, cart: cart)
+    }
+    
+    private func catalogSearch(id: Int) -> Product? {
+        var product: Product?
+        for index in 0 ..< catalog.count {
+            product = catalog[index].items.first(where: { $0.id == id })
+            if product != nil { break }
+        }
+        return product
     }
 }
 
