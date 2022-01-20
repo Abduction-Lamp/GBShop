@@ -66,6 +66,7 @@ final class LoginView: UIView {
         textfield.backgroundColor = .systemGray6
         textfield.borderStyle = .roundedRect
         textfield.placeholder = "Логин"
+        textfield.accessibilityIdentifier = "loginTextField"
         return textfield
     }()
     
@@ -81,6 +82,7 @@ final class LoginView: UIView {
         textfield.backgroundColor = .systemGray6
         textfield.borderStyle = .roundedRect
         textfield.placeholder = "Пароль"
+        textfield.accessibilityIdentifier = "passwordTextField"
         return textfield
     }()
     private let textFieldSize = CGSize(width: 250, height: 40)
@@ -94,6 +96,7 @@ final class LoginView: UIView {
         button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
         button.setTitle("Войти", for: .normal)
+        button.accessibilityIdentifier = "loginButton"
         return button
     }()
     
@@ -106,6 +109,7 @@ final class LoginView: UIView {
         button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
         button.setTitle("Регистрация", for: .normal)
+        button.accessibilityIdentifier = "registrationButton"
         return button
     }()
     private let buttonSize = CGSize(width: 150, height: 40)
@@ -135,6 +139,8 @@ final class LoginView: UIView {
     // MARK: - Configure Content
     //
     private func configuration() {
+        self.accessibilityIdentifier = "LoginView"
+        
         self.layer.addSublayer(gradientLayer)
         gradientLayer.frame = self.bounds
         

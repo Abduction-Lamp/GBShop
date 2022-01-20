@@ -32,19 +32,34 @@ extension CartRequest: CartRequestFactory {
         self.request(request: requestModel, completionHandler: completionHandler)
     }
     
-    func add(productId: Int,
-             owner: Int,
-             token: String,
-             completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+    func addProduct(productId: Int,
+                    owner: Int,
+                    token: String,
+                    completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
         let requestModel = ProductAddToCart(baseUrl: baseUrl, productId: productId, owner: owner, token: token)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
     
-    func delete(productId: Int,
-                owner: Int,
-                token: String,
-                completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+    func deleteProduct(productId: Int,
+                       owner: Int,
+                       token: String,
+                       completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
         let requestModel = ProductDeleteFromCart(baseUrl: baseUrl, productId: productId, owner: owner, token: token)
+        self.request(request: requestModel, completionHandler: completionHandler)
+    }
+    
+    func deleteAllByProduct(productId: Int,
+                            owner: Int,
+                            token: String,
+                            completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        let requestModel = AllByProductDeleteFromCart(baseUrl: baseUrl, productId: productId, owner: owner, token: token)
+        self.request(request: requestModel, completionHandler: completionHandler)
+    }
+    
+    func deleteAll(owner: Int,
+                   token: String,
+                   completionHandler: @escaping (AFDataResponse<CartResponse>) -> Void) {
+        let requestModel = AllDeleteFromCart(baseUrl: baseUrl, owner: owner, token: token)
         self.request(request: requestModel, completionHandler: completionHandler)
     }
     
@@ -92,13 +107,43 @@ extension CartRequest {
     struct ProductDeleteFromCart: RequestRouter {
         let baseUrl: URL
         let method: HTTPMethod = .post
-        let path: String = "cart/delete"
+        let path: String = "cart/delete/product"
         let productId: Int
         let owner: Int
         let token: String
         var parameters: Parameters? {
             return [
                 "product_id": productId,
+                "owner": owner,
+                "token": token
+            ]
+        }
+    }
+    
+    struct AllByProductDeleteFromCart: RequestRouter {
+        let baseUrl: URL
+        let method: HTTPMethod = .post
+        let path: String = "cart/delete/product/all"
+        let productId: Int
+        let owner: Int
+        let token: String
+        var parameters: Parameters? {
+            return [
+                "product_id": productId,
+                "owner": owner,
+                "token": token
+            ]
+        }
+    }
+    
+    struct AllDeleteFromCart: RequestRouter {
+        let baseUrl: URL
+        let method: HTTPMethod = .post
+        let path: String = "cart/delete/all"
+        let owner: Int
+        let token: String
+        var parameters: Parameters? {
+            return [
                 "owner": owner,
                 "token": token
             ]

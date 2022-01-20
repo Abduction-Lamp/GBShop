@@ -35,11 +35,10 @@ final class CatalogHeaderView: UICollectionReusableView {
         title.font = font
         
         let padding = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: 5)
-        
         title.frame = CGRect(x: padding.left,
                              y: font.lineHeight - padding.bottom,
                              width: self.bounds.width - padding.left - padding.right,
-                             height: ceil(font.lineHeight))
+                             height: font.getFontHeight())
     }
     
     override func prepareForReuse() {

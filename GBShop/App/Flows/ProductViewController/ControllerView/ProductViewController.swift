@@ -10,7 +10,12 @@ import Kingfisher
 
 final class ProductViewController: UITableViewController {
     
-    var reviewThisProduct: String = ""
+    private let notification = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
+    private var reviewThisProduct: String = ""
+    private var rightBarButton = ButtonWithBadge(type: .system)
+    
     var presenret: ProductViewPresenterProtocol?
     
     // MARK: - Lifecycle
@@ -19,11 +24,24 @@ final class ProductViewController: UITableViewController {
         super.loadView()
         configurationView()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.title = presenret?.product.category
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        presenret?.getCartIndicator()
         presenret?.fetchReview()
+        notification.addObserver(self, selector: #selector(keyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+        super.viewDidAppear(animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        notification.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
     // MARK: - Configure Content
@@ -32,52 +50,44 @@ final class ProductViewController: UITableViewController {
         self.view.backgroundColor = .systemGray6
         configurationNavigationBar()
         
-        self.tableView.register(ProductViewCommentFormCell.self, forHeaderFooterViewReuseIdentifier: ProductViewCommentFormCell.reuseIdentifier)
+        tableView.register(ProductViewCommentFormCell.self, forHeaderFooterViewReuseIdentifier: ProductViewCommentFormCell.reuseIdentifier)
         
-        self.tableView.register(ProductViewTitleCell.self, forCellReuseIdentifier: ProductViewTitleCell.reuseIdentifier)
-        self.tableView.register(ProductViewImageCell.self, forCellReuseIdentifier: ProductViewImageCell.reuseIdentifier)
-        self.tableView.register(ProductViewDescriptionCell.self, forCellReuseIdentifier: ProductViewDescriptionCell.reuseIdentifier)
-        self.tableView.register(ProductViewPriceCell.self, forCellReuseIdentifier: ProductViewPriceCell.reuseIdentifier)
-        self.tableView.register(ProductViewCommentCell.self, forCellReuseIdentifier: ProductViewCommentCell.reuseIdentifier)
+        tableView.register(ProductViewTitleCell.self, forCellReuseIdentifier: ProductViewTitleCell.reuseIdentifier)
+        tableView.register(ProductViewImageCell.self, forCellReuseIdentifier: ProductViewImageCell.reuseIdentifier)
+        tableView.register(ProductViewDescriptionCell.self, forCellReuseIdentifier: ProductViewDescriptionCell.reuseIdentifier)
+        tableView.register(ProductViewPriceCell.self, forCellReuseIdentifier: ProductViewPriceCell.reuseIdentifier)
+        tableView.register(ProductViewCommentCell.self, forCellReuseIdentifier: ProductViewCommentCell.reuseIdentifier)
         
-        self.tableView.separatorStyle = .none
-        self.tableView.isEditing = false
-        self.tableView.keyboardDismissMode = .interactive
+        tableView.addGestureRecognizer(keyboardHideGesture)
+        
+        tableView.separatorStyle = .none
+        tableView.isEditing = false
+        tableView.keyboardDismissMode = .interactive
     }
     
     private func configurationNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.setHidesBackButton(false, animated: false)
-        
+        self.navigationItem.setHidesBackButton(true, animated: false)
+    
         let cartIcon = UIImage(systemName: "cart")
+        let chevronLeftIcon = UIImage(systemName: "chevron.left")
         
-        let back = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        let right = UIBarButtonItem(image: cartIcon, style: .plain, target: self, action: nil)
+        rightBarButton.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
+        rightBarButton.setImage(cartIcon, for: .normal)
+        rightBarButton.contentMode = .scaleToFill
+        rightBarButton.addTarget(self, action: #selector(pressedCartButton), for: .touchUpInside)
         
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = back
+        let back = UIBarButtonItem(image: chevronLeftIcon, style: .plain, target: self, action: #selector(pressedBackButton))
+        let right = UIBarButtonItem(customView: rightBarButton)
+        
+        self.navigationItem.leftBarButtonItem = back
         self.navigationItem.rightBarButtonItem = right
     }
 }
 
-extension ProductViewController: ProductViewProtocol {
-    
-    var bounds: CGRect {
-        return UIScreen.main.bounds
-    }
-    
-    func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
-    }
-    
-    func showErrorAlert(message: String) {
-        showAlert(message: message)
-    }
-    
-    func setReviews() {
-        self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-    }
-}
-
+// MARK: - Extension UITableViewDelegate & UITableViewDataSource
+//
 extension ProductViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -89,7 +99,7 @@ extension ProductViewController {
         case 0:
             return 4
         case 1:
-            return presenret?.numberOfReviews ?? 0
+            return presenret?.review.count ?? 0
         default:
             return 0
         }
@@ -219,9 +229,28 @@ extension ProductViewController {
     }
 }
 
+// MARK: - TextView Delegate
+//
+extension ProductViewController: UITextViewDelegate {
+
+    func textViewDidChange(_ textView: UITextView) {
+        reviewThisProduct = textView.text
+    }
+}
+
 // MARK: - Extension Button Actions
 //
 extension ProductViewController {
+    
+    @objc
+    private func pressedCartButton(_ sender: UIButton) {
+        presenret?.goToCartView()
+    }
+    
+    @objc
+    private func pressedBackButton(_ sender: UIButton) {
+        presenret?.backToCatalog()
+    }
     
     @objc
     private func pressedPriceButton(_ sender: UIButton) {
@@ -241,11 +270,42 @@ extension ProductViewController {
     }
 }
 
-// MARK: - TextView  Delegate
+// MARK: - Extension Keyboard Actions
 //
-extension ProductViewController: UITextViewDelegate {
+extension ProductViewController {
     
-    func textViewDidChange(_ textView: UITextView) {
-        reviewThisProduct = textView.text
+    @objc
+    private func keyboardDidShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else { return }
+        let keyboardFramRect: CGRect = keyboardFram.cgRectValue
+        let yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height + keyboardFramRect.height
+        self.tableView.setContentOffset(CGPoint(x: .zero, y: yOffset), animated: true)
+    }
+        
+    @objc
+    private func keyboardHide(_ sender: Any?) {
+        self.tableView.endEditing(true)
+    }
+}
+
+// MARK: - ProductView Protocol
+//
+extension ProductViewController: ProductViewProtocol {
+
+    func showRequestErrorAlert(error: Error) {
+        showAlert(message: error.localizedDescription, title: "error")
+    }
+    
+    func showErrorAlert(message: String) {
+        showAlert(message: message)
+    }
+    
+    func setReviews() {
+        self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+    }
+    
+    func updateCartIndicator(count: Int) {
+        rightBarButton.update(badgeCount: count)
     }
 }

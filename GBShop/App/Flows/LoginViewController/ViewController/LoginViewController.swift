@@ -26,12 +26,12 @@ final class LoginViewController: UIViewController {
     //
     override func loadView() {
         super.loadView()
-        
         configurationView()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,9 +51,10 @@ final class LoginViewController: UIViewController {
     // MARK: - Configure Content
     //
     private func configurationView() {
-        self.view = LoginView(frame: self.view.frame)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.isNavigationBarHidden = true
-        
+        self.view = LoginView(frame: self.view.frame)
+
         loginView.scrollView.addGestureRecognizer(keyboardHideGesture)
         
         loginView.loginTextField.delegate = self
@@ -64,9 +65,80 @@ final class LoginViewController: UIViewController {
         
         loginView.loginTextField.text = "Username"
         loginView.passwordTextField.text = "UserPassword"
-        
-        let point = CGPoint(x: loginView.frame.width/2, y: loginView.frame.height/3)
-        spinner = LoadingScreenWithSpinner(view: loginView, center: point)
+
+        spinner = LoadingScreenWithSpinner(view: loginView)
+    }
+}
+
+// MARK: - Extension TextField Delegate
+//
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.placeholder = ""
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField === loginView.loginTextField {
+            textField.placeholder = "Логин"
+        } else {
+            textField.placeholder = "Пароль"
+        }
+    }
+}
+
+// MARK: - Extension Button Actions
+//
+extension LoginViewController {
+    
+    @objc
+    private func pressedLoginButton(_ sender: UIButton) {
+        guard let login = loginView.loginTextField.text,
+              let password = loginView.passwordTextField.text,
+              !login.isEmpty,
+              !password.isEmpty else { return }
+        presenret?.auth(login: login, password: password)
+    }
+    
+    @objc
+    private func pressedRegistrationButton(_ sender: UIButton) {
+        presenret?.goToRegistrationView()
+    }
+}
+
+// MARK: - Extension Keyboard Actions
+//
+extension LoginViewController {
+    
+    @objc
+    private func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else {
+                  return
+        }
+        var keyboardFramRect: CGRect = keyboardFram.cgRectValue
+        keyboardFramRect = self.view.convert(keyboardFramRect, from: nil)
+        var contentInset: UIEdgeInsets = loginView.scrollView.contentInset
+        contentInset.bottom = keyboardFramRect.size.height
+        loginView.scrollView.contentInset = contentInset
+        loginView.scrollView.scrollIndicatorInsets = contentInset
+    }
+    
+    @objc
+    private func keyboardWillHide(notification: NSNotification) {
+        let contentInset: UIEdgeInsets = UIEdgeInsets.zero
+        loginView.scrollView.contentInset = contentInset
+        loginView.scrollView.scrollIndicatorInsets = contentInset
+    }
+    
+    @objc
+    private func keyboardHide(_ sender: Any?) {
+        loginView.scrollView.endEditing(true)
+        if let button = sender as? UIButton,
+           button === loginView.loginButton {
+            pressedLoginButton(button)
+        }
     }
 }
 
@@ -88,75 +160,5 @@ extension LoginViewController: LoginViewProtocol {
     
     func hideLoadingScreen() {
         spinner?.hide()
-    }
-}
-
-// MARK: - Keyboard Actions
-//
-extension LoginViewController {
-    
-    @objc
-    private func keyboardWillShow(notification: NSNotification) {
-        guard let userInfo = notification.userInfo,
-              let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else {
-                  return
-        }
-        var keyboardFramRect: CGRect = keyboardFram.cgRectValue
-        keyboardFramRect = self.view.convert(keyboardFramRect, from: nil)
-        var contentInset: UIEdgeInsets = loginView.scrollView.contentInset
-        contentInset.bottom = keyboardFramRect.size.height
-        loginView.scrollView.contentInset = contentInset
-    }
-    
-    @objc
-    private func keyboardWillHide(notification: NSNotification) {
-        let contentInset: UIEdgeInsets = UIEdgeInsets.zero
-        loginView.scrollView.contentInset = contentInset
-    }
-    
-    @objc
-    private func keyboardHide(_ sender: Any?) {
-        loginView.scrollView.endEditing(true)
-        if let button = sender as? UIButton,
-           button === loginView.loginButton {
-            pressedLoginButton(button)
-        }
-    }
-}
-
-// MARK: - TextField Delegate
-//
-extension LoginViewController: UITextFieldDelegate {
-    
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.placeholder = ""
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField === loginView.loginTextField {
-            textField.placeholder = "Логин"
-        } else {
-            textField.placeholder = "Пароль"
-        }
-    }
-}
-
-// MARK: - Button Actions
-//
-extension LoginViewController {
-    
-    @objc
-    private func pressedLoginButton(_ sender: UIButton) {
-        guard let login = loginView.loginTextField.text,
-              let password = loginView.passwordTextField.text,
-              !login.isEmpty,
-              !password.isEmpty else { return }
-        presenret?.auth(login: login, password: password)
-    }
-    
-    @objc
-    private func pressedRegistrationButton(_ sender: UIButton) {
-        presenret?.goToRegistrationView()
     }
 }

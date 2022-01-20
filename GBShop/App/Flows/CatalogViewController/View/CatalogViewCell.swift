@@ -104,7 +104,7 @@ final class CatalogViewCell: UICollectionViewCell {
         title.frame = CGRect(x: padding.left,
                              y: padding.top,
                              width: bounds.width - padding.left - padding.right,
-                             height: ceil(font.lineHeight))
+                             height: font.getFontHeight())
         
         imageView.frame = CGRect(x: imagePadding.left,
                                  y: title.frame.maxY + imagePadding.top,

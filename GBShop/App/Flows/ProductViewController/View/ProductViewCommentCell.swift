@@ -75,8 +75,8 @@ final class ProductViewCommentCell: UITableViewCell {
         let imagePadding = DesignConstants.shared.imagePadding
         let mediumFont = DesignConstants.shared.mediumFont
         let smallFont = DesignConstants.shared.smallFont
-        let widthDeleteButton = ceil(mediumFont.lineHeight)
-        let heightDeleteButton = ceil(mediumFont.lineHeight)
+        let widthDeleteButton = mediumFont.getFontHeight()
+        let heightDeleteButton = mediumFont.getFontHeight()
         
         username.frame = CGRect(x: padding.left,
                                 y: padding.top,

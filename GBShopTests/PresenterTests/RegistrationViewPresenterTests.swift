@@ -127,11 +127,14 @@ extension RegistrationViewPresenterTests {
         XCTAssertTrue(view.hideFlag)
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
         XCTAssertEqual(router.messagePushCatalog, "success")
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -153,11 +156,14 @@ extension RegistrationViewPresenterTests {
         XCTAssertFalse(view.hideFlag)
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
         XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopCatalog, nil)
-        XCTAssertEqual(router.messageProduct, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
 }

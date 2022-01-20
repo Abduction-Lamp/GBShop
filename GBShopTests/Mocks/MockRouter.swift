@@ -11,7 +11,7 @@ import UIKit
 
 
 class MockRouter: RouterProtocol {
-
+    
     private let fake = FakeData()
 
     var navigation: UINavigationController?
@@ -26,15 +26,17 @@ class MockRouter: RouterProtocol {
         self.expectation.fulfill()
     }
     
-    var messageRegistration: String?
+    var messagePushRegistration: String?
     func pushRegistrationViewController() {
-        messageRegistration = "success"
+        messagePushRegistration = "success"
         self.expectation.fulfill()
     }
     
-    var messageUserPage: String?
+    var messagePushUserPage: String?
     func pushUserPageViewController(user: User, token: String) {
-        messageUserPage = "success"
+        if (token == fake.token) {
+            messagePushUserPage = "success"
+        }
         self.expectation.fulfill()
     }
     
@@ -46,17 +48,39 @@ class MockRouter: RouterProtocol {
         self.expectation.fulfill()
     }
     
-    var messageProduct: String?
-    func pushProductViewController(user: User, token: String, product: Product) {
-        if (user == fake.user) && (token == fake.token) && (product == fake.product) {
-            messageProduct = "success"
+    var messagePopToCatalogWithCart: String?
+    func popToCatalogViewController(cart: Cart) {
+        messagePopToCatalogWithCart = "success"
+        self.expectation.fulfill()
+    }
+    
+    var messagePopToCatalogWithUser: String?
+    func popToCatalogViewController(user: User, token: String) {
+        if (token == fake.token) {
+            messagePopToCatalogWithUser = "success"
         }
         self.expectation.fulfill()
     }
     
-    var messagePopCatalog: String?
-    func popToCatalogViewController(user: User, token: String) {
-        messagePopCatalog = "success"
+    var messagePushProduct: String?
+    func pushProductViewController(user: User, token: String, product: Product, cart: Cart) {
+        if (token == fake.token) {
+            messagePushProduct = "success"
+        }
+        self.expectation.fulfill()
+    }
+    
+    var messagePushCart: String?
+    func pushCartViewController(user: User, token: String, cart: Cart) {
+        if (token == fake.token) {
+            messagePushCart = "success"
+        }
+        self.expectation.fulfill()
+    }
+    
+    var messagePopToBackFromCart: String?
+    func popToBackFromCartViewController(cart: Cart) {
+        messagePopToBackFromCart = "success"
         self.expectation.fulfill()
     }
     

@@ -1,8 +1,8 @@
 //
-//  ProductViewPresenterTests.swift
+//  CartViewPresenterTests.swift
 //  GBShopTests
 //
-//  Created by Владимир on 30.12.2021.
+//  Created by Владимир on 17.01.2022.
 //
 
 import XCTest
@@ -11,14 +11,12 @@ import Alamofire
 
 // MARK: - Mock Entity
 //
-class MockProductView: UIViewController, ProductViewProtocol {
-
-    var presenret: ProductViewPresenterProtocol?
-
+class MockCartView: UIViewController, CartViewProtocol {
+    
     let fake = FakeData()
     
     var expectation = XCTestExpectation(description: "[ TEST MockProductView ]")
-    var expectationSetReview = XCTestExpectation(description: "[ TEST MockProductView SetReview()]")
+//    var expectationSetReview = XCTestExpectation(description: "[ TEST MockProductView SetReview()]")
     
     var error: String?
     func showRequestErrorAlert(error: Error) {
@@ -32,53 +30,47 @@ class MockProductView: UIViewController, ProductViewProtocol {
         self.expectation.fulfill()
     }
     
-    var messageSetReview: String?
-    func setReviews() {
-        messageSetReview = "success"
-        self.expectation.fulfill()
-        self.expectationSetReview.fulfill()
-    }
-
-    var countUpdateCartIndicator: Int?
-    func updateCartIndicator(count: Int) {
-        self.countUpdateCartIndicator = count
+    var messageUpdataCart: String?
+    func updataCart() {
+        messageUpdataCart = "success"
         self.expectation.fulfill()
     }
+    
+    var messageUpdataCartWithIndex: Int?
+    func updataCart(index: Int) {
+        messageUpdataCartWithIndex = index
+        self.expectation.fulfill()
+    }
+    
 }
 
-// MARK: - TESTS
-//
-class ProductViewPresenterTests: XCTestCase {
-    
+class CartViewPresenterTests: XCTestCase {
+
     let fake = FakeData()
     
     var router: MockRouter!
-    var view: MockProductView!
+    var view: MockCartView!
     var network: RequestFactoryProtocol!
-    var presenter: ProductViewPresenter!
-    var cart: Cart!
+    var presenter: CartViewPresenter!
     
     override func setUpWithError() throws {
         router = MockRouter()
-        view = MockProductView()
-        cart = Cart()
+        view = MockCartView()
         network = MockNetworkRequest()
-
-        presenter = ProductViewPresenter(router: router,
-                                         view: view,
-                                         network: network,
-                                         user: fake.user,
-                                         token: fake.token,
-                                         product: fake.product,
-                                         cart: cart)
+        
+        presenter = CartViewPresenter(router: router,
+                                      view: view,
+                                      network: network,
+                                      user: fake.user,
+                                      token: fake.token,
+                                      cart: fake.cart)
     }
 
     override func tearDownWithError() throws {
+        router = nil
         view = nil
         network = nil
-        router = nil
         presenter = nil
-        cart = nil
     }
 
     func testIsNotNill() throws {
@@ -86,17 +78,16 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertNotNil(network, "Network component is not nil")
         XCTAssertNotNil(router, "Router component is not nil")
         XCTAssertNotNil(presenter, "Presenter component is not nil")
-        XCTAssertNotNil(cart, "Cart component is not nil")
+        XCTAssertNotNil(presenter.cart, "Cart at to Presenter component is not nil")
     }
     
-    func testProductViewPresenterGetUserInfo() throws {
-        let user = presenter.getUserInfo()
+    func testCartViewPresenter() throws {
+        XCTAssertEqual(presenter.cart, fake.cart)
         
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(user, fake.user)
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
         
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
@@ -110,15 +101,18 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterAddToCartSuccess() throws {
-        presenter.addToCart()
+    func testCartViewPresenterAdd() throws {
+
+        presenter.addProductToCart(index: 1)
         wait(for: [self.view.expectation], timeout: 2.0)
         
+        XCTAssertEqual(presenter.cart, fake.cartPlusOneProduct)
+
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, 4)
-        
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, 1)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -131,16 +125,18 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterAddToCartFailure() throws {
-        presenter = ProductViewPresenter(router: router, view: view, network: network, user: fake.user, token: "token", product: fake.product, cart: fake.cart)
-        presenter.addToCart()
+    func testCartViewPresenterAddFailure() throws {
+
+        presenter.addProductToCart(index: 2)
         wait(for: [self.view.expectation], timeout: 2.0)
         
-        XCTAssertEqual(view.error, "error")
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
+        XCTAssertEqual(presenter.cart, fake.cart)
+
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, "Что-то пошло не так")
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -153,15 +149,42 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterFetchReview() throws {
-        presenter.fetchReview()
+    func testCartViewPresenterAddFailureMore() throws {
+
+        presenter.addProductToCart(index: 41)
         wait(for: [self.view.expectation], timeout: 2.0)
         
+        XCTAssertEqual(presenter.cart, fake.cart)
+
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, "Что-то пошло не так")
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+    }
+    
+    func testCartViewPresenterDelete() throws {
+
+        presenter.removeProductFromCart(index: 1)
+        wait(for: [self.view.expectation], timeout: 2.0)
+        
+        XCTAssertEqual(presenter.cart, fake.cartMinusOneProduct)
+
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, "success")
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, 1)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -174,16 +197,18 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterFetchReviewFailure() throws {
-        presenter = ProductViewPresenter(router: router, view: view, network: network, user: fake.user, token: fake.token, product: fake.product2, cart: fake.cart)
-        presenter.fetchReview()
+    func testCartViewPresenterDeleteFailure() throws {
+
+        presenter.removeProductFromCart(index: 2)
         wait(for: [self.view.expectation], timeout: 2.0)
         
-        XCTAssertEqual(view.error, "error")
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
+        XCTAssertEqual(presenter.cart, fake.cart)
+
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, "Что-то пошло не так")
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -196,14 +221,42 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterAddReview() throws {
-        presenter.addReview("test")
+    func testCartViewPresenterDeleteFailureMore() throws {
+
+        presenter.removeProductFromCart(index: 222)
         wait(for: [self.view.expectation], timeout: 2.0)
         
+        XCTAssertEqual(presenter.cart, fake.cart)
+
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, "Что-то пошло не так")
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+    }
+    
+    func testCartViewPresenterDeleteItem() throws {
+
+        presenter.removeItemFromCart(index: 1)
+        wait(for: [self.view.expectation], timeout: 2.0)
+        
+        XCTAssertEqual(presenter.cart, fake.cartMinusOneProduct)
+
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, "success")
-        
+        XCTAssertEqual(view.messageUpdataCart, "success")
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -216,16 +269,18 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterAddReviewFailure() throws {
-        presenter = ProductViewPresenter(router: router, view: view, network: network, user: fake.user, token: "token", product: fake.product, cart: fake.cart)
-        presenter.addReview("test")
+    func testCartViewPresenterDeleteItemFailure() throws {
+
+        presenter.removeItemFromCart(index: 2)
         wait(for: [self.view.expectation], timeout: 2.0)
         
-        XCTAssertEqual(view.error, "error")
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
+        XCTAssertEqual(presenter.cart, fake.cart)
+
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, "Не удалось удалить товар из карзины")
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -238,16 +293,42 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterRemoveReview() throws {
-        presenter.review = fake.reviewByProductViewModel
-        presenter.removeReview(id: 3)
+    func testCartViewPresenterDeleteItemFailureMore() throws {
+
+        presenter.removeItemFromCart(index: 222)
         wait(for: [self.view.expectation], timeout: 2.0)
         
+        XCTAssertEqual(presenter.cart, fake.cart)
+
+        XCTAssertEqual(view.error, nil)
+        XCTAssertEqual(view.message, "Не удалось удалить товар из карзины")
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
+        XCTAssertEqual(router.messageRoot, nil)
+    }
+    
+    func testCartViewPresenterDeleteAll() throws {
+
+        presenter.removeAll()
+        wait(for: [self.view.expectation], timeout: 2.0)
+        
+        XCTAssertEqual(presenter.cart, Cart())
+
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, "success")
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
+        XCTAssertEqual(view.messageUpdataCart, "success")
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -260,16 +341,18 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterRemoveReviewMessageId() throws {
-        presenter.review = fake.reviewByProductViewModel
-        presenter.removeReview(id: 1)
+    func testCartViewPresenterBuy() throws {
+
+        presenter.buy()
         wait(for: [self.view.expectation], timeout: 2.0)
         
+        XCTAssertEqual(presenter.cart, Cart())
+
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, "success")
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
+        XCTAssertEqual(view.messageUpdataCart, "success")
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -282,37 +365,18 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterRemoveReviewFailure() throws {
-        presenter = ProductViewPresenter(router: router, view: view, network: network, user: fake.user, token: "token", product: fake.product, cart: fake.cart)
-        presenter.removeReview(id: 1)
+    func testCartViewPresenterFetchCart() throws {
+
+        presenter.fetchCart()
         wait(for: [self.view.expectation], timeout: 2.0)
         
-        XCTAssertEqual(view.error, "error")
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
-        XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messagePushRegistration, nil)
-        XCTAssertEqual(router.messagePushUserPage, nil)
-        XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
-        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
-        XCTAssertEqual(router.messagePushProduct, nil)
-        XCTAssertEqual(router.messagePushCart, nil)
-        XCTAssertEqual(router.messagePopToBackFromCart, nil)
-        XCTAssertEqual(router.messageRoot, nil)
-    }
-    
-    func testProductViewPresenterGetCartIndicator() throws {
-        presenter.getCartIndicator()
-        wait(for: [self.view.expectation], timeout: 2.0)
-        
+        XCTAssertEqual(presenter.cart, fake.cart)
+
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, 0)
-        
+        XCTAssertEqual(view.messageUpdataCart, "success")
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -325,57 +389,16 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messageRoot, nil)
     }
     
-    func testProductViewPresenterUpdatatCart() throws {
-        presenter.updateCart(cart: fake.cart)
-        wait(for: [self.view.expectation], timeout: 2.0)
-        
-        XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, 3)
-        
-        XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messagePushRegistration, nil)
-        XCTAssertEqual(router.messagePushUserPage, nil)
-        XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
-        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
-        XCTAssertEqual(router.messagePushProduct, nil)
-        XCTAssertEqual(router.messagePushCart, nil)
-        XCTAssertEqual(router.messagePopToBackFromCart, nil)
-        XCTAssertEqual(router.messageRoot, nil)
-    }
-    
-    func testProductViewPresenterBackToCatalog() throws {
-        presenter.backToCatalog()
+    func testCartViewPresenterBackTo() throws {
+
+        presenter.backTo()
         wait(for: [self.router.expectation], timeout: 2.0)
-        
+
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
-        XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messagePushRegistration, nil)
-        XCTAssertEqual(router.messagePushUserPage, nil)
-        XCTAssertEqual(router.messagePushCatalog, nil)
-        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
-        XCTAssertEqual(router.messagePopToCatalogWithCart, "success")
-        XCTAssertEqual(router.messagePushProduct, nil)
-        XCTAssertEqual(router.messagePushCart, nil)
-        XCTAssertEqual(router.messagePopToBackFromCart, nil)
-        XCTAssertEqual(router.messageRoot, nil)
-    }
-    
-    func testProductViewPresenterGoToCart() throws {
-        presenter.goToCartView()
-        wait(for: [self.router.expectation], timeout: 2.0)
-        
-        XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, nil)
-        XCTAssertEqual(view.messageSetReview, nil)
-        XCTAssertEqual(view.countUpdateCartIndicator, nil)
-        
+        XCTAssertEqual(view.messageUpdataCart, nil)
+        XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
+
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messagePushRegistration, nil)
         XCTAssertEqual(router.messagePushUserPage, nil)
@@ -383,8 +406,8 @@ class ProductViewPresenterTests: XCTestCase {
         XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
         XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
         XCTAssertEqual(router.messagePushProduct, nil)
-        XCTAssertEqual(router.messagePushCart, "success")
-        XCTAssertEqual(router.messagePopToBackFromCart, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, "success")
         XCTAssertEqual(router.messageRoot, nil)
     }
 }

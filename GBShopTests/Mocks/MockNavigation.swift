@@ -25,7 +25,9 @@ class MockNavigation: UINavigationController {
     
     override func popToRootViewController(animated: Bool) -> [UIViewController]? {
         let initVC = super.popToRootViewController(animated: animated)
-        self.presentedVC = initVC?.first
+        self.presentedVC = self.viewControllers.first
         return initVC
     }
+    
+    
 }

@@ -11,9 +11,10 @@ import UIKit
 // MARK: - Protools
 //
 protocol ProductViewProtocol: AbstractViewController {
-    var bounds: CGRect { get }
-    
     func setReviews()
+    func updateCartIndicator(count: Int)
+    
+    var presenret: ProductViewPresenterProtocol? { get set }
 }
 
 protocol ProductViewPresenterProtocol: AnyObject {
@@ -22,15 +23,19 @@ protocol ProductViewPresenterProtocol: AnyObject {
          network: RequestFactoryProtocol,
          user: User,
          token: String,
-         product: Product)
+         product: Product,
+         cart: Cart)
     
     var product: ProductViewModel { get set }
     var review: [ReviewViewModel] { get set }
-    var numberOfReviews: Int { get }
     
     func getUserInfo() -> User
+    func getCartIndicator()
+    func updateCart(cart: Cart)
     
-    func goToCart()
+    func backToCatalog()
+    
+    func goToCartView()
     func addToCart()
     
     func fetchReview()
@@ -49,18 +54,29 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     private let user: User
     private let token: String
     
+    private var cart: Cart
+
     var product: ProductViewModel
     var review: [ReviewViewModel] = []
-    var numberOfReviews: Int { review.count }
 
     // MARK: Initialization
-    init(router: RouterProtocol, view: ProductViewProtocol, network: RequestFactoryProtocol, user: User, token: String, product: Product) {
+    init(router: RouterProtocol,
+         view: ProductViewProtocol,
+         network: RequestFactoryProtocol,
+         user: User,
+         token: String,
+         product: Product,
+         cart: Cart) {
+        
         self.router = router
         self.view = view
         self.network = network
+        
         self.user = user
         self.token = token
-        self.product = ProductViewModel(bounds: view.bounds, product: product)
+        
+        self.product = ProductViewModel(bounds: UIScreen.main.bounds, product: product)
+        self.cart = cart
     }
 }
 
@@ -70,8 +86,21 @@ extension ProductViewPresenter {
         return user
     }
     
-    func goToCart() {
-        return
+    func getCartIndicator() {
+        view?.updateCartIndicator(count: cart.totalCartCount)
+    }
+    
+    func updateCart(cart: Cart) {
+        self.cart = cart
+        view?.updateCartIndicator(count: cart.totalCartCount)
+    }
+    
+    func backToCatalog() {
+        router?.popToCatalogViewController(cart: cart)
+    }
+    
+    func goToCartView() {
+        router?.pushCartViewController(user: user, token: token, cart: cart)
     }
     
     func addToCart() {
@@ -81,14 +110,20 @@ extension ProductViewPresenter {
         }
         
         let request = network.makeCartRequestFactory()
-        request.add(productId: product.id, owner: user.id, token: token) { response in
+        request.addProduct(productId: product.id, owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        self.view?.showErrorAlert(message: "В корзину добавлено: \(self.product.titleCell.value)")
+                        if let newCart = result.cart {
+                            self.cart.items = newCart
+                            self.view?.updateCartIndicator(count: self.cart.totalCartCount)
+                        } else {
+                            self.view?.showErrorAlert(message: "Карзина пуста")
+                        }
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }
@@ -99,7 +134,7 @@ extension ProductViewPresenter {
             }
         }
     }
-    
+  
     func fetchReview() {
         logging(.funcStart)
         defer {
@@ -109,14 +144,14 @@ extension ProductViewPresenter {
         let request = network.makeReviewRequestFactory()
         request.reviewByProduct(id: product.id) { [weak self] response in
             guard let self = self else { return }
+            
             switch response.result {
             case .success(let result):
                 logging("[\(self) result message: \(result.message)]")
                 
                 if result.result == 1 {
-                    if let reviews = result.review,
-                       let bounds = self.view?.bounds {
-                        self.review = reviews.map({ ReviewViewModel(bounds: bounds, review: $0) })
+                    if let reviews = result.review {
+                        self.review = reviews.map({ ReviewViewModel(bounds: UIScreen.main.bounds, review: $0) })
                         DispatchQueue.main.async {
                             self.view?.setReviews()
                         }
@@ -154,15 +189,15 @@ extension ProductViewPresenter {
                                date: Date().timeIntervalSince1970)
         
         let request = network.makeReviewRequestFactory()
-        request.reviewAdd(review: newReview, token: token) { response in
+        request.reviewAdd(review: newReview, token: token) { [weak self] response in
+            guard let self = self else { return }
             
             switch response.result {
             case .success(let result):
                 logging("[\(self) result message: \(result.message)]")
                 if result.result == 1,
-                   let newReview = result.review?.first,
-                   let bounds = self.view?.bounds {
-                    self.review.append(ReviewViewModel(bounds: bounds, review: newReview))
+                   let newReview = result.review?.first {
+                    self.review.append(ReviewViewModel(bounds: UIScreen.main.bounds, review: newReview))
                     DispatchQueue.main.async {
                         self.view?.setReviews()
                     }
@@ -177,7 +212,6 @@ extension ProductViewPresenter {
                     self.view?.showRequestErrorAlert(error: error)
                 }
             }
-            
         }
     }
     
@@ -188,7 +222,8 @@ extension ProductViewPresenter {
         }
         
         let request = network.makeReviewRequestFactory()
-        request.reviewDelete(reviewId: id, userId: user.id, token: token) { response in
+        request.reviewDelete(reviewId: id, userId: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
             
             switch response.result {
             case .success(let result):

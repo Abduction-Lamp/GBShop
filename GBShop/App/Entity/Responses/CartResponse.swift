@@ -10,7 +10,7 @@ import Foundation
 struct CartResponse: Codable {
     let result: Int
     let message: String
-    let cart: [Product]?
+    let cart: [CartItem]?
 }
 
 extension CartResponse: CustomStringConvertible {
@@ -23,11 +23,7 @@ extension CartResponse: CustomStringConvertible {
         if let cart = self.cart {
             cart.forEach { item in
                 output += """
-                          product:  id:          \(item.id)
-                                    name:        \(item.name)
-                                    category:    \(item.category)
-                                    price:       \(item.price)
-                                    description: \(item.description ?? "")\n
+                          product: \(item.product.name) x \(item.quantity)\n
                           """
             }
         }

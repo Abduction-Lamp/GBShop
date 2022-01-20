@@ -10,7 +10,8 @@ import Kingfisher
 
 final class CatalogViewController: UICollectionViewController {
     
-    var cellSize = CGSize.zero
+    private var cellSize = CGSize.zero
+    private var rightBarButton = ButtonWithBadge(type: .system)
 
     var presenret: CatalogViewPresenterProtocol?
     
@@ -21,9 +22,15 @@ final class CatalogViewController: UICollectionViewController {
         configurationView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
     // MARK: - Configure Content
     //
     private func configurationView() {
+        self.collectionView.accessibilityIdentifier = "CatalogViewControllerCollectionView"
         configurationNavigationBar()
         
         self.collectionView.backgroundColor = .systemGray6
@@ -35,6 +42,7 @@ final class CatalogViewController: UICollectionViewController {
     }
     
     private func configurationNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.title = "Магазин"
         
         self.navigationController?.isNavigationBarHidden = false
@@ -42,9 +50,14 @@ final class CatalogViewController: UICollectionViewController {
         
         let personIcon = UIImage(systemName: "person")
         let cartIcon = UIImage(systemName: "cart")
+                
+        rightBarButton.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
+        rightBarButton.setImage(cartIcon, for: .normal)
+        rightBarButton.contentMode = .scaleToFill
+        rightBarButton.addTarget(self, action: #selector(pressedCartButton), for: .touchUpInside)
         
         let left = UIBarButtonItem(image: personIcon, style: .plain, target: self, action: #selector(pressedUserPageButton))
-        let right = UIBarButtonItem(image: cartIcon, style: .plain, target: self, action: nil)
+        let right = UIBarButtonItem(customView: rightBarButton)
         
         self.navigationItem.leftBarButtonItem = left
         self.navigationItem.rightBarButtonItem = right
@@ -69,6 +82,8 @@ final class CatalogViewController: UICollectionViewController {
     }
 }
 
+// MARK: - Extension UICollectionViewDelegate & UICollectionViewDataSource
+//
 extension CatalogViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -116,6 +131,8 @@ extension CatalogViewController {
     }
 }
 
+// MARK: - Extension UICollectionViewDelegateFlowLayout
+//
 extension CatalogViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,
@@ -154,6 +171,11 @@ extension CatalogViewController: UICollectionViewDelegateFlowLayout {
 extension CatalogViewController {
     
     @objc
+    private func pressedCartButton(_ sender: UIButton) {
+        presenret?.goToCartView()
+    }
+    
+    @objc
     private func pressedUserPageButton(_ sender: UIBarButtonItem) {
         presenret?.goToUserPageView()
     }
@@ -164,6 +186,8 @@ extension CatalogViewController {
     }
 }
 
+// MARK: - CatalogView Protocol
+//
 extension CatalogViewController: CatalogViewProtocol {
     
     func showRequestErrorAlert(error: Error) {
@@ -179,10 +203,6 @@ extension CatalogViewController: CatalogViewProtocol {
     }
     
     func updateCartIndicator(count: Int) {
-        (count < 1) ? (self.title = "Магазин") : (self.title = "В корзине [\(count)]")
-    }
-    
-    func updateUserDataInPresenter(user: User, token: String) {
-        presenret?.updateUserData(user: user, token: token)
+        rightBarButton.update(badgeCount: count)
     }
 }

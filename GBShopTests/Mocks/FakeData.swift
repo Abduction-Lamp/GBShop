@@ -17,6 +17,8 @@ final class FakeData {
     
     let token = "ED86EE70-124E-46DD-876B-4A4441F74575"
     
+    
+    
     let product = Product(id: 1,
                           name: "MacBook Pro",
                           category: "Ноутбук",
@@ -30,6 +32,7 @@ final class FakeData {
                           price: 250_000,
                           description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
                           imageURL: nil)
+    
     
     
     let catalog: [Section] = [
@@ -69,6 +72,8 @@ final class FakeData {
         ])
     ]
     
+    
+    
     let reviewByProduct: [Review] = [
         Review(id: 3,
                productId: 1,
@@ -103,6 +108,8 @@ final class FakeData {
                assessment: 5,
                date: 1638458528.926343)
     ]
+    
+    
     
     let reviewByUser: [Review] = [
         Review(id: 2,
@@ -139,6 +146,64 @@ final class FakeData {
                date: 1638372128.926343),
     ]
     
+    
     lazy var reviewByProductViewModel: [ReviewViewModel] = reviewByProduct.map { ReviewViewModel(bounds: CGRect(x: 0, y: 0, width: 500, height: 100), review: $0) }
     lazy var reviewByUserViewModel: [ReviewViewModel] = reviewByUser.map { ReviewViewModel(bounds: CGRect(x: 0, y: 0, width: 500, height: 100), review: $0) }
+    
+    
+    var cart: Cart = {
+        var newCart = Cart()
+        newCart.items = [
+            CartItem(product: Product(id: 4,
+                                      name: "PlayStation 4 Slim",
+                                      category: "Игровая приставка",
+                                      price: 44_500,
+                                      description: "500 ГБ HDD, черный",
+                                      imageURL: nil),
+                     quantity: 2),
+            CartItem(product: Product(id: 1,
+                                      name: "MacBook Pro",
+                                      category: "Ноутбук",
+                                      price: 250_000,
+                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                      imageURL: nil),
+                     quantity: 1)
+        ]
+        return newCart
+    }()
+    
+    var cartPlusOneProduct: Cart = {
+        var newCart = Cart()
+        newCart.items = [
+            CartItem(product: Product(id: 4,
+                                      name: "PlayStation 4 Slim",
+                                      category: "Игровая приставка",
+                                      price: 44_500,
+                                      description: "500 ГБ HDD, черный",
+                                      imageURL: nil),
+                     quantity: 2),
+            CartItem(product: Product(id: 1,
+                                      name: "MacBook Pro",
+                                      category: "Ноутбук",
+                                      price: 250_000,
+                                      description: "Экран 16 дюймов, Apple M1 Pro, 16 ГБ объединённой памяти, SSD‑накопитель 1 ТБ",
+                                      imageURL: nil),
+                     quantity: 2)
+        ]
+        return newCart
+    }()
+    
+    var cartMinusOneProduct: Cart = {
+        var newCart = Cart()
+        newCart.items = [
+            CartItem(product: Product(id: 4,
+                                      name: "PlayStation 4 Slim",
+                                      category: "Игровая приставка",
+                                      price: 44_500,
+                                      description: "500 ГБ HDD, черный",
+                                      imageURL: nil),
+                     quantity: 2)
+        ]
+        return newCart
+    }()
 }
