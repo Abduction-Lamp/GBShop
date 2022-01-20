@@ -9,17 +9,18 @@ import UIKit
 
 final class RegistrationViewController: UIViewController {
     
-    var presenret: RegistrationViewPresenterProtool?
-    
-    private let notifiction = NotificationCenter.default
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
     private var registrationView: RegistrationView {
         guard let view = self.view as? RegistrationView else {
             return RegistrationView(frame: self.view.frame)
         }
         return view
     }
+    private var spinner: LoadingScreenWithSpinner?
+    
+    private let notifiction = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
+    var presenret: RegistrationViewPresenterProtocol?
 
     // MARK: - Lifecycle
     //
@@ -55,10 +56,10 @@ final class RegistrationViewController: UIViewController {
         self.title = "Регистрация"
         
         registrationView.scrollView.addGestureRecognizer(keyboardHideGesture)
-        
         registrationView.creditCardTextField.delegate = self
-        
         registrationView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
+        
+        spinner = LoadingScreenWithSpinner(view: registrationView)
     }
 }
 
@@ -72,6 +73,14 @@ extension RegistrationViewController: RegistrationViewProtocol {
     
     func showErrorAlert(message: String) {
         showAlert(message: message, title: "Ошибка")
+    }
+    
+    func showLoadingScreen() {
+        spinner?.show()
+    }
+    
+    func hideLoadingScreen() {
+        spinner?.hide()
     }
 }
 
@@ -136,22 +145,7 @@ extension RegistrationViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard textField === registrationView.creditCardTextField,
-              let count = textField.text?.count,
-              let char = string.cString(using: String.Encoding.utf8) else {
-                  return false
-              }
-        
-        let backSpace = strcmp(char, "\\b")
-        if backSpace == -92 && count > 0 {
-            textField.text?.removeLast()
-            return false
-        }
-        
-        switch count {
-        case 0, 1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 18: break
-        case 4, 9, 14: textField.text?.append("-")
-        default: return false
-        }
-        return true
+              let chars = string.cString(using: .utf8) else { return false }
+        return registrationView.creditCardTextField.formatter(chars)
     }
 }

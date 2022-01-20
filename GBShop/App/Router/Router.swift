@@ -18,6 +18,10 @@ protocol RouterProtocol: AbstractRouterProtocol {
     func initialViewController()
     func pushRegistrationViewController()
     func pushUserPageViewController(user: User, token: String)
+    func pushCatalogViewController(user: User, token: String)
+    func popToCatalogViewController(user: User, token: String)
+    func pushProductViewController(user: User, token: String, product: Product)
+    
     func popToRootViewController()
 }
 
@@ -75,6 +79,54 @@ class Router: RouterProtocol {
         
         logging("[\(self) navigation: pushUserPageViewController]")
         navigation.pushViewController(userPageViewController, animated: true)
+    }
+    
+    func pushCatalogViewController(user: User, token: String) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        guard let navigation = self.navigation,
+              let catalogViewController = builder?.makeCatalogViewController(router: self, user: user, token: token) else {
+                  return
+              }
+        
+        logging("[\(self) navigation: pushCatalogViewController]")
+        navigation.pushViewController(catalogViewController, animated: true)
+    }
+    
+    func popToCatalogViewController(user: User, token: String) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        guard let navigation = self.navigation else { return }
+        let catalogViewController = navigation.viewControllers.first(where: { $0 is CatalogViewProtocol })
+        if let controller = catalogViewController as? CatalogViewController {
+            logging("[\(self) navigation: popToCatalogViewController]")
+            navigation.popToViewController(controller, animated: true)
+            controller.updateUserDataInPresenter(user: user, token: token)
+        } else {
+            logging("[\(self) navigation: popToRootViewController]")
+            navigation.popToRootViewController(animated: true)
+        }
+    }
+    
+    func pushProductViewController(user: User, token: String, product: Product) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        guard let navigation = self.navigation,
+              let productViewController = builder?.makeProductViewController(router: self, user: user, token: token, product: product) else {
+                  return
+              }
+        
+        logging("[\(self) navigation: pushProductViewController]")
+        navigation.pushViewController(productViewController, animated: true)
     }
     
     func popToRootViewController() {

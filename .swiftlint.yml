@@ -1,6 +1,7 @@
 excluded: 
   - Carthage
   - Pods
+  - GBShopTests
 
 disabled_rules:
   - trailing_whitespace
@@ -8,4 +9,4 @@ disabled_rules:
 line_length: 150
 file_length: 500
 function_body_length: 50
-function_parameter_count: 7
+function_parameter_count: 10

@@ -10,7 +10,12 @@ import UIKit
 protocol BuilderProtocol: AnyObject {
     func makeLoginViewController(router: RouterProtocol) -> UIViewController & LoginViewProtocol
     func makeRegistrationViewController(router: RouterProtocol) -> UIViewController & RegistrationViewProtocol
-    func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController
+    func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController & UserPageViewProtocol
+    func makeCatalogViewController(router: RouterProtocol, user: User, token: String) -> UICollectionViewController & CatalogViewProtocol
+    func makeProductViewController(router: RouterProtocol,
+                                   user: User,
+                                   token: String,
+                                   product: Product) -> UITableViewController & ProductViewProtocol
 }
 
 class BuilderViewController: BuilderProtocol {
@@ -22,7 +27,7 @@ class BuilderViewController: BuilderProtocol {
         }
         
         let viewController = LoginViewController()
-        let network = RequestFactory().makeAuthRequestFatory()
+        let network = RequestFactory().makeAuthRequestFactory()
         let presenter = LoginViewPresenter(router: router, view: viewController, network: network)
         viewController.presenret = presenter
         
@@ -45,7 +50,7 @@ class BuilderViewController: BuilderProtocol {
         return viewController
     }
     
-    func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController {
+    func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController & UserPageViewProtocol {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
@@ -57,6 +62,44 @@ class BuilderViewController: BuilderProtocol {
         viewController.presenret = presenter
         
         logging("[\(self) MAKE UserPageView Module]")
+        return viewController
+    }
+    
+    func makeCatalogViewController(router: RouterProtocol, user: User, token: String) -> UICollectionViewController & CatalogViewProtocol {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let layout = UICollectionViewFlowLayout()
+        let viewController = CatalogViewController(collectionViewLayout: layout)
+        let network = RequestFactory()
+        let presenter = CatalogViewPresenter(router: router, view: viewController, network: network, user: user, token: token)
+        viewController.presenret = presenter
+        
+        logging("[\(self) MAKE CatalogView Module]")
+        return viewController
+    }
+    
+    func makeProductViewController(router: RouterProtocol,
+                                   user: User,
+                                   token: String,
+                                   product: Product) -> UITableViewController & ProductViewProtocol {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let viewController = ProductViewController(style: .insetGrouped)
+        let network = RequestFactory()
+        let presenter = ProductViewPresenter(router: router,
+                                             view: viewController,
+                                             network: network,
+                                             user: user, token: token,
+                                             product: product)
+        viewController.presenret = presenter
+        
+        logging("[\(self) MAKE ProductView Module]")
         return viewController
     }
 }

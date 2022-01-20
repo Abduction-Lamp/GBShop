@@ -8,11 +8,12 @@
 import Foundation
 
 struct Product: Codable {
-    let id: Int
+    var id: Int
     let name: String
     let category: String
     let price: Double
     let description: String?
+    let imageURL: String?
 }
 
 extension Product: Equatable {

@@ -10,27 +10,16 @@ import Foundation
 struct CatalogResponse: Codable {
     let result: Int
     let message: String
-    let catalog: [Product]?
+    let catalog: [Section]?
 }
 
 extension CatalogResponse: CustomStringConvertible {
     
     var description: String {
-        var output = """
+        let output = """
                      result:    \(result)
                      message:   \(message)\n
                      """
-        if let catalog = self.catalog {
-            catalog.forEach { item in
-                output += """
-                          product:  id:          \(item.id)
-                                    name:        \(item.name)
-                                    category:    \(item.category)
-                                    price:       \(item.price)
-                                    description: \(item.description ?? "")\n
-                          """
-            }
-        }
         return output
     }
 }

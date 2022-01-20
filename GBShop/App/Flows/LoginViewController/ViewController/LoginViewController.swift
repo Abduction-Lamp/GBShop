@@ -9,18 +9,19 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
-    var presenret: LoginViewPresenterProtool?
-    
-    private let notification = NotificationCenter.default
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
     private var loginView: LoginView {
         guard let view = self.view as? LoginView else {
             return LoginView(frame: self.view.frame)
         }
         return view
     }
+    private var spinner: LoadingScreenWithSpinner?
     
+    private let notification = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
+    var presenret: LoginViewPresenterProtocol?
+
     // MARK: - Lifecycle
     //
     override func loadView() {
@@ -63,19 +64,30 @@ final class LoginViewController: UIViewController {
         
         loginView.loginTextField.text = "Username"
         loginView.passwordTextField.text = "UserPassword"
+        
+        let point = CGPoint(x: loginView.frame.width/2, y: loginView.frame.height/3)
+        spinner = LoadingScreenWithSpinner(view: loginView, center: point)
     }
 }
 
 // MARK: - LoginView Protocol
 //
 extension LoginViewController: LoginViewProtocol {
-    
+
     func showRequestErrorAlert(error: Error) {
         showAlert(message: error.localizedDescription, title: "error")
     }
     
     func showErrorAlert(message: String) {
         showAlert(message: message, title: "Ошибка")
+    }
+    
+    func showLoadingScreen() {
+        spinner?.show()
+    }
+    
+    func hideLoadingScreen() {
+        spinner?.hide()
     }
 }
 
@@ -145,6 +157,6 @@ extension LoginViewController {
     
     @objc
     private func pressedRegistrationButton(_ sender: UIButton) {
-        presenret?.pushRegistrationViewController()
+        presenret?.goToRegistrationView()
     }
 }

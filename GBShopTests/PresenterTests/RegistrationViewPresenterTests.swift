@@ -10,17 +10,28 @@ import Alamofire
 @testable import GBShop
 
 class MockRegistrationView: UIViewController, RegistrationViewProtocol {
-    var expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
+    var expectation = XCTestExpectation(description: "[ TEST MockRegistrationView ]")
     
     var error: String?
     func showRequestErrorAlert(error: Error) {
         self.error = "error"
         self.expectation.fulfill()
     }
+    
     var message: String?
     func showErrorAlert(message: String) {
         self.message = message
         self.expectation.fulfill()
+    }
+    
+    var showFlag = false
+    func showLoadingScreen() {
+        showFlag = !showFlag
+    }
+    
+    var hideFlag = false
+    func hideLoadingScreen() {
+        hideFlag = !hideFlag
     }
 }
 
@@ -28,6 +39,8 @@ class MockRegistrationView: UIViewController, RegistrationViewProtocol {
 //
 class RegistrationViewPresenterTests: XCTestCase {
 
+    let fake = FakeData()
+    
     var router: MockRouter!
     var view: MockRegistrationView!
     var network: UserRequestFactory!
@@ -98,21 +111,27 @@ extension RegistrationViewPresenterTests {
     
     func testRegistrationViewPresenterRegistrationSuccess() throws {
         
-        presenter.registration(firstName: "firstName",
-                               lastName: "lastName",
+        presenter.registration(firstName: fake.user.firstName,
+                               lastName: fake.user.lastName,
                                gender: 0,
-                               email: "email@email.ru",
-                               creditCard: "1111-1111-1111-1111",
-                               login: "login",
-                               password: "password")
+                               email: fake.user.email,
+                               creditCard: fake.user.creditCard,
+                               login: fake.user.login,
+                               password: fake.user.password)
         wait(for: [self.router.expectation], timeout: 2.0)
         
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, nil)
         
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
-        XCTAssertEqual(router.messageUserPage, "success")
+        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, "success")
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
     
@@ -130,9 +149,15 @@ extension RegistrationViewPresenterTests {
         XCTAssertEqual(view.error, nil)
         XCTAssertEqual(view.message, "Не верный формат E-mail")
         
+        XCTAssertFalse(view.showFlag)
+        XCTAssertFalse(view.hideFlag)
+        
         XCTAssertEqual(router.messageInitial, nil)
         XCTAssertEqual(router.messageRegistration, nil)
         XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopCatalog, nil)
+        XCTAssertEqual(router.messageProduct, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
 }
