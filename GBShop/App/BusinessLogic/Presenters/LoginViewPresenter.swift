@@ -9,17 +9,22 @@ import Foundation
 
 // MARK: - Protools
 //
-protocol LoginViewProtocol: AbstractViewController {}
+protocol LoginViewProtocol: AbstractViewController {
+    func showLoadingScreen()
+    func hideLoadingScreen()
+}
 
-protocol LoginViewPresenterProtool: AnyObject {
+protocol LoginViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory)
+    
     func auth(login: String, password: String)
-    func pushRegistrationViewController()
+    func goToRegistrationView()
 }
 
 // MARK: - LoginView Presenter
 //
-class LoginViewPresenter: LoginViewPresenterProtool {
+final class LoginViewPresenter: LoginViewPresenterProtocol {
+    
     private var router: RouterProtocol?
     private weak var view: LoginViewProtocol?
     private let network: AuthRequestFactory
@@ -35,22 +40,26 @@ class LoginViewPresenter: LoginViewPresenterProtool {
         defer {
             logging(.funcEnd)
         }
-
+        
+        self.view?.showLoadingScreen()
+        
         network.login(login: login, password: password) { [weak self] response in
             guard let self = self else { return }
             
             logging("[\(self) login: \(login), password: \(password)]")
             
             DispatchQueue.main.async {
+                self.view?.hideLoadingScreen()
+                
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
                         guard let user = result.user,
                               let token = result.token else {
-                               self.view?.showErrorAlert(message: result.message)
-                                  return
-                              }
+                            self.view?.showErrorAlert(message: result.message)
+                            return
+                        }
                         self.router?.pushCatalogViewController(user: user, token: token)
                     } else {
                         self.view?.showErrorAlert(message: result.message)
@@ -63,7 +72,7 @@ class LoginViewPresenter: LoginViewPresenterProtool {
         }
     }
     
-    func pushRegistrationViewController() {
+    func goToRegistrationView() {
         router?.pushRegistrationViewController()
     }
 }

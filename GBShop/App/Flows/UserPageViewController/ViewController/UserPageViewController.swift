@@ -9,10 +9,7 @@ import UIKit
 
 final class UserPageViewController: UIViewController {
     
-    var presenret: UserPageViewPresenterProtool?
-    
-    private let notifiction = NotificationCenter.default
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    private let desing = DesignConstants.shared
     
     private var userPageView: UserPageView {
         guard let view = self.view as? UserPageView else {
@@ -21,30 +18,35 @@ final class UserPageViewController: UIViewController {
         return view
     }
     
-    private lazy var changeBarButtonItem = UIBarButtonItem(title: "Изменить",
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(pressedСhangeButton))
-    private lazy var saveBarButtonItem = UIBarButtonItem(title: "Сохранить",
-                                                         style: .done,
-                                                         target: self,
-                                                         action: #selector(pressedSaveButton))
-    private lazy var cancelBarButtonItem = UIBarButtonItem(title: "Отменить",
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(pressedCancelButton))
+    private var spinner: LoadingScreenWithSpinner?
+    
+    private let notifiction = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
     private var isEditingUserData: Bool = false
 
+    private lazy var buckBarButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.setTitle(" Магазин", for: .normal)
+        button.tintColor = .systemBlue
+        button.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
+        button.addTarget(self, action: #selector(pressedBackButton), for: .touchUpInside)
+        button.sizeToFit()
+        return button
+    }()
+    private lazy var buckBarButtonItem = UIBarButtonItem(customView: buckBarButton)
+    private lazy var changeBarButtonItem = UIBarButtonItem(title: "Изменить", style: .plain, target: self, action: #selector(pressedСhangeButton))
+    private lazy var saveBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(pressedSaveButton))
+    private lazy var cancelBarButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(pressedCancelButton))
+
+    var presenret: UserPageViewPresenterProtocol?
+    
     // MARK: - Lifecycle
     //
     override func loadView() {
         super.loadView()
-        
         configurationView()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,6 +54,8 @@ final class UserPageViewController: UIViewController {
         
         notifiction.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notifiction.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,50 +69,36 @@ final class UserPageViewController: UIViewController {
     //
     private func configurationView() {
         self.view = UserPageView(frame: self.view.frame)
+        configurationNavigationBar()
         
-        self.navigationItem.setHidesBackButton(false, animated: false)
+        userPageView.scrollView.addGestureRecognizer(keyboardHideGesture)
+        userPageView.creditCardTextField.delegate = self
+        userPageView.logoutButton.addTarget(self, action: #selector(pressedLogOutButton), for: .touchUpInside)
+        
+        enabledUserDataView(isEnable: isEditingUserData)
+        
+        spinner = LoadingScreenWithSpinner(view: userPageView)
+    }
+    
+    private func configurationNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.isNavigationBarHidden = false
+        self.navigationItem.setHidesBackButton(true, animated: false)
+        self.navigationItem.leftBarButtonItem = buckBarButtonItem
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
         
         saveBarButtonItem.tintColor = .systemRed
-        
-        userPageView.scrollView.addGestureRecognizer(keyboardHideGesture)
-        
-        userPageView.creditCardTextField.delegate = self
-        
-        userPageView.logoutButton.addTarget(self, action: #selector(pressedLogOutButton), for: .touchUpInside)
     }
 }
 
-// MARK: - Extension UserPageView Protocol
+// MARK: - TextField Delegate
 //
-extension UserPageViewController: UserPageViewProtocol {
-        
-    func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
-    }
+extension UserPageViewController: UITextFieldDelegate {
     
-    func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
-    }
-    
-    func setUserData(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String) {
-        userPageView.firstNameTextField.text = firstName
-        userPageView.lastNameTextField.text = lastName
-        userPageView.genderSegmentControl.selectedSegmentIndex = gender
-        userPageView.emailTextField.text = email
-        userPageView.creditCardTextField.text = creditCard
-        userPageView.loginTextField.text = login
-        userPageView.passwordTextField.text = password
-    }
-    
-    func didChangeUserData() {
-        self.navigationItem.rightBarButtonItem = changeBarButtonItem
-        self.navigationItem.leftBarButtonItem = nil
-        self.navigationItem.setHidesBackButton(false, animated: true)
-
-        isEditingUserData = false
-        enabledUserDataView(isEnable: isEditingUserData)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField === userPageView.creditCardTextField,
+              let chars = string.cString(using: .utf8) else { return false }
+        return userPageView.creditCardTextField.formatter(chars)
     }
 }
 
@@ -123,7 +113,6 @@ extension UserPageViewController {
     
     @objc
     private func pressedСhangeButton(_ sender: UIBarButtonItem) {
-        self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.rightBarButtonItem = saveBarButtonItem
         self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         
@@ -152,15 +141,21 @@ extension UserPageViewController {
     
     @objc
     private func pressedCancelButton(_ sender: UIBarButtonItem) {
-        self.navigationItem.setHidesBackButton(false, animated: false)
+        self.navigationItem.leftBarButtonItem = buckBarButtonItem
         self.navigationItem.rightBarButtonItem = changeBarButtonItem
-        self.navigationItem.leftBarButtonItem = nil
-        
+    
         isEditingUserData = false
         enabledUserDataView(isEnable: isEditingUserData)
+        
         presenret?.getUserData()
     }
     
+    @objc
+    private func pressedBackButton(_ sender: UIBarButtonItem) {
+        presenret?.backToCatalog()
+    }
+    
+    // MARK: Suppotr methods
     private func enabledUserDataView(isEnable: Bool) {
         userPageView.genderSegmentControl.isEnabled = isEnable
         
@@ -173,13 +168,10 @@ extension UserPageViewController {
     }
     
     private func enabledTextField(_ textField: UITextField, isEnable: Bool) {
-        let font17 = UIFont(name: "NewYork-Regular", size: 17)
-        let font20 = UIFont(name: "NewYork-Regular", size: 20)
-        
         textField.isEnabled = isEnable
         textField.backgroundColor = isEnable ? .white : .systemGray6
         textField.borderStyle = isEnable ? .roundedRect : .none
-        textField.font = isEnable ? font17 : font20
+        textField.font = isEnable ? desing.mediumFont : desing.largeFont
     }
 }
 
@@ -212,13 +204,41 @@ extension UserPageViewController {
     }
 }
 
-// MARK: - TextField Delegate
+// MARK: - UserPageView Protocol
 //
-extension UserPageViewController: UITextFieldDelegate {
+extension UserPageViewController: UserPageViewProtocol {
+        
+    func showRequestErrorAlert(error: Error) {
+        showAlert(message: error.localizedDescription, title: "error")
+    }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard textField === userPageView.creditCardTextField,
-              let chars = string.cString(using: .utf8) else { return false }
-        return userPageView.creditCardTextField.formatter(chars)
+    func showErrorAlert(message: String) {
+        showAlert(message: message, title: "Ошибка")
+    }
+    
+    func setUserData(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String) {
+        userPageView.firstNameTextField.text = firstName
+        userPageView.lastNameTextField.text = lastName
+        userPageView.genderSegmentControl.selectedSegmentIndex = gender
+        userPageView.emailTextField.text = email
+        userPageView.creditCardTextField.text = creditCard
+        userPageView.loginTextField.text = login
+        userPageView.passwordTextField.text = password
+    }
+    
+    func didChangeUserData() {
+        self.navigationItem.rightBarButtonItem = changeBarButtonItem
+        self.navigationItem.leftBarButtonItem = buckBarButtonItem
+
+        isEditingUserData = false
+        enabledUserDataView(isEnable: isEditingUserData)
+    }
+    
+    func showLoadingScreen() {
+        spinner?.show()
+    }
+    
+    func hideLoadingScreen() {
+        spinner?.hide()
     }
 }

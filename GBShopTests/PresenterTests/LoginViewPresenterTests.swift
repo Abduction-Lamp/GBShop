@@ -12,6 +12,7 @@ import Alamofire
 // MARK: - Mock Entity
 //
 class MockLoginView: UIViewController, LoginViewProtocol {
+    
     var expectation = XCTestExpectation(description: "[ TEST MockLoginView ]")
     
     var error: String?
@@ -23,6 +24,16 @@ class MockLoginView: UIViewController, LoginViewProtocol {
     func showErrorAlert(message: String) {
         self.message = message
         self.expectation.fulfill()
+    }
+    
+    var showFlag = false
+    func showLoadingScreen() {
+        showFlag = !showFlag
+    }
+    
+    var hideFlag = false
+    func hideLoadingScreen() {
+        hideFlag = !hideFlag
     }
 }
 
@@ -63,11 +74,25 @@ extension LoginViewPresenterTest {
     }
     
     func testLoginViewPresenterAuthSuccess() throws {
-        presenter.auth(login: "login", password: "password")
-        wait(for: [self.view.expectation], timeout: 10.0)
+        presenter.auth(login: FakeData().user.login, password: FakeData().user.password)
+        wait(for: [self.router.expectation], timeout: 10.0)
         
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "success")
+        XCTAssertEqual(view.message, nil)
+        
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, "success")
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
+        XCTAssertEqual(router.messageRoot, nil)
     }
     
     func testLoginViewPresenterAuthFailure() throws {
@@ -76,14 +101,40 @@ extension LoginViewPresenterTest {
         
         XCTAssertEqual(view.message, nil)
         XCTAssertEqual(view.error, "error")
+        
+        XCTAssertTrue(view.showFlag)
+        XCTAssertTrue(view.hideFlag)
+        
+        XCTAssertEqual(router.messageInitial, nil)
+        XCTAssertEqual(router.messagePushRegistration, nil)
+        XCTAssertEqual(router.messagePushUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
+        XCTAssertEqual(router.messageRoot, nil)
     }
     
     func testLoginViewPresenterPushRegistration() throws {
-        presenter.pushRegistrationViewController()
+        presenter.goToRegistrationView()
+             
+        XCTAssertEqual(view.message, nil)
+        XCTAssertEqual(view.error, nil)
+        
+        XCTAssertFalse(view.showFlag)
+        XCTAssertFalse(view.hideFlag)
         
         XCTAssertEqual(router.messageInitial, nil)
-        XCTAssertEqual(router.messageRegistration, "success")
-        XCTAssertEqual(router.messageUserPage, nil)
+        XCTAssertEqual(router.messagePushRegistration, "success")
+        XCTAssertEqual(router.messagePushUserPage, nil)
+        XCTAssertEqual(router.messagePushCatalog, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithUser, nil)
+        XCTAssertEqual(router.messagePopToCatalogWithCart, nil)
+        XCTAssertEqual(router.messagePushProduct, nil)
+        XCTAssertEqual(router.messagePushCart, nil)
+        XCTAssertEqual(router.messagePopToBackFromCart, nil)
         XCTAssertEqual(router.messageRoot, nil)
     }
 }

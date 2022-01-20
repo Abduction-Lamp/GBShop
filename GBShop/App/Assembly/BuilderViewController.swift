@@ -7,14 +7,28 @@
 
 import UIKit
 
+// MARK: - Protocol
+//
 protocol BuilderProtocol: AnyObject {
+    
     func makeLoginViewController(router: RouterProtocol) -> UIViewController & LoginViewProtocol
     func makeRegistrationViewController(router: RouterProtocol) -> UIViewController & RegistrationViewProtocol
     func makeUserPageViewController(router: RouterProtocol, user: User, token: String) -> UIViewController & UserPageViewProtocol
     func makeCatalogViewController(router: RouterProtocol, user: User, token: String) -> UICollectionViewController & CatalogViewProtocol
+    func makeProductViewController(router: RouterProtocol,
+                                   user: User,
+                                   token: String,
+                                   product: Product,
+                                   cart: Cart) -> UITableViewController & ProductViewProtocol
+    func makeCartViewController(router: RouterProtocol,
+                                user: User,
+                                token: String,
+                                cart: Cart) -> UITableViewController & CartViewProtocol
 }
 
-class BuilderViewController: BuilderProtocol {
+// MARK: - Assembly
+//
+final class BuilderViewController: BuilderProtocol {
     
     func makeLoginViewController(router: RouterProtocol) -> UIViewController & LoginViewProtocol {
         logging(.funcStart)
@@ -74,6 +88,48 @@ class BuilderViewController: BuilderProtocol {
         viewController.presenret = presenter
         
         logging("[\(self) MAKE CatalogView Module]")
+        return viewController
+    }
+    
+    func makeProductViewController(router: RouterProtocol,
+                                   user: User,
+                                   token: String,
+                                   product: Product,
+                                   cart: Cart) -> UITableViewController & ProductViewProtocol {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let viewController = ProductViewController(style: .insetGrouped)
+        let network = RequestFactory()
+        let presenter = ProductViewPresenter(router: router,
+                                             view: viewController,
+                                             network: network,
+                                             user: user, token: token,
+                                             product: product,
+                                             cart: cart)
+        viewController.presenret = presenter
+        
+        logging("[\(self) MAKE ProductView Module]")
+        return viewController
+    }
+    
+    func makeCartViewController(router: RouterProtocol,
+                                user: User,
+                                token: String,
+                                cart: Cart) -> UITableViewController & CartViewProtocol {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let viewController = CartViewController(style: .insetGrouped)
+        let network = RequestFactory()
+        let presenter = CartViewPresenter(router: router, view: viewController, network: network, user: user, token: token, cart: cart)
+        viewController.presenret = presenter
+        
+        logging("[\(self) MAKE CartView Module]")
         return viewController
     }
 }

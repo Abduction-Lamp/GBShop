@@ -12,10 +12,37 @@ import Alamofire
 class ReviewResponseCodableTests: XCTestCase {
 
     let request = RequestFactory().makeReviewRequestFactory()
-    let expectation = XCTestExpectation(description: "Download https://salty-springs-77873.herokuapp.com/")
+    var expectation: XCTestExpectation!
+    var initialStateEexpectation: XCTestExpectation!
     
-    override func setUpWithError() throws { }
-    override func tearDownWithError() throws { }
+    override func setUpWithError() throws {
+        initialStateEexpectation = XCTestExpectation(description: "[ INITIAL STATE MOCK SERVER ]")
+        expectation = XCTestExpectation(description: "[ Test ]")
+        initialStateServer()
+    }
+    override func tearDownWithError() throws {
+        initialStateEexpectation = nil
+        expectation = nil
+    }
+    
+    // MARK: - SUPPORT: Сбрасывает мок-данные на сервере в исходное состояние
+    private func initialStateServer() {
+        AF.request("https://salty-springs-77873.herokuapp.com/mock/server/state/initial")
+            .responseJSON { response in
+                switch response.result {
+                case .success(let jsonObject):
+                    if let json = jsonObject as? [String: Any] {
+                        print(String(describing: "\n - [ INITIAL STATE MOCK SERVER ]: \(json["message"] ?? "nil")"))
+                    } else {
+                        XCTFail("server has not returned to its initial state")
+                    }
+                case .failure(let error):
+                    XCTFail(error.localizedDescription)
+                }
+                self.initialStateEexpectation.fulfill()
+            }
+        wait(for: [self.initialStateEexpectation], timeout: 5.0)
+    }
 }
 
 // MARK: - Review By Product
@@ -232,7 +259,7 @@ extension ReviewResponseCodableTests {
                                date: Date().timeIntervalSince1970)
 
         let expression = ReviewResponse(result: 0,
-                                        message: "Token усторел",
+                                        message: "Токен устарел",
                                         review: nil)
         let tokenToId2 = "token"
 
@@ -261,36 +288,7 @@ extension ReviewResponseCodableTests {
                                assessment: 5,
                                date: Date().timeIntervalSince1970)
         let expression = ReviewResponse(result: 0,
-                                        message: "Пользователь с ID = 12 не найден",
-                                        review: nil)
-        let tokenToId2 = "token"
-
-        request.reviewAdd(review: newReview, token: tokenToId2) { response in
-            switch response.result {
-            case .success(let review):
-                XCTAssertEqual(review.result, expression.result)
-                XCTAssertEqual(review.message, expression.message)
-                XCTAssertEqual(review.review, expression.review)
-            case .failure(let error):
-                print(error)
-                XCTFail(error.localizedDescription)
-            }
-            self.expectation.fulfill()
-        }
-        wait(for: [self.expectation], timeout: 10.0)
-    }
-
-    func testReviewAddResponseFailureAssessment() throws {
-        let newReview = Review(id: 0,
-                               productId: 1,
-                               productName: nil,
-                               userId: 2,
-                               userLogin: nil,
-                               comment: "test",
-                               assessment: 51,
-                               date: Date().timeIntervalSince1970)
-        let expression = ReviewResponse(result: 0,
-                                        message: "Ошибка в поле с оценкой",
+                                        message: "Токен устарел",
                                         review: nil)
         let tokenToId2 = "13AA24D9-ECF1-401A-8F32-B05EBC7E8E38"
 
@@ -345,7 +343,7 @@ extension ReviewResponseCodableTests {
 
     func testReviewDeleteResponseFailureToken() throws {
         let expression = ReviewResponse(result: 0,
-                                        message: "Token усторел",
+                                        message: "Токен устарел",
                                         review: nil)
         let tokenToId2 = "token"
 

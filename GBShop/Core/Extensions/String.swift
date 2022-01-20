@@ -5,7 +5,7 @@
 //  Created by Владимир on 21.12.2021.
 //
 
-import Foundation
+import UIKit
 
 extension String {
     
@@ -19,5 +19,16 @@ extension String {
         let cardRegEx = "[0-9]{4}+-[0-9]{4}+-[0-9]{4}+-[0-9]{4}"
         let cardPred = NSPredicate(format: "SELF MATCHES %@", cardRegEx)
         return cardPred.evaluate(with: self)
+    }
+    
+    func calculationTextBlockSize(width: CGFloat, font: UIFont) -> CGSize {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect,
+                                            options: [.usesLineFragmentOrigin, .usesFontLeading],
+                                            attributes: [NSAttributedString.Key.font: font],
+                                            context: nil)
+        
+        return CGSize(width: ceil(boundingBox.size.width),
+                      height: ceil(boundingBox.size.height + font.lineHeight))
     }
 }

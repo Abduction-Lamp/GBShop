@@ -9,9 +9,16 @@ import XCTest
 import UIKit
 @testable import GBShop
 
+
 class MockRouter: RouterProtocol {
     
+    private let fake = FakeData()
+
+    var navigation: UINavigationController?
+    var builder: BuilderProtocol?
+    
     var expectation = XCTestExpectation(description: "[ MockRouter INIT ]")
+    
     
     var messageInitial: String?
     func initialViewController() {
@@ -19,38 +26,62 @@ class MockRouter: RouterProtocol {
         self.expectation.fulfill()
     }
     
-    var messageRegistration: String?
+    var messagePushRegistration: String?
     func pushRegistrationViewController() {
-        messageRegistration = "success"
+        messagePushRegistration = "success"
         self.expectation.fulfill()
     }
     
-    var messageUserPage: String?
+    var messagePushUserPage: String?
     func pushUserPageViewController(user: User, token: String) {
-        if  (user.firstName == MockNetworkUserRequest.fakeUser.firstName) &&
-            (user.lastName == MockNetworkUserRequest.fakeUser.lastName) &&
-            (user.gender == MockNetworkUserRequest.fakeUser.gender) &&
-            (user.email == MockNetworkUserRequest.fakeUser.email) &&
-            (user.creditCard == MockNetworkUserRequest.fakeUser.creditCard) &&
-            (user.login == MockNetworkUserRequest.fakeUser.login) &&
-            (user.password == MockNetworkUserRequest.fakeUser.password) {
-            messageUserPage = "success"
-            self.expectation.fulfill()
+        if (token == fake.token) {
+            messagePushUserPage = "success"
         }
+        self.expectation.fulfill()
     }
     
-    var messageCatalog: String?
+    var messagePushCatalog: String?
     func pushCatalogViewController(user: User, token: String) {
-        if  (user.firstName == MockNetworkUserRequest.fakeUser.firstName) &&
-            (user.lastName == MockNetworkUserRequest.fakeUser.lastName) &&
-            (user.gender == MockNetworkUserRequest.fakeUser.gender) &&
-            (user.email == MockNetworkUserRequest.fakeUser.email) &&
-            (user.creditCard == MockNetworkUserRequest.fakeUser.creditCard) &&
-            (user.login == MockNetworkUserRequest.fakeUser.login) &&
-            (user.password == MockNetworkUserRequest.fakeUser.password) {
-            messageUserPage = "success"
-            self.expectation.fulfill()
+        if (token == fake.token) {
+            messagePushCatalog = "success"
         }
+        self.expectation.fulfill()
+    }
+    
+    var messagePopToCatalogWithCart: String?
+    func popToCatalogViewController(cart: Cart) {
+        messagePopToCatalogWithCart = "success"
+        self.expectation.fulfill()
+    }
+    
+    var messagePopToCatalogWithUser: String?
+    func popToCatalogViewController(user: User, token: String) {
+        if (token == fake.token) {
+            messagePopToCatalogWithUser = "success"
+        }
+        self.expectation.fulfill()
+    }
+    
+    var messagePushProduct: String?
+    func pushProductViewController(user: User, token: String, product: Product, cart: Cart) {
+        if (token == fake.token) {
+            messagePushProduct = "success"
+        }
+        self.expectation.fulfill()
+    }
+    
+    var messagePushCart: String?
+    func pushCartViewController(user: User, token: String, cart: Cart) {
+        if (token == fake.token) {
+            messagePushCart = "success"
+        }
+        self.expectation.fulfill()
+    }
+    
+    var messagePopToBackFromCart: String?
+    func popToBackFromCartViewController(cart: Cart) {
+        messagePopToBackFromCart = "success"
+        self.expectation.fulfill()
     }
     
     var messageRoot: String?
@@ -58,7 +89,4 @@ class MockRouter: RouterProtocol {
         messageRoot = "success"
         self.expectation.fulfill()
     }
-    
-    var navigation: UINavigationController?
-    var builder: BuilderProtocol?
 }

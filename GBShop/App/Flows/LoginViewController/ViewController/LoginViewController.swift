@@ -9,28 +9,29 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
-    var presenret: LoginViewPresenterProtool?
-    
-    private let notification = NotificationCenter.default
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
     private var loginView: LoginView {
         guard let view = self.view as? LoginView else {
             return LoginView(frame: self.view.frame)
         }
         return view
     }
+    private var spinner: LoadingScreenWithSpinner?
     
+    private let notification = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
+    var presenret: LoginViewPresenterProtocol?
+
     // MARK: - Lifecycle
     //
     override func loadView() {
         super.loadView()
-        
         configurationView()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,9 +51,10 @@ final class LoginViewController: UIViewController {
     // MARK: - Configure Content
     //
     private func configurationView() {
-        self.view = LoginView(frame: self.view.frame)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.isNavigationBarHidden = true
-        
+        self.view = LoginView(frame: self.view.frame)
+
         loginView.scrollView.addGestureRecognizer(keyboardHideGesture)
         
         loginView.loginTextField.delegate = self
@@ -63,56 +65,12 @@ final class LoginViewController: UIViewController {
         
         loginView.loginTextField.text = "Username"
         loginView.passwordTextField.text = "UserPassword"
+
+        spinner = LoadingScreenWithSpinner(view: loginView)
     }
 }
 
-// MARK: - LoginView Protocol
-//
-extension LoginViewController: LoginViewProtocol {
-    
-    func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
-    }
-    
-    func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
-    }
-}
-
-// MARK: - Keyboard Actions
-//
-extension LoginViewController {
-    
-    @objc
-    private func keyboardWillShow(notification: NSNotification) {
-        guard let userInfo = notification.userInfo,
-              let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else {
-                  return
-        }
-        var keyboardFramRect: CGRect = keyboardFram.cgRectValue
-        keyboardFramRect = self.view.convert(keyboardFramRect, from: nil)
-        var contentInset: UIEdgeInsets = loginView.scrollView.contentInset
-        contentInset.bottom = keyboardFramRect.size.height
-        loginView.scrollView.contentInset = contentInset
-    }
-    
-    @objc
-    private func keyboardWillHide(notification: NSNotification) {
-        let contentInset: UIEdgeInsets = UIEdgeInsets.zero
-        loginView.scrollView.contentInset = contentInset
-    }
-    
-    @objc
-    private func keyboardHide(_ sender: Any?) {
-        loginView.scrollView.endEditing(true)
-        if let button = sender as? UIButton,
-           button === loginView.loginButton {
-            pressedLoginButton(button)
-        }
-    }
-}
-
-// MARK: - TextField Delegate
+// MARK: - Extension TextField Delegate
 //
 extension LoginViewController: UITextFieldDelegate {
     
@@ -130,7 +88,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: - Button Actions
+// MARK: - Extension Button Actions
 //
 extension LoginViewController {
     
@@ -145,6 +103,62 @@ extension LoginViewController {
     
     @objc
     private func pressedRegistrationButton(_ sender: UIButton) {
-        presenret?.pushRegistrationViewController()
+        presenret?.goToRegistrationView()
+    }
+}
+
+// MARK: - Extension Keyboard Actions
+//
+extension LoginViewController {
+    
+    @objc
+    private func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFram = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue) else {
+                  return
+        }
+        var keyboardFramRect: CGRect = keyboardFram.cgRectValue
+        keyboardFramRect = self.view.convert(keyboardFramRect, from: nil)
+        var contentInset: UIEdgeInsets = loginView.scrollView.contentInset
+        contentInset.bottom = keyboardFramRect.size.height
+        loginView.scrollView.contentInset = contentInset
+        loginView.scrollView.scrollIndicatorInsets = contentInset
+    }
+    
+    @objc
+    private func keyboardWillHide(notification: NSNotification) {
+        let contentInset: UIEdgeInsets = UIEdgeInsets.zero
+        loginView.scrollView.contentInset = contentInset
+        loginView.scrollView.scrollIndicatorInsets = contentInset
+    }
+    
+    @objc
+    private func keyboardHide(_ sender: Any?) {
+        loginView.scrollView.endEditing(true)
+        if let button = sender as? UIButton,
+           button === loginView.loginButton {
+            pressedLoginButton(button)
+        }
+    }
+}
+
+// MARK: - LoginView Protocol
+//
+extension LoginViewController: LoginViewProtocol {
+
+    func showRequestErrorAlert(error: Error) {
+        showAlert(message: error.localizedDescription, title: "error")
+    }
+    
+    func showErrorAlert(message: String) {
+        showAlert(message: message, title: "Ошибка")
+    }
+    
+    func showLoadingScreen() {
+        spinner?.show()
+    }
+    
+    func hideLoadingScreen() {
+        spinner?.hide()
     }
 }

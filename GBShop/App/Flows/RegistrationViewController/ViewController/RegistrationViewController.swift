@@ -9,35 +9,33 @@ import UIKit
 
 final class RegistrationViewController: UIViewController {
     
-    var presenret: RegistrationViewPresenterProtool?
-    
-    private let notifiction = NotificationCenter.default
-    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
     private var registrationView: RegistrationView {
         guard let view = self.view as? RegistrationView else {
             return RegistrationView(frame: self.view.frame)
         }
         return view
     }
+    private var spinner: LoadingScreenWithSpinner?
+    
+    private let notifiction = NotificationCenter.default
+    private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+    
+    var presenret: RegistrationViewPresenterProtocol?
 
     // MARK: - Lifecycle
     //
     override func loadView() {
         super.loadView()
-        
         configurationView()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         notifiction.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notifiction.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,28 +48,27 @@ final class RegistrationViewController: UIViewController {
     // MARK: - Configure Content
     //
     private func configurationView() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.view = RegistrationView(frame: self.view.frame)
         self.navigationController?.isNavigationBarHidden = false
         self.title = "Регистрация"
         
         registrationView.scrollView.addGestureRecognizer(keyboardHideGesture)
-        
         registrationView.creditCardTextField.delegate = self
-        
         registrationView.registrationButton.addTarget(self, action: #selector(pressedRegistrationButton), for: .touchUpInside)
+        
+        spinner = LoadingScreenWithSpinner(view: registrationView)
     }
 }
 
-// MARK: - Extension RegistrationView Protocol
+// MARK: - TextField Delegate
 //
-extension RegistrationViewController: RegistrationViewProtocol {
+extension RegistrationViewController: UITextFieldDelegate {
     
-    func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
-    }
-    
-    func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField === registrationView.creditCardTextField,
+              let chars = string.cString(using: .utf8) else { return false }
+        return registrationView.creditCardTextField.formatter(chars)
     }
 }
 
@@ -130,13 +127,23 @@ extension RegistrationViewController {
     }
 }
 
-// MARK: - TextField Delegate
+// MARK: - RegistrationView Protocol
 //
-extension RegistrationViewController: UITextFieldDelegate {
+extension RegistrationViewController: RegistrationViewProtocol {
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard textField === registrationView.creditCardTextField,
-              let chars = string.cString(using: .utf8) else { return false }
-        return registrationView.creditCardTextField.formatter(chars)
+    func showRequestErrorAlert(error: Error) {
+        showAlert(message: error.localizedDescription, title: "error")
+    }
+    
+    func showErrorAlert(message: String) {
+        showAlert(message: message, title: "Ошибка")
+    }
+    
+    func showLoadingScreen() {
+        spinner?.show()
+    }
+    
+    func hideLoadingScreen() {
+        spinner?.hide()
     }
 }

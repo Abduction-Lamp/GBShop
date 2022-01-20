@@ -10,6 +10,7 @@ import Foundation
 // MARK: - Protools
 //
 protocol UserPageViewProtocol: AbstractViewController {
+    func didChangeUserData()
     func setUserData(firstName: String,
                      lastName: String,
                      gender: Int,
@@ -17,11 +18,14 @@ protocol UserPageViewProtocol: AbstractViewController {
                      creditCard: String,
                      login: String,
                      password: String)
-    func didChangeUserData()
+    func showLoadingScreen()
+    func hideLoadingScreen()
 }
 
-protocol UserPageViewPresenterProtool: AnyObject {
+protocol UserPageViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: UserPageViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
+    
+    func backToCatalog()
     func logout()
     func getUserData()
     func changeUserData(firstName: String,
@@ -35,7 +39,7 @@ protocol UserPageViewPresenterProtool: AnyObject {
 
 // MARK: - UserPageView Presenter
 //
-class UserPageViewPresenter: UserPageViewPresenterProtool {
+final class UserPageViewPresenter: UserPageViewPresenterProtocol {
     private var router: RouterProtocol?
     private weak var view: UserPageViewProtocol?
     private let network: RequestFactoryProtocol
@@ -72,6 +76,47 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                                    password: user.password)
         }
     }
+}
+
+extension UserPageViewPresenter: MakeUserFactory { }
+
+extension UserPageViewPresenter {
+    
+    func backToCatalog() {
+        router?.popToCatalogViewController(user: user, token: token)
+    }
+    
+    func logout() {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        self.view?.showLoadingScreen()
+        
+        let auth = network.makeAuthRequestFactory()
+        auth.logout(id: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
+            logging("[\(self) id: \(self.user.id) token: \(self.token)]")
+            
+            DispatchQueue.main.async {
+                self.view?.hideLoadingScreen()
+                
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        self.router?.popToRootViewController()
+                    } else {
+                        self.view?.showErrorAlert(message: result.message)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
     
     func getUserData() {
         logging(.funcStart)
@@ -91,35 +136,7 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                                    password: self.user.password)
         }
     }
-    
-    func logout() {
-        logging(.funcStart)
-        defer {
-            logging(.funcEnd)
-        }
-        
-        let auth = network.makeAuthRequestFactory()
-        auth.logout(id: user.id, token: token) { response in
-            
-            logging("[\(self) id: \(self.user.id) token: \(self.token)]")
-            
-            DispatchQueue.main.async {
-                switch response.result {
-                case .success(let result):
-                    logging("[\(self) result message: \(result.message)]")
-                    if result.result == 1 {
-                        self.router?.popToRootViewController()
-                    } else {
-                        self.view?.showErrorAlert(message: result.message)
-                    }
-                case .failure(let error):
-                    logging("[\(self) error: \(error.localizedDescription)]")
-                    self.view?.showRequestErrorAlert(error: error)
-                }
-            }
-        }
-    }
-    
+
     func changeUserData(firstName: String,
                         lastName: String,
                         gender: Int,
@@ -142,17 +159,21 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
                                          login: login,
                                          password: password) else { return }
         
+        self.view?.showLoadingScreen()
+        
         let userRequest = network.makeUserRequestFactory()
-        userRequest.change(user: newUserData, token: token) { response in
-            
+        userRequest.change(user: newUserData, token: token) { [weak self] response in
+            guard let self = self else { return }
             logging("[\(self) user: \(newUserData) token: \(self.token)]")
             
             DispatchQueue.main.async {
+                self.view?.hideLoadingScreen()
+                
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
-                    if let resulNewUserData = result.user {
-                        self.user = resulNewUserData
+                    if let resultNewUserData = result.user {
+                        self.user = resultNewUserData
                         self.view?.didChangeUserData()
                     } else {
                         self.view?.showErrorAlert(message: result.message)
@@ -165,8 +186,6 @@ class UserPageViewPresenter: UserPageViewPresenterProtool {
         }
     }
 }
-
-extension UserPageViewPresenter: MakeUserFactory { }
 
 extension UserPageViewPresenter: CustomStringConvertible {
     

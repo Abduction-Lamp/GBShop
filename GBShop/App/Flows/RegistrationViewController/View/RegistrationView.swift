@@ -9,6 +9,8 @@ import UIKit
 
 final class RegistrationView: UIView {
     
+    private let design = DesignConstants.shared
+    
     private(set) var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -25,11 +27,15 @@ final class RegistrationView: UIView {
     }()
     
     private(set) lazy var firstNameTextField: UITextField = {
-        return makeTextFildView(placeholder: "Имя")
+        let textField = design.makeTextFildView(placeholder: "Имя")
+        textField.accessibilityIdentifier = "firstNameTextField"
+        return textField
     }()
 
     private(set) lazy var lastNameTextField: UITextField = {
-        return makeTextFildView(placeholder: "Фамилия")
+        let textField = design.makeTextFildView(placeholder: "Фамилия")
+        textField.accessibilityIdentifier = "lastNameTextField"
+        return textField
     }()
     
     private(set) var genderSegmentControl: UISegmentedControl = {
@@ -39,76 +45,81 @@ final class RegistrationView: UIView {
         segment.insertSegment(withTitle: "Мужчина", at: 0, animated: false)
         segment.insertSegment(withTitle: "Женщина", at: 1, animated: false)
         segment.selectedSegmentIndex = 0
+        segment.accessibilityIdentifier = "genderSegmentControl"
         return segment
     }()
     
     private(set) lazy var emailTextField: UITextField = {
-        return makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
+        let textField = design.makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
+        textField.accessibilityIdentifier = "emailTextField"
+        return textField
     }()
 
-    private(set) var creditCardTextField: CreditCardTextField = {
-        let textfield = CreditCardTextField()
-        textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = UIFont(name: "NewYork-Regular", size: 17)
-        textfield.autocapitalizationType = .none
-        textfield.autocorrectionType = .no
-        textfield.clearButtonMode = .whileEditing
-        textfield.textAlignment = .left
-        textfield.textColor = .black
-        textfield.backgroundColor = .systemGray6
-        textfield.borderStyle = .roundedRect
-        textfield.keyboardType = .numberPad
-        textfield.placeholder = "Кредитная карта"
-        return textfield
+    private(set) lazy var creditCardTextField: CreditCardTextField = {
+        let textField = CreditCardTextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = design.mediumFont
+        textField.autocapitalizationType = .none
+        textField.autocorrectionType = .no
+        textField.clearButtonMode = .whileEditing
+        textField.textAlignment = .left
+        textField.textColor = .black
+        textField.backgroundColor = .white
+        textField.borderStyle = .roundedRect
+        textField.keyboardType = .numberPad
+        textField.placeholder = "Кредитная карта"
+        textField.accessibilityIdentifier = "creditCardTextField"
+        return textField
     }()
 
     private(set) lazy var loginTextField: UITextField = {
-        return makeTextFildView(placeholder: "Логин")
+        let textField = design.makeTextFildView(placeholder: "Логин")
+        textField.accessibilityIdentifier = "RegistrationViewLoginTextField"
+        return textField
     }()
 
     private(set) lazy var passwordTextField: UITextField = {
-        let textField = makeTextFildView(placeholder: "Пароль")
+        let textField = design.makeTextFildView(placeholder: "Пароль")
         textField.isSecureTextEntry = false
         textField.textContentType = .init(rawValue: "")
+        textField.accessibilityIdentifier = "RegistrationViewPasswordTextField"
         return textField
     }()
     
-    private(set) var registrationButton: UIButton = {
+    private(set) lazy var registrationButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemYellow
         button.setTitleColor(.systemGray2, for: .highlighted)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont(name: "NewYork-Regular", size: 17)
+        button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
         button.setTitle("Зарегистрироваться ", for: .normal)
+        button.accessibilityIdentifier = "RegistrationViewRegistrationButton"
         return button
     }()
     
-    private let textFieldSize = CGSize(width: .zero, height: 40)
-    private let textFieldPadding = Padding<CGFloat>(top: 7, bottom: 7, leading: 30, trailing: 30)
-    
     private let registrationButtonSize = CGSize(width: 200, height: 40)
-    private let registrationButtonPadding = Padding<CGFloat>(top: .zero, bottom: 15, leading: .zero, trailing: .zero)
+    private let registrationButtonPadding = UIEdgeInsets(top: .zero, left: .zero, bottom: 15, right: .zero)
 
-    // MARK: Initiation
+    // MARK: - Initialization
+    //
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        configureContent()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        configureContent()
-    }
-
+    
     // MARK: - Configure Content
     //
     private func configureContent() {
-        self.backgroundColor = .white
+        self.accessibilityIdentifier = "RegistrationView"
+        
+        self.backgroundColor = .systemGray6
         
         self.addSubview(scrollView)
 
@@ -138,63 +149,45 @@ final class RegistrationView: UIView {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
 
-            firstNameTextField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textFieldPadding.top * 2),
-            firstNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
-            firstNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            firstNameTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
+            firstNameTextField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: design.textFieldPadding.top * 2),
+            firstNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: design.textFieldPadding.left),
+            firstNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -design.textFieldPadding.right),
+            firstNameTextField.heightAnchor.constraint(equalToConstant: design.textFieldSize.height),
             
-            lastNameTextField.topAnchor.constraint(equalTo: firstNameTextField.bottomAnchor, constant: textFieldPadding.top),
-            lastNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
-            lastNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            lastNameTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
+            lastNameTextField.topAnchor.constraint(equalTo: firstNameTextField.bottomAnchor, constant: design.textFieldPadding.top),
+            lastNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: design.textFieldPadding.left),
+            lastNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -design.textFieldPadding.right),
+            lastNameTextField.heightAnchor.constraint(equalToConstant: design.textFieldSize.height),
             
-            genderSegmentControl.topAnchor.constraint(equalTo: lastNameTextField.bottomAnchor, constant: textFieldPadding.top * 2),
-            genderSegmentControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
-            genderSegmentControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            genderSegmentControl.heightAnchor.constraint(equalToConstant: textFieldSize.height),
+            genderSegmentControl.topAnchor.constraint(equalTo: lastNameTextField.bottomAnchor, constant: design.textFieldPadding.top * 2),
+            genderSegmentControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: design.textFieldPadding.left),
+            genderSegmentControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -design.textFieldPadding.right),
+            genderSegmentControl.heightAnchor.constraint(equalToConstant: design.textFieldSize.height),
             
-            emailTextField.topAnchor.constraint(equalTo: genderSegmentControl.bottomAnchor, constant: textFieldPadding.top * 4),
-            emailTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
-            emailTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            emailTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
+            emailTextField.topAnchor.constraint(equalTo: genderSegmentControl.bottomAnchor, constant: design.textFieldPadding.top * 4),
+            emailTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: design.textFieldPadding.left),
+            emailTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -design.textFieldPadding.right),
+            emailTextField.heightAnchor.constraint(equalToConstant: design.textFieldSize.height),
             
-            creditCardTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: textFieldPadding.top),
-            creditCardTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
-            creditCardTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            creditCardTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
+            creditCardTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: design.textFieldPadding.top),
+            creditCardTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: design.textFieldPadding.left),
+            creditCardTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -design.textFieldPadding.right),
+            creditCardTextField.heightAnchor.constraint(equalToConstant: design.textFieldSize.height),
             
-            loginTextField.topAnchor.constraint(equalTo: creditCardTextField.bottomAnchor, constant: textFieldPadding.top * 2),
-            loginTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
-            loginTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            loginTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
+            loginTextField.topAnchor.constraint(equalTo: creditCardTextField.bottomAnchor, constant: design.textFieldPadding.top * 2),
+            loginTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: design.textFieldPadding.left),
+            loginTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -design.textFieldPadding.right),
+            loginTextField.heightAnchor.constraint(equalToConstant: design.textFieldSize.height),
             
-            passwordTextField.topAnchor.constraint(equalTo: loginTextField.bottomAnchor, constant: textFieldPadding.top),
-            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: textFieldPadding.leading),
-            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -textFieldPadding.trailing),
-            passwordTextField.heightAnchor.constraint(equalToConstant: textFieldSize.height),
+            passwordTextField.topAnchor.constraint(equalTo: loginTextField.bottomAnchor, constant: design.textFieldPadding.top),
+            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: design.textFieldPadding.left),
+            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -design.textFieldPadding.right),
+            passwordTextField.heightAnchor.constraint(equalToConstant: design.textFieldSize.height),
             
             registrationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             registrationButton.widthAnchor.constraint(equalToConstant: registrationButtonSize.width),
             registrationButton.heightAnchor.constraint(equalToConstant: registrationButtonSize.height),
             registrationButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -registrationButtonPadding.bottom)
         ])
-    }
-    
-    // MARK: - Support methods
-    //
-    private func makeTextFildView(placeholder: String, keyboardType: UIKeyboardType = .asciiCapable) -> UITextField {
-        let textfield = UITextField()
-        textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = UIFont(name: "NewYork-Regular", size: 17)
-        textfield.autocapitalizationType = .none
-        textfield.autocorrectionType = .no
-        textfield.clearButtonMode = .whileEditing
-        textfield.textAlignment = .left
-        textfield.textColor = .black
-        textfield.backgroundColor = .systemGray6
-        textfield.borderStyle = .roundedRect
-        textfield.keyboardType = keyboardType
-        textfield.placeholder = placeholder
-        return textfield
     }
 }

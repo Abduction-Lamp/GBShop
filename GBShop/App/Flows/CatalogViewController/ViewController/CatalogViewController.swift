@@ -10,36 +10,39 @@ import Kingfisher
 
 final class CatalogViewController: UICollectionViewController {
     
-    var presenret: CatalogViewPresenterProtool?
-    var catalog: [Section] = []
-    
-    var cellSize = CGSize.zero
+    private var cellSize = CGSize.zero
+    private var rightBarButton = ButtonWithBadge(type: .system)
+
+    var presenret: CatalogViewPresenterProtocol?
     
     // MARK: - Lifecycle
     //
     override func loadView() {
         super.loadView()
-    
         configurationView()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     // MARK: - Configure Content
     //
     private func configurationView() {
+        self.collectionView.accessibilityIdentifier = "CatalogViewControllerCollectionView"
+        configurationNavigationBar()
+        
+        self.collectionView.backgroundColor = .systemGray6
         self.collectionView.register(CatalogHeaderView.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: CatalogHeaderView.reuseIdentifier)
         self.collectionView.register(CatalogViewCell.self, forCellWithReuseIdentifier: CatalogViewCell.reuseIdentifier)
-        
-        let width: CGFloat = (collectionView.bounds.size.width - 21)/2
-        let height: CGFloat = width + width/2
-        cellSize = CGSize(width: width, height: height)
-        
-        self.collectionView.backgroundColor = .systemGray6
+        cellSize = calculationСellSize()
+    }
+    
+    private func configurationNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.title = "Магазин"
         
         self.navigationController?.isNavigationBarHidden = false
@@ -47,31 +50,59 @@ final class CatalogViewController: UICollectionViewController {
         
         let personIcon = UIImage(systemName: "person")
         let cartIcon = UIImage(systemName: "cart")
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: personIcon,
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(pressedUserPageButton))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: cartIcon,
-                                                                 style: .plain,
-                                                                 target: self,
-                                                                 action: nil)
+                
+        rightBarButton.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
+        rightBarButton.setImage(cartIcon, for: .normal)
+        rightBarButton.contentMode = .scaleToFill
+        rightBarButton.addTarget(self, action: #selector(pressedCartButton), for: .touchUpInside)
+        
+        let left = UIBarButtonItem(image: personIcon, style: .plain, target: self, action: #selector(pressedUserPageButton))
+        let right = UIBarButtonItem(customView: rightBarButton)
+        
+        self.navigationItem.leftBarButtonItem = left
+        self.navigationItem.rightBarButtonItem = right
     }
     
+    // MARK: - Support methods
+    //
+    private func makePriceString(price: Double) -> String {
+        var priceString = String(format: "%.0f", price)
+        priceString += " \u{20BD}"
+        return priceString
+    }
+    
+    private func calculationСellSize() -> CGSize {
+        let desing = DesignConstants.shared
+        let width: CGFloat = (collectionView.bounds.size.width - 21)/2
+        let heightTitleComponent: CGFloat = desing.padding.top + desing.mediumFont.lineHeight
+        let heightImageComponent: CGFloat = width
+        let heightPriceComponent: CGFloat = desing.padding.top + desing.buttonSize.height + desing.padding.bottom
+        let height: CGFloat = heightTitleComponent + heightImageComponent + heightPriceComponent
+        return CGSize(width: width, height: height)
+    }
+}
+
+// MARK: - Extension UICollectionViewDelegate & UICollectionViewDataSource
+//
+extension CatalogViewController {
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return catalog.count
+        return presenret?.catalog.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return catalog[section].items.count
+        return presenret?.catalog[section].items.count ?? 0
     }
     
     override  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CatalogViewCell.reuseIdentifier,
-                                                            for: indexPath) as? CatalogViewCell else { return UICollectionViewCell() }
+                                                            for: indexPath) as? CatalogViewCell,
+              let catalog = presenret?.catalog else { return UICollectionViewCell() }
+        
         cell.title.text = catalog[indexPath.section].items[indexPath.row].name
         cell.priceLabel.text = makePriceString(price: catalog[indexPath.section].items[indexPath.row].price)
-        if  let urlString = catalog[indexPath.section].items[indexPath.row].imageURL,
-            let url = URL(string: urlString) {
+        if let urlString = catalog[indexPath.section].items[indexPath.row].imageURL,
+           let url = URL(string: urlString) {
             cell.imageView.kf.indicatorType = .activity
             cell.imageView.kf.setImage(with: url)
         }
@@ -86,22 +117,22 @@ final class CatalogViewController: UICollectionViewController {
         guard kind == UICollectionView.elementKindSectionHeader,
               let section = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                             withReuseIdentifier: CatalogHeaderView.reuseIdentifier,
-                                                                            for: indexPath) as? CatalogHeaderView else {
-            return UICollectionReusableView()
-        }
+                                                                            for: indexPath) as? CatalogHeaderView,
+              let catalog = presenret?.catalog else { return UICollectionReusableView() }
+        
         section.title.text = catalog[indexPath.section].title
         return section
     }
     
-    // MARK: - Support methods
-    //
-    private func makePriceString(price: Double) -> String {
-        var priceString = String(format: "%.0f", price)
-        priceString += " \u{20BD}"
-        return priceString
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let id = presenret?.catalog[indexPath.section].items[indexPath.row].id {
+            presenret?.goToProductView(id: id)
+        }
     }
 }
 
+// MARK: - Extension UICollectionViewDelegateFlowLayout
+//
 extension CatalogViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,
@@ -140,16 +171,23 @@ extension CatalogViewController: UICollectionViewDelegateFlowLayout {
 extension CatalogViewController {
     
     @objc
-    private func pressedUserPageButton(_ sender: UIBarButtonItem) {
-        presenret?.userPage()
+    private func pressedCartButton(_ sender: UIButton) {
+        presenret?.goToCartView()
     }
     
     @objc
-    private func pressedBuyButon(_ sender: UIButton, id: Int) {
-        presenret?.addCart(id: sender.tag)
+    private func pressedUserPageButton(_ sender: UIBarButtonItem) {
+        presenret?.goToUserPageView()
+    }
+    
+    @objc
+    private func pressedBuyButon(_ sender: UIButton) {
+        presenret?.addToCart(productId: sender.tag)
     }
 }
 
+// MARK: - CatalogView Protocol
+//
 extension CatalogViewController: CatalogViewProtocol {
     
     func showRequestErrorAlert(error: Error) {
@@ -160,16 +198,11 @@ extension CatalogViewController: CatalogViewProtocol {
         showAlert(message: message, title: "Ошибка")
     }
     
-    func setCatalog(_ catalog: [Section]) {
-        self.catalog = catalog
+    func setCatalog() {
         self.collectionView.reloadData()
     }
     
-    func updataCart(count: Int) {
-        if count < 1 {
-            self.title = "Магазин"
-        } else {
-            self.title = "В корзине [\(count)]"
-        }
+    func updateCartIndicator(count: Int) {
+        rightBarButton.update(badgeCount: count)
     }
 }

@@ -13,6 +13,7 @@ protocol RequestFactoryProtocol {
     func makeUserRequestFactory() -> UserRequestFactory
     func makeProductRequestFactory() -> ProductRequestFactory
     func makeCartRequestFactory() -> CartRequestFactory
+    func makeReviewRequestFactory() -> ReviewRequestFactory
 }
 
 class RequestFactory: RequestFactoryProtocol {

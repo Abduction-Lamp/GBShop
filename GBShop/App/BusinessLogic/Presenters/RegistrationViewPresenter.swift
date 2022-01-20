@@ -9,16 +9,21 @@ import Foundation
 
 // MARK: - Protools
 //
-protocol RegistrationViewProtocol: AbstractViewController { }
+protocol RegistrationViewProtocol: AbstractViewController {
+    func showLoadingScreen()
+    func hideLoadingScreen()
+}
 
-protocol RegistrationViewPresenterProtool: AnyObject {
+protocol RegistrationViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: RegistrationViewProtocol, network: UserRequestFactory)
+    
     func registration(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String)
 }
 
 // MARK: - RegistrationView Presenter
 //
-class RegistrationViewPresenter: RegistrationViewPresenterProtool {
+final class RegistrationViewPresenter: RegistrationViewPresenterProtocol {
+    
     private var router: RouterProtocol?
     weak var view: RegistrationViewProtocol?
     private let network: UserRequestFactory
@@ -31,6 +36,11 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
         self.view = view
         self.network = network
     }
+}
+
+extension RegistrationViewPresenter: MakeUserFactory { }
+
+extension RegistrationViewPresenter {
     
     func registration(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String) {
         newUser = makeUser(view: view,
@@ -53,12 +63,15 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
             logging(.funcEnd)
         }
         
+        self.view?.showLoadingScreen()
+        
         network.register(user: user) { [weak self] response in
             guard let self = self else { return }
-            
             logging("[\(self) \(user)]")
             
             DispatchQueue.main.async {
+                self.view?.hideLoadingScreen()
+                
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
@@ -66,7 +79,7 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
                        let newUser = result.user,
                        let token = result.token {
                         self.newUser = newUser
-                        self.router?.pushUserPageViewController(user: newUser, token: token)
+                        self.router?.pushCatalogViewController(user: newUser, token: token)
                     } else {
                         self.view?.showErrorAlert(message: result.message)
                     }
@@ -78,8 +91,6 @@ class RegistrationViewPresenter: RegistrationViewPresenterProtool {
         }
     }
 }
-
-extension RegistrationViewPresenter: MakeUserFactory { }
 
 extension RegistrationViewPresenter: CustomStringConvertible {
     

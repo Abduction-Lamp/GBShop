@@ -10,60 +10,69 @@ import Foundation
 // MARK: - Protools
 //
 protocol CatalogViewProtocol: AbstractViewController {
-    func setCatalog(_ catalog: [Section])
-    func updataCart(count: Int)
+    func setCatalog()
+    func updateCartIndicator(count: Int)
+    
+    var presenret: CatalogViewPresenterProtocol? { get set }
 }
 
-protocol CatalogViewPresenterProtool: AnyObject {
+protocol CatalogViewPresenterProtocol: AnyObject {
     init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String)
     
-    func getCatalog(page: Int)
-    func addCart(id: Int)
+    var catalog: [Section] { get set }
     
-    func userPage()
-    func cart()
+    func addToCart(productId: Int)
+    
+    func updateUserData(user: User, token: String)
+    func updateCart(cart: Cart)
+    
+    func goToUserPageView()
+    func goToCartView()
+    func goToProductView(id: Int)
 }
 
 // MARK: - CatalogView Presenter
 //
-final class CatalogViewPresenter: CatalogViewPresenterProtool {
+final class CatalogViewPresenter: CatalogViewPresenterProtocol {
+    
     private var router: RouterProtocol?
     private weak var view: CatalogViewProtocol?
     private let network: RequestFactoryProtocol
     
-    private let user: User
-    private let token: String
+    private var user: User
+    private var token: String
     
-    private var catalog: [Section]?
+    private var cart: Cart = Cart()
+    
+    var catalog: [Section] = []
 
     // MARK: Initialization
     required init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
+        
         self.router = router
         self.view = view
         self.network = network
         
         self.user = user
         self.token = token
-        getCatalog(page: 0)
+        
+        fetchCatalog(page: 0)
+        fetchCart()
     }
+}
+
+extension CatalogViewPresenter {
     
-    func userPage() {
-        self.router?.pushUserPageViewController(user: user, token: token)
-    }
-    
-    func cart() {
-        return
-    }
-    
-    func getCatalog(page: Int) {
+    private func fetchCatalog(page: Int) {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
         }
         
         let request = network.makeProductRequestFactory()
-        request.getCatalog(page: page) { response in
-        
+        request.getCatalog(page: page) { [weak self] response in
+            guard let self = self else { return }
+            
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
@@ -71,7 +80,7 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
                     if result.result == 1 {
                         if let productList = result.catalog {
                             self.catalog = productList
-                            self.view?.setCatalog(productList)
+                            self.view?.setCatalog()
                         }
                     } else {
                         self.view?.showErrorAlert(message: result.message)
@@ -84,22 +93,56 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
         }
     }
     
-    func addCart(id: Int) {
+    private func fetchCart() {
         logging(.funcStart)
         defer {
             logging(.funcEnd)
         }
         
         let request = network.makeCartRequestFactory()
-        request.add(productId: id, owner: user.id, token: token) { response in
+        request.cart(owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch response.result {
                 case .success(let result):
                     logging("[\(self) result message: \(result.message)]")
                     if result.result == 1 {
-                        if let count = result.cart?.count {
-                            self.view?.updataCart(count: count)
+                        if let newCart = result.cart {
+                            self.cart.items = newCart
+                            self.view?.updateCartIndicator(count: self.cart.totalCartCount)
+                        } else {
+                            self.view?.updateCartIndicator(count: 0)
+                        }
+                    } else {
+                        self.view?.updateCartIndicator(count: 0)
+                    }
+                case .failure(let error):
+                    logging("[\(self) error: \(error.localizedDescription)]")
+                    self.view?.showRequestErrorAlert(error: error)
+                }
+            }
+        }
+    }
+    
+    public func addToCart(productId: Int) {
+        logging(.funcStart)
+        defer {
+            logging(.funcEnd)
+        }
+        
+        let request = network.makeCartRequestFactory()
+        request.addProduct(productId: productId, owner: user.id, token: token) { [weak self] response in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let result):
+                    logging("[\(self) result message: \(result.message)]")
+                    if result.result == 1 {
+                        if let newCart = result.cart {
+                            self.cart.items = newCart
+                            self.view?.updateCartIndicator(count: self.cart.totalCartCount)
                         } else {
                             self.view?.showErrorAlert(message: "Карзина пуста")
                         }
@@ -112,6 +155,31 @@ final class CatalogViewPresenter: CatalogViewPresenterProtool {
                 }
             }
         }
+    }
+    
+    public func updateUserData(user: User, token: String) {
+        self.user = user
+        self.token = token
+    }
+    
+    func updateCart(cart: Cart) {
+        self.cart = cart
+        view?.updateCartIndicator(count: cart.totalCartCount)
+    }
+    
+    public func goToUserPageView() {
+        router?.pushUserPageViewController(user: user, token: token)
+    }
+    
+    public func goToProductView(id: Int) {
+        let productList = catalog.flatMap({ $0.items })
+        if let product = productList.first(where: { $0.id == id }) {
+            router?.pushProductViewController(user: user, token: token, product: product, cart: cart)
+        }
+    }
+    
+    public func goToCartView() {
+        router?.pushCartViewController(user: user, token: token, cart: cart)
     }
 }
 
