@@ -65,6 +65,7 @@ final class LoginView: UIView {
         textfield.textColor = .black
         textfield.backgroundColor = .systemGray6
         textfield.borderStyle = .roundedRect
+        textfield.clearButtonMode = .whileEditing
         textfield.placeholder = "Логин"
         textfield.accessibilityIdentifier = "loginTextField"
         return textfield
@@ -81,6 +82,7 @@ final class LoginView: UIView {
         textfield.textColor = .black
         textfield.backgroundColor = .systemGray6
         textfield.borderStyle = .roundedRect
+        textfield.clearButtonMode = .whileEditing
         textfield.placeholder = "Пароль"
         textfield.accessibilityIdentifier = "passwordTextField"
         return textfield

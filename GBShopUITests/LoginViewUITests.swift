@@ -62,9 +62,9 @@ extension LoginViewUITests {
         XCTAssert(registrationButton.exists)
         
         loginTextField.tap()
-        deleteKey.press(forDuration: 2)
+        elementsQuery.buttons["Clear text"].tap()
         passwordTextField.tap()
-        deleteKey.press(forDuration: 1)
+        elementsQuery.buttons["Clear text"].tap()
         
         loginTextField.tap()
         app.typeText("Username")
@@ -88,9 +88,9 @@ extension LoginViewUITests {
         XCTAssert(registrationButton.exists)
         
         loginTextField.tap()
-        deleteKey.press(forDuration: 2)
+        elementsQuery.buttons["Clear text"].tap()
         passwordTextField.tap()
-        deleteKey.press(forDuration: 1)
+        elementsQuery.buttons["Clear text"].tap()
         
         loginTextField.tap()
         app.typeText("Login")

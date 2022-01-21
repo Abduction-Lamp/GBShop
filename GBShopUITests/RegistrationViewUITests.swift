@@ -109,6 +109,7 @@ extension RegistrationViewUITests {
         passwordTextField.tap()
         app.typeText("123456789")
         
+        app.tap()
         registrationButton.tap()
         
         // Проверяем перешли ли в каталог
