@@ -1,0 +1,87 @@
+/* 
+  Localizable.strings
+  GBShop
+
+  Created by Владимир on 22.01.2022.
+  
+*/
+
+// MARK: - General
+"General.Alert.CloseButton" = "Закрыть";
+"General.Alert.Title" = "Ошибка";
+"General.Alert.EmptyFields" = "Не все поля заполнены";
+
+"General.TextField.ClearTextButton" = "Очистить текст";
+
+// MARK: - LoginView
+"LoginView.HeaderLabel.Text" = "Магазин";
+
+"LoginView.LoginTextField.Placeholder" = "Логин";
+"LoginView.PasswordTextField.Placeholder" = "Пароль";
+
+"LoginView.LoginButton.Title" = "Войти";
+"LoginView.RegistrationButton.Title" = "Регистрация";
+
+// MARK: - RegistrationView
+"RegistrationView.NavigationBar.Title" = "Регистрация";
+"RegistrationView.FirstNameTextField.Placeholder" = "Имя";
+"RegistrationView.LastNameTextField.Placeholder" = "Фамилия";
+"RegistrationView.GenderSegmentControl.Title.0" = "Мужчина";
+"RegistrationView.GenderSegmentControl.Title.1" = "Женщина";
+"RegistrationView.EmailTextField.Placeholder" = "E-mail";
+"RegistrationView.CreditCardTextField.Placeholder" = "Кредитная карта";
+"RegistrationView.LoginTextField.Placeholder" = "Логин";
+"RegistrationView.PasswordTextField.Placeholder" = "Пароль";
+
+"RegistrationView.RegistrationButton.Title" = "Зарегистрироваться";
+
+"RegistrationView.Alert.EmptyFirstNameField" = "Поле Имя не заполнено";
+"RegistrationView.Alert.EmptyLastNameField" = "Поле Фамилия не заполнено";
+"RegistrationView.Alert.EmptyEmailField" = "Поле E-mail не заполнено";
+"RegistrationView.Alert.EmptyCreditCardField" = "Поле Кредитная Карта не заполнено";
+"RegistrationView.Alert.EmptyLoginField" = "Поле Логин не заполнено";
+"RegistrationView.Alert.EmptyPasswordField" = "Поле Пароль не заполнено";
+"RegistrationView.Alert.ShortPassword" = "Короткий Пароль (меньше 7 символов)";
+"RegistrationView.Alert.WrongEmailFormat" = "Не верный формат E-mail";
+"RegistrationView.Alert.WrongCreditCardFormat" = "Не верный формат Кредитной Карты";
+
+// MARK: - UserPageView
+"UserPageView.NavigationBar.Title" = "Регистрация";
+"UserPageView.FirstNameTextField.Placeholder" = "Имя";
+"UserPageView.LastNameTextField.Placeholder" = "Фамилия";
+"UserPageView.GenderSegmentControl.Title.0" = "Мужчина";
+"UserPageView.GenderSegmentControl.Title.1" = "Женщина";
+"UserPageView.EmailTextField.Placeholder" = "E-mail";
+"UserPageView.CreditCardTextField.Placeholder" = "Кредитная карта";
+"UserPageView.LoginTextField.Placeholder" = "Логин";
+"UserPageView.PasswordTextField.Placeholder" = "Пароль";
+
+"UserPageView.LogoutButton.Title" = "Выйти";
+
+"UserPageView.Alert.EmptyFirstNameField" = "Поле Имя не заполнено";
+"UserPageView.Alert.EmptyLastNameField" = "Поле Фамилия не заполнено";
+"UserPageView.Alert.EmptyEmailField" = "Поле E-mail не заполнено";
+"UserPageView.Alert.EmptyCreditCardField" = "Поле Кредитная Карта не заполнено";
+"UserPageView.Alert.EmptyLoginField" = "Поле Логин не заполнено";
+"UserPageView.Alert.EmptyPasswordField" = "Поле Пароль не заполнено";
+"UserPageView.Alert.ShortPassword" = "Короткий Пароль (меньше 7 символов)";
+"UserPageView.Alert.WrongEmailFormat" = "Не верный формат E-mail";
+"UserPageView.Alert.WrongCreditCardFormat" = "Не верный формат Кредитной Карты";
+
+"UserPageView.NavigationBar.ChangeBarButton" = "Изменить";
+"UserPageView.NavigationBar.SaveBarButton" = "Сохранить";
+"UserPageView.NavigationBar.CancelBarButton" = "Отменить";
+
+// MARK: - ProductView
+"ProductView.AddCommentButton.Title" = "Оставить отзыв";
+
+// MARK: - CartView
+"CartView.EmptyCart.Text" = "Сложите в корзину нужные товары";
+"CartView.PayButton.Title" = "Оплатить";
+
+"CartView.Alert.ProductDeleteMesage" = "Вы уверены, что хотите удалить ";
+"CartView.Alert.AllItemProductDeleteMesage" = "Вы уверены, что хотите удалить все ";
+"CartView.Alert.CancelButton.Title" = "Отмена";
+"CartView.Alert.DeleteButton.Title" = "Удалить";
+
+"CartView.Alert.SomethingWenWrong.Text" = "Что-то пошло не так";

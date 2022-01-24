@@ -16,7 +16,8 @@ final class CartViewController: UITableViewController {
         button.setTitleColor(.black, for: .normal)
         button.setTitleColor(.systemGray2, for: .highlighted)
         button.titleLabel?.font = DesignConstants.shared.mediumFont
-        button.setTitle("Оплатить", for: .normal)
+        let title = NSLocalizedString("CartView.PayButton.Title", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(pressedBuyButton), for: .touchUpInside)
         return button
     }()
@@ -153,8 +154,9 @@ extension CartViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let message = "Вы уверены, что хотите удалить \(presenret?.cart.items[indexPath.section].product.name ?? "")"
-        warningWithAction(title: nil, message: message) { _ in
+        let message = NSLocalizedString("CartView.Alert.ProductDeleteMesage", comment: "")
+        let productName = presenret?.cart.items[indexPath.section].product.name ?? ""
+        warningWithAction(title: nil, message: message + productName) { _ in
             if editingStyle == .delete {
                 self.presenret?.removeItemFromCart(index: indexPath.section)
             }
@@ -218,8 +220,10 @@ extension CartViewController {
     
     private func warningWithAction(title: String?, message: String?, handler: ((UIAlertAction) -> Void)?) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: "Отмена", style: .cancel) { _ in })
-        alertController.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: handler))
+        let cancelButtonTitle = NSLocalizedString("CartView.Alert.CancelButton.Title", comment: "")
+        let deleteButtonTitle = NSLocalizedString("CartView.Alert.DeleteButton.Title", comment: "")
+        alertController.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel) { _ in })
+        alertController.addAction(UIAlertAction(title: deleteButtonTitle, style: .destructive, handler: handler))
         self.present(alertController, animated: true, completion: nil)
     }
 }
@@ -235,8 +239,9 @@ extension CartViewController {
     
     @objc
     private func pressedDeleteButton(_ sender: UIButton) {
-        let message = "Вы уверены, что хотите удалить все \(presenret?.cart.items[sender.tag].product.name ?? "")"
-        warningWithAction(title: nil, message: message) { _ in
+        let message = NSLocalizedString("CartView.Alert.AllItemProductDeleteMesage", comment: "")
+        let productName = presenret?.cart.items[sender.tag].product.name ?? ""
+        warningWithAction(title: nil, message: message + productName) { _ in
             self.presenret?.removeItemFromCart(index: sender.tag)
         }
     }
@@ -262,11 +267,13 @@ extension CartViewController {
 extension CartViewController: CartViewProtocol {
 
     func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: error.localizedDescription, title: title)
     }
     
     func showErrorAlert(message: String) {
-        showAlert(message: message)
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: message, title: title)
     }
     
     func updataCart() {

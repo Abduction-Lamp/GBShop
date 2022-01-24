@@ -27,51 +27,60 @@ final class UserPageView: UIView {
     }()
 
     private(set) lazy var firstNameTextField: UITextField = {
-        return design.makeTextFildView(placeholder: "Имя")
+        let placeholder = NSLocalizedString("UserPageView.FirstNameTextField.Placeholder", comment: "")
+        return design.makeTextFildView(placeholder: placeholder)
     }()
 
     private(set) lazy var lastNameTextField: UITextField = {
-        return design.makeTextFildView(placeholder: "Фамилия")
+        let placeholder = NSLocalizedString("UserPageView.LastNameTextField.Placeholder", comment: "")
+        return design.makeTextFildView(placeholder: placeholder)
     }()
     
     private(set) var genderSegmentControl: UISegmentedControl = {
         let segment = UISegmentedControl()
         segment.translatesAutoresizingMaskIntoConstraints = false
         segment.backgroundColor = .systemBackground
-        segment.insertSegment(withTitle: "Мужчина", at: 0, animated: false)
-        segment.insertSegment(withTitle: "Женщина", at: 1, animated: false)
+        let maleTitle = NSLocalizedString("UserPageView.GenderSegmentControl.Title.0", comment: "")
+        let femaleTitle = NSLocalizedString("UserPageView.GenderSegmentControl.Title.1", comment: "")
+        segment.insertSegment(withTitle: maleTitle, at: 0, animated: false)
+        segment.insertSegment(withTitle: femaleTitle, at: 1, animated: false)
         segment.selectedSegmentIndex = 0
         segment.isEnabled = false
         return segment
     }()
     
     private(set) lazy var emailTextField: UITextField = {
-        return design.makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
+        let placeholder = NSLocalizedString("UserPageView.EmailTextField.Placeholder", comment: "")
+        return design.makeTextFildView(placeholder: placeholder, keyboardType: .emailAddress)
     }()
 
     private(set) lazy var creditCardTextField: CreditCardTextField = {
-        let textfield = CreditCardTextField()
-        textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = design.largeFont
-        textfield.autocapitalizationType = .none
-        textfield.autocorrectionType = .no
-        textfield.clearButtonMode = .whileEditing
-        textfield.textAlignment = .left
-        textfield.textColor = .black
-        textfield.backgroundColor = .white
-        textfield.borderStyle = .none
-        textfield.isEnabled = false
-        textfield.keyboardType = .numberPad
-        textfield.placeholder = "Кредитная карта"
-        return textfield
+        let textField = CreditCardTextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = design.largeFont
+        textField.autocapitalizationType = .none
+        textField.autocorrectionType = .no
+        textField.clearButtonMode = .whileEditing
+        textField.textAlignment = .left
+        textField.textColor = .black
+        textField.backgroundColor = .white
+        textField.borderStyle = .none
+        textField.isEnabled = false
+        textField.keyboardType = .numberPad
+        let placeholder = NSLocalizedString("UserPageView.CreditCardTextField.Placeholder", comment: "")
+        textField.placeholder = placeholder
+        textField.accessibilityIdentifier = placeholder
+        return textField
     }()
 
     private(set) lazy var loginTextField: UITextField = {
-        return design.makeTextFildView(placeholder: "Логин")
+        let placeholder = NSLocalizedString("UserPageView.LoginTextField.Placeholder", comment: "")
+        return design.makeTextFildView(placeholder: placeholder)
     }()
 
     private(set) lazy var passwordTextField: UITextField = {
-        let textField = design.makeTextFildView(placeholder: "Пароль")
+        let placeholder = NSLocalizedString("UserPageView.PasswordTextField.Placeholder", comment: "")
+        let textField = design.makeTextFildView(placeholder: placeholder)
         textField.isSecureTextEntry = true
         return textField
     }()
@@ -84,7 +93,9 @@ final class UserPageView: UIView {
         button.setTitleColor(.systemGray2, for: .highlighted)
         button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
-        button.setTitle("Выйти", for: .normal)
+        let title = NSLocalizedString("UserPageView.LogoutButton.Title", comment: "")
+        button.setTitle(title, for: .normal)
+        button.accessibilityIdentifier = title
         return button
     }()
     private let buttonSize = CGSize(width: 100, height: 40)

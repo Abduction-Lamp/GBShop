@@ -49,7 +49,7 @@ final class LoginView: UIView {
         label.layer.shadowOffset = .zero
         label.layer.shadowOpacity = 0.7
         label.layer.shadowRadius = 10
-        label.text = "Магазин"
+        label.text = NSLocalizedString("LoginView.HeaderLabel.Text", comment: "")
         return label
     }()
     private let headerPadding = UIEdgeInsets(top: 45, left: .zero, bottom: .zero, right: .zero)
@@ -66,7 +66,7 @@ final class LoginView: UIView {
         textfield.backgroundColor = .systemGray6
         textfield.borderStyle = .roundedRect
         textfield.clearButtonMode = .whileEditing
-        textfield.placeholder = "Логин"
+        textfield.placeholder = NSLocalizedString("LoginView.LoginTextField.Placeholder", comment: "")
         textfield.accessibilityIdentifier = "loginTextField"
         return textfield
     }()
@@ -83,7 +83,7 @@ final class LoginView: UIView {
         textfield.backgroundColor = .systemGray6
         textfield.borderStyle = .roundedRect
         textfield.clearButtonMode = .whileEditing
-        textfield.placeholder = "Пароль"
+        textfield.placeholder = NSLocalizedString("LoginView.PasswordTextField.Placeholder", comment: "")
         textfield.accessibilityIdentifier = "passwordTextField"
         return textfield
     }()
@@ -97,7 +97,8 @@ final class LoginView: UIView {
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
-        button.setTitle("Войти", for: .normal)
+        let title = NSLocalizedString("LoginView.LoginButton.Title", comment: "")
+        button.setTitle(title, for: .normal)
         button.accessibilityIdentifier = "loginButton"
         return button
     }()
@@ -110,7 +111,8 @@ final class LoginView: UIView {
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
-        button.setTitle("Регистрация", for: .normal)
+        let title = NSLocalizedString("LoginView.RegistrationButton.Title", comment: "")
+        button.setTitle(title, for: .normal)
         button.accessibilityIdentifier = "registrationButton"
         return button
     }()

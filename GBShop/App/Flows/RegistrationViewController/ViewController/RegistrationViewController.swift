@@ -36,6 +36,7 @@ final class RegistrationViewController: UIViewController {
         notifiction.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         self.navigationController?.navigationBar.prefersLargeTitles = false
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -51,7 +52,7 @@ final class RegistrationViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.view = RegistrationView(frame: self.view.frame)
         self.navigationController?.isNavigationBarHidden = false
-        self.title = "Регистрация"
+        self.title = NSLocalizedString("RegistrationView.NavigationBar.Title", comment: "")
         
         registrationView.scrollView.addGestureRecognizer(keyboardHideGesture)
         registrationView.creditCardTextField.delegate = self
@@ -84,7 +85,8 @@ extension RegistrationViewController {
               let creditCard = registrationView.creditCardTextField.text,
               let login = registrationView.loginTextField.text,
               let password = registrationView.passwordTextField.text else {
-                  showAlert(message: "Не все поля заполнены")
+                  let message = NSLocalizedString("General.Alert.EmptyFields", comment: "")
+                  showAlert(message: message)
                   return
               }
         let gender = registrationView.genderSegmentControl.selectedSegmentIndex
@@ -132,11 +134,13 @@ extension RegistrationViewController {
 extension RegistrationViewController: RegistrationViewProtocol {
     
     func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: error.localizedDescription, title: title)
     }
     
     func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: message, title: title)
     }
     
     func showLoadingScreen() {

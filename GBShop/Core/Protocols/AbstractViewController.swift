@@ -18,7 +18,8 @@ extension AbstractViewController {
     
     func showAlert(message: String, title: String? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+        let title = NSLocalizedString("General.Alert.CloseButton", comment: "")
+        let action = UIAlertAction(title: title, style: .cancel, handler: nil)
         alert.addAction(action)
         alert.accessibilityLabel = "Alert"
         present(alert, animated: true, completion: nil)

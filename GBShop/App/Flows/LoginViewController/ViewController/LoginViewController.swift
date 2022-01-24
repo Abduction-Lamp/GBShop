@@ -81,9 +81,9 @@ extension LoginViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField === loginView.loginTextField {
-            textField.placeholder = "Логин"
+            textField.placeholder = NSLocalizedString("LoginView.LoginTextField.Placeholder", comment: "")
         } else {
-            textField.placeholder = "Пароль"
+            textField.placeholder = NSLocalizedString("LoginView.PasswordTextField.Placeholder", comment: "")
         }
     }
 }
@@ -147,11 +147,13 @@ extension LoginViewController {
 extension LoginViewController: LoginViewProtocol {
 
     func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: error.localizedDescription, title: title)
     }
     
     func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: message, title: title)
     }
     
     func showLoadingScreen() {

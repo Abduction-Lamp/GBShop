@@ -28,7 +28,8 @@ final class ProductViewCommentFormCell: UITableViewHeaderFooterView {
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = DesignConstants.shared.mediumFont
         button.layer.cornerRadius = 5
-        button.setTitle("Оставить отзыв", for: .normal)
+        let title = NSLocalizedString("ProductView.AddCommentButton.Title", comment: "")
+        button.setTitle(title, for: .normal)
         return button
     }()
     

@@ -10,6 +10,14 @@ import Alamofire
 @testable import GBShop
 
 class RegistrationViewUITests: XCTestCase {
+    
+    func localizedString(key: String) -> String {
+        guard let path = Bundle(for: RegistrationViewUITests.self).path(forResource: NSLocale.current.languageCode, ofType: "lproj"),
+              let bundle = Bundle(path: path) else {
+            return ""
+        }
+        return NSLocalizedString(key, bundle: bundle, comment: "")
+    }
 
     let app = XCUIApplication()
     
@@ -31,6 +39,7 @@ class RegistrationViewUITests: XCTestCase {
         
         let loginScrollView = app.scrollViews
         let elementsQuery = loginScrollView.otherElements
+//        var identifier = localizedString(key: "RegistrationView.RegistrationButton.Title")
         let button = elementsQuery.buttons["registrationButton"].firstMatch
         XCTAssert(button.exists)
         button.tap()
@@ -42,13 +51,26 @@ class RegistrationViewUITests: XCTestCase {
         XCTAssertTrue(registrationView.waitForExistence(timeout: 1))
         XCTAssert(registrationView.exists)
         
-        firstNameTextField = registrationView.textFields["firstNameTextField"].firstMatch
-        lastNameTextField = registrationView.textFields["lastNameTextField"].firstMatch
-        emailTextField = registrationView.textFields["emailTextField"].firstMatch
-        creditCardTextField = registrationView.textFields["creditCardTextField"].firstMatch
-        loginTextField = registrationView.textFields["RegistrationViewLoginTextField"].firstMatch
-        passwordTextField = registrationView.textFields["RegistrationViewPasswordTextField"].firstMatch
-        registrationButton = registrationView.buttons["RegistrationViewRegistrationButton"].firstMatch
+        var identifier = localizedString(key: "RegistrationView.FirstNameTextField.Placeholder")
+        firstNameTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.LastNameTextField.Placeholder")
+        lastNameTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.EmailTextField.Placeholder")
+        emailTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.CreditCardTextField.Placeholder")
+        creditCardTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.LoginTextField.Placeholder")
+        loginTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.PasswordTextField.Placeholder")
+        passwordTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.RegistrationButton.Title")
+        registrationButton = registrationView.buttons[identifier].firstMatch
     }
 
     override func tearDownWithError() throws {
@@ -132,11 +154,13 @@ extension RegistrationViewUITests {
         registrationButton.tap()
                 
         // Проверяем появление Alert с сообщением о ошибках
-        let alert = app.alerts["Ошибка"]
+        let identifierAlert = localizedString(key: "General.Alert.Title")
+        let identifierCloseButton = localizedString(key: "General.Alert.CloseButton")
+        let alert = app.alerts[identifierAlert]
         expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: alert, handler: nil)
         waitForExpectations(timeout: 5) { _ in
             XCTAssert(alert.exists)
-            alert.scrollViews.otherElements.buttons["Закрыть"].tap()
+            alert.scrollViews.otherElements.buttons[identifierCloseButton].tap()
         }
     }
 }

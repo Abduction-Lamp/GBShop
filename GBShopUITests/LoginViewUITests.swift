@@ -9,6 +9,15 @@ import XCTest
 
 class LoginViewUITests: XCTestCase {
     
+    func localizedString(key: String) -> String {
+        guard let path = Bundle(for: LoginViewUITests.self).path(forResource: NSLocale.current.languageCode, ofType: "lproj"),
+              let bundle = Bundle(path: path) else {
+            return ""
+        }
+        return NSLocalizedString(key, bundle: bundle, comment: "")
+    }
+    
+    
     let app = XCUIApplication()
     
     var scrollView: XCUIElementQuery!
@@ -61,10 +70,11 @@ extension LoginViewUITests {
         XCTAssert(loginButton.exists)
         XCTAssert(registrationButton.exists)
         
+        let identifierClearTextButton = localizedString(key: "General.TextField.ClearTextButton")
         loginTextField.tap()
-        elementsQuery.buttons["Clear text"].tap()
+        elementsQuery.buttons[identifierClearTextButton].tap()
         passwordTextField.tap()
-        elementsQuery.buttons["Clear text"].tap()
+        elementsQuery.buttons[identifierClearTextButton].tap()
         
         loginTextField.tap()
         app.typeText("Username")
@@ -87,10 +97,11 @@ extension LoginViewUITests {
         XCTAssert(loginButton.exists)
         XCTAssert(registrationButton.exists)
         
+        let identifierClearTextButton = localizedString(key: "General.TextField.ClearTextButton")
         loginTextField.tap()
-        elementsQuery.buttons["Clear text"].tap()
+        elementsQuery.buttons[identifierClearTextButton].tap()
         passwordTextField.tap()
-        elementsQuery.buttons["Clear text"].tap()
+        elementsQuery.buttons[identifierClearTextButton].tap()
         
         loginTextField.tap()
         app.typeText("Login")
@@ -100,11 +111,13 @@ extension LoginViewUITests {
         loginButton.tap()
 
         // Проверяем появление Alert с сообщением о ошибках
-        let alert = app.alerts["Ошибка"]
+        let identifierAlert = localizedString(key: "General.Alert.Title")
+        let identifierCloseButton = localizedString(key: "General.Alert.CloseButton")
+        let alert = app.alerts[identifierAlert]
         expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: alert, handler: nil)
         waitForExpectations(timeout: 5) { _ in
             XCTAssert(alert.exists)
-            alert.scrollViews.otherElements.buttons["Закрыть"].tap()
+            alert.scrollViews.otherElements.buttons[identifierCloseButton].tap()
         }
     }
     

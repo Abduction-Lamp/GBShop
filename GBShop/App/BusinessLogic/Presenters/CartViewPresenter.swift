@@ -112,7 +112,8 @@ extension CartViewPresenter {
         guard (0 ..< cart.items.count).contains(index) else {
             logging("[\(self) (0 ..< cart.items.count).contains(index) = \((0 ..< cart.items.count).contains(index))]")
             self.reportExceptions.report(code: .undefinedBehavior)
-            view?.showErrorAlert(message: "Что-то пошло не так")
+            let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+            view?.showErrorAlert(message: message)
             return
         }
         let productId = cart.items[index].product.id
@@ -134,7 +135,10 @@ extension CartViewPresenter {
                         DispatchQueue.main.async { self.view?.updataCart(index: index) }
                     } else {
                         self.reportExceptions.report(productID: productId, cart: self.cart, code: .nilDataResult, result: result)
-                        DispatchQueue.main.async { self.view?.showErrorAlert(message: "Что-то пошло не так") }
+                        DispatchQueue.main.async {
+                            let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+                            self.view?.showErrorAlert(message: message)
+                        }
                     }
                 } else {
                     self.reportExceptions.report(productID: productId, cart: self.cart, code: .rejectionResult, result: result)
@@ -157,7 +161,8 @@ extension CartViewPresenter {
         guard (0 ..< cart.items.count).contains(index) else {
             logging("[\(self) (0 ..< cart.items.count).contains(index) = \((0 ..< cart.items.count).contains(index))]")
             self.reportExceptions.report(code: .undefinedBehavior)
-            view?.showErrorAlert(message: "Что-то пошло не так")
+            let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+            view?.showErrorAlert(message: message)
             return
         }
         let productId = cart.items[index].product.id
@@ -178,7 +183,10 @@ extension CartViewPresenter {
                         DispatchQueue.main.async { self.view?.updataCart(index: index) }
                     } else {
                         self.reportExceptions.report(productID: productId, cart: self.cart, code: .nilDataResult, result: result)
-                        DispatchQueue.main.async { self.view?.showErrorAlert(message: "Что-то пошло не так") }
+                        DispatchQueue.main.async {
+                            let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+                            self.view?.showErrorAlert(message: message)
+                        }
                     }
                 } else {
                     self.reportExceptions.report(productID: productId, cart: self.cart, code: .rejectionResult, result: result)
@@ -200,7 +208,8 @@ extension CartViewPresenter {
         guard (0 ..< cart.items.count).contains(index) else {
             logging("[\(self) index не входит в диапазон (0 - \(cart.items.count - 1)]")
             self.reportExceptions.report(code: .undefinedBehavior)
-            view?.showErrorAlert(message: "Не удалось удалить товар из карзины")
+            let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+            view?.showErrorAlert(message: message)
             return
         }
         
@@ -221,7 +230,10 @@ extension CartViewPresenter {
                         DispatchQueue.main.async { self.view?.updataCart() }
                     } else {
                         self.reportExceptions.report(productID: productId, cart: self.cart, code: .nilDataResult, result: result)
-                        DispatchQueue.main.async { self.view?.showErrorAlert(message: "Что-то пошло не так") }
+                        DispatchQueue.main.async {
+                            let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+                            self.view?.showErrorAlert(message: message)
+                        }
                     }
                 } else {
                     self.reportExceptions.report(productID: productId, cart: self.cart, code: .rejectionResult, result: result)
@@ -254,7 +266,10 @@ extension CartViewPresenter {
                     DispatchQueue.main.async { self.view?.updataCart() }
                 } else {
                     self.reportExceptions.report(login: self.user.login, code: .rejectionResult, result: result)
-                    DispatchQueue.main.async { self.view?.showErrorAlert(message: "Что-то пошло не так") }
+                    DispatchQueue.main.async {
+                        let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+                        self.view?.showErrorAlert(message: message)
+                    }
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
