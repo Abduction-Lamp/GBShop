@@ -8,16 +8,7 @@
 import XCTest
 
 class LoginViewUITests: XCTestCase {
-    
-    func localizedString(key: String) -> String {
-        guard let path = Bundle(for: LoginViewUITests.self).path(forResource: NSLocale.current.languageCode, ofType: "lproj"),
-              let bundle = Bundle(path: path) else {
-            return ""
-        }
-        return NSLocalizedString(key, bundle: bundle, comment: "")
-    }
-    
-    
+
     let app = XCUIApplication()
     
     var scrollView: XCUIElementQuery!
@@ -38,8 +29,9 @@ class LoginViewUITests: XCTestCase {
     
     override func setUpWithError() throws {
         continueAfterFailure = false
-        XCUIApplication().launch()
-        
+        setupSnapshot(app)
+        app.launch()
+
         scrollView = app.scrollViews
         elementsQuery = scrollView.otherElements
         loginTextField = elementsQuery.textFields["loginTextField"].firstMatch
@@ -70,7 +62,9 @@ extension LoginViewUITests {
         XCTAssert(loginButton.exists)
         XCTAssert(registrationButton.exists)
         
-        let identifierClearTextButton = localizedString(key: "General.TextField.ClearTextButton")
+        snapshot("LoginView")
+        
+        let identifierClearTextButton = localizedString(key: "General.TextField.ClearTextButton", for: LoginViewUITests.self)
         loginTextField.tap()
         elementsQuery.buttons[identifierClearTextButton].tap()
         passwordTextField.tap()
@@ -89,6 +83,8 @@ extension LoginViewUITests {
                              .element
         XCTAssertTrue(catalogView.waitForExistence(timeout: 5))
         XCTAssert(catalogView.exists)
+        
+        snapshot("CatalogView")
     }
 
     func testLoginViewBadLogin() throws {
@@ -97,7 +93,8 @@ extension LoginViewUITests {
         XCTAssert(loginButton.exists)
         XCTAssert(registrationButton.exists)
         
-        let identifierClearTextButton = localizedString(key: "General.TextField.ClearTextButton")
+        let identifierClearTextButton = localizedString(key: "General.TextField.ClearTextButton", for: LoginViewUITests.self)
+        print("\n\n\n\(identifierClearTextButton)\n\n\n")
         loginTextField.tap()
         elementsQuery.buttons[identifierClearTextButton].tap()
         passwordTextField.tap()
@@ -111,8 +108,8 @@ extension LoginViewUITests {
         loginButton.tap()
 
         // Проверяем появление Alert с сообщением о ошибках
-        let identifierAlert = localizedString(key: "General.Alert.Title")
-        let identifierCloseButton = localizedString(key: "General.Alert.CloseButton")
+        let identifierAlert = localizedString(key: "General.Alert.Title", for: LoginViewUITests.self)
+        let identifierCloseButton = localizedString(key: "General.Alert.CloseButton", for: LoginViewUITests.self)
         let alert = app.alerts[identifierAlert]
         expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: alert, handler: nil)
         waitForExpectations(timeout: 5) { _ in
@@ -131,5 +128,7 @@ extension LoginViewUITests {
                                   .element
         XCTAssertTrue(registrationView.waitForExistence(timeout: 1))
         XCTAssert(registrationView.exists)
+        
+        snapshot("RegistrationView")
     }
 }

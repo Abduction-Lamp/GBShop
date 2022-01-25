@@ -39,10 +39,10 @@ Description of what the lane does
 
 
 
-### ios tests
+### ios full_tests
 
 ```sh
-[bundle exec] fastlane ios tests
+[bundle exec] fastlane ios full_tests
 ```
 
 

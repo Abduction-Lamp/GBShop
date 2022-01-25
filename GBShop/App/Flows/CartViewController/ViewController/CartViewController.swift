@@ -272,8 +272,7 @@ extension CartViewController: CartViewProtocol {
     }
     
     func showErrorAlert(message: String) {
-        let title = NSLocalizedString("General.Alert.Title", comment: "")
-        showAlert(message: message, title: title)
+        showAlert(message: message)
     }
     
     func updataCart() {

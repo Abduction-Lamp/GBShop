@@ -28,14 +28,17 @@ platform :ios do
   end
   
   lane :unit_tests do
-    run_tests(testplan: "Unit")
+    run_tests(scheme: "GBShop",
+              testplan: "Unit")
   end
   
   lane :ui_tests do
-    run_tests(testplan: "UI")
+    run_tests(scheme: "GBShop",
+              testplan: "UI")
   end
   
   lane :full_tests do
-    run_tests(testplan: "Full")
+    run_tests(scheme: "GBShop",
+              testplan: "Full")
   end
 end

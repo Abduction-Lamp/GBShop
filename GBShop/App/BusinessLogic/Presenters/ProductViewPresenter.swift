@@ -59,8 +59,8 @@ final class ProductViewPresenter: ProductViewPresenterProtocol {
     var product: ProductViewModel
     var review: [ReviewViewModel] = []
 
-    private let reportExceptions = CrashlyticsReportExceptions()
-    private let analytics = AnalyticsLog()
+//    private let reportExceptions = CrashlyticsReportExceptions()
+//    private let analytics = AnalyticsLog()
     
     // MARK: Initialization
     init(router: RouterProtocol,
@@ -122,19 +122,19 @@ extension ProductViewPresenter {
                 if result.result == 1 {
                     if let newCart = result.cart {
                         self.cart.items = newCart
-                        self.analytics.addProductToCart(user: self.user, product: self.product, cart: self.cart)
+//                        self.analytics.addProductToCart(user: self.user, product: self.product, cart: self.cart)
                         DispatchQueue.main.async { self.view?.updateCartIndicator(count: self.cart.totalCartCount) }
                     } else {
-                        self.reportExceptions.report(productID: self.product.id, cart: self.cart, code: .nilDataResult, result: result)
+//                        self.reportExceptions.report(productID: self.product.id, cart: self.cart, code: .nilDataResult, result: result)
                         DispatchQueue.main.async { self.view?.showErrorAlert(message: "Карзина пуста") }
                     }
                 } else {
-                    self.reportExceptions.report(productID: self.product.id, cart: self.cart, code: .rejectionResult, result: result)
+//                    self.reportExceptions.report(productID: self.product.id, cart: self.cart, code: .rejectionResult, result: result)
                     DispatchQueue.main.async { self.view?.showErrorAlert(message: result.message) }
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
-                self.reportExceptions.report(error: error.localizedDescription)
+//                self.reportExceptions.report(error: error.localizedDescription)
                 DispatchQueue.main.async { self.view?.showRequestErrorAlert(error: error) }
             }
         }
@@ -158,15 +158,15 @@ extension ProductViewPresenter {
                         self.review = reviews.map({ ReviewViewModel(bounds: UIScreen.main.bounds, review: $0) })
                         DispatchQueue.main.async { self.view?.setReviews() }
                     } else {
-                        self.reportExceptions.report(login: self.user.login, code: .nilDataResult, result: result)
+//                        self.reportExceptions.report(login: self.user.login, code: .nilDataResult, result: result)
                     }
                 } else {
-                    self.reportExceptions.report(login: self.user.login, code: .rejectionResult, result: result)
+//                    self.reportExceptions.report(login: self.user.login, code: .rejectionResult, result: result)
                     DispatchQueue.main.async { self.view?.showErrorAlert(message: result.message) }
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
-                self.reportExceptions.report(error: error.localizedDescription)
+//                self.reportExceptions.report(error: error.localizedDescription)
                 DispatchQueue.main.async { self.view?.showRequestErrorAlert(error: error) }
             }
         }
@@ -200,16 +200,16 @@ extension ProductViewPresenter {
                 if result.result == 1,
                    let newReview = result.review?.first {
                     self.review.append(ReviewViewModel(bounds: UIScreen.main.bounds, review: newReview))
-                    self.analytics.addProductReview(user: self.user, product: self.product, review: newReview)
+//                    self.analytics.addProductReview(user: self.user, product: self.product, review: newReview)
                     
                     DispatchQueue.main.async { self.view?.setReviews() }
                 } else {
-                    self.reportExceptions.report(review: newReview, code: .rejectionResult, result: result)
+//                    self.reportExceptions.report(review: newReview, code: .rejectionResult, result: result)
                     DispatchQueue.main.async { self.view?.showErrorAlert(message: result.message) }
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
-                self.reportExceptions.report(error: error.localizedDescription)
+//                self.reportExceptions.report(error: error.localizedDescription)
                 DispatchQueue.main.async { self.view?.showRequestErrorAlert(error: error) }
             }
         }
@@ -230,16 +230,16 @@ extension ProductViewPresenter {
                 logging("[\(self) result message: \(result.message)]")
                 if result.result == 1, let index = self.review.firstIndex(where: { $0.id == id }) {
                     let oldReview = self.review.remove(at: index)
-                    self.analytics.removeProductReview(user: self.user, product: self.product, review: oldReview)
+//                    self.analytics.removeProductReview(user: self.user, product: self.product, review: oldReview)
                     
                     DispatchQueue.main.async { self.view?.setReviews() }
                 } else {
-                    self.reportExceptions.report(login: self.user.login, code: .rejectionResult, result: result)
+//                    self.reportExceptions.report(login: self.user.login, code: .rejectionResult, result: result)
                     DispatchQueue.main.async { self.view?.showErrorAlert(message: result.message) }
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
-                self.reportExceptions.report(error: error.localizedDescription)
+//                self.reportExceptions.report(error: error.localizedDescription)
                 DispatchQueue.main.async { self.view?.showRequestErrorAlert(error: error) }
             }
         }

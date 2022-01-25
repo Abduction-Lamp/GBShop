@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Firebase
+//import Firebase
 
 struct LogMessage: ExpressibleByStringLiteral {
 
@@ -27,7 +27,7 @@ extension LogMessage {
 func logging(_ logInstance: Any, file: String = #file, funcName: String = #function, line: Int = #line) {
     let logMessage = "\(funcName) \(line): \(logInstance)"
     print("\(Date()): \(logMessage)")
-    Crashlytics.crashlytics().log("\(logMessage)")
+//    Crashlytics.crashlytics().log("\(logMessage)")
 }
 
 func logging(_ logInstance: LogMessage, file: String = #file, funcName: String = #function, line: Int = #line) {
