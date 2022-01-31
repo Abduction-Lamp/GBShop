@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CatalogResponse: Codable {
+struct CatalogResponse: AbstructResponse, Codable {
     let result: Int
     let message: String
     let catalog: [Section]?

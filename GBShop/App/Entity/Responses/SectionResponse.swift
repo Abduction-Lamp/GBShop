@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SectionResponse: Codable {
+struct SectionResponse: AbstructResponse, Codable {
     let result: Int
     let message: String
     let section: Section?

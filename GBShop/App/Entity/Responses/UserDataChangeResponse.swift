@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserDataChangeResponse: Codable {
+struct UserDataChangeResponse: AbstructResponse, Codable {
     let result: Int
     let message: String
     let user: User?
