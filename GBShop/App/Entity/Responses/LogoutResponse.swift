@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LogoutResponse: Codable {
+struct LogoutResponse: AbstructResponse, Codable {
     let result: Int
     let message: String
 }
