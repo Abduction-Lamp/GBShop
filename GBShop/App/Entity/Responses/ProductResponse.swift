@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductResponse: Codable {
+struct ProductResponse: AbstructResponse, Codable {
     let result: Int
     let message: String
     let product: Product?

@@ -46,6 +46,9 @@ final class CatalogViewPresenter: CatalogViewPresenterProtocol {
     
     var catalog: [Section] = []
 
+//    private let reportExceptions = CrashlyticsReportExceptions()
+//    private let analytics = AnalyticsLog()
+    
     // MARK: Initialization
     required init(router: RouterProtocol, view: CatalogViewProtocol, network: RequestFactoryProtocol, user: User, token: String) {
         
@@ -73,22 +76,22 @@ extension CatalogViewPresenter {
         request.getCatalog(page: page) { [weak self] response in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                switch response.result {
-                case .success(let result):
-                    logging("[\(self) result message: \(result.message)]")
-                    if result.result == 1 {
-                        if let productList = result.catalog {
-                            self.catalog = productList
-                            self.view?.setCatalog()
-                        }
-                    } else {
-                        self.view?.showErrorAlert(message: result.message)
-                    }
-                case .failure(let error):
-                    logging("[\(self) error: \(error.localizedDescription)]")
-                    self.view?.showRequestErrorAlert(error: error)
+            switch response.result {
+            case .success(let result):
+                logging("[\(self) result message: \(result.message)]")
+                if result.result == 1 {
+                    if let productList = result.catalog {
+                        self.catalog = productList
+                        DispatchQueue.main.async { self.view?.setCatalog() }
+                    }// else { self.reportExceptions.report(page: page, code: .nilDataResult, result: result) }
+                } else {
+//                    self.reportExceptions.report(page: page, code: .rejectionResult, result: result)
+                    DispatchQueue.main.async { self.view?.showErrorAlert(message: result.message) }
                 }
+            case .failure(let error):
+                logging("[\(self) error: \(error.localizedDescription)]")
+//                self.reportExceptions.report(error: error.localizedDescription)
+                DispatchQueue.main.async { self.view?.showRequestErrorAlert(error: error) }
             }
         }
     }
@@ -103,24 +106,26 @@ extension CatalogViewPresenter {
         request.cart(owner: user.id, token: token) { [weak self] response in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                switch response.result {
-                case .success(let result):
-                    logging("[\(self) result message: \(result.message)]")
-                    if result.result == 1 {
-                        if let newCart = result.cart {
-                            self.cart.items = newCart
-                            self.view?.updateCartIndicator(count: self.cart.totalCartCount)
-                        } else {
-                            self.view?.updateCartIndicator(count: 0)
-                        }
+            switch response.result {
+            case .success(let result):
+                logging("[\(self) result message: \(result.message)]")
+                
+                if result.result == 1 {
+                    if let newCart = result.cart {
+                        self.cart.items = newCart
+                        DispatchQueue.main.async { self.view?.updateCartIndicator(count: self.cart.totalCartCount) }
                     } else {
-                        self.view?.updateCartIndicator(count: 0)
+//                        self.reportExceptions.report(login: self.user.login, code: .nilDataResult, result: result)
+                        DispatchQueue.main.async { self.view?.updateCartIndicator(count: 0) }
                     }
-                case .failure(let error):
-                    logging("[\(self) error: \(error.localizedDescription)]")
-                    self.view?.showRequestErrorAlert(error: error)
+                } else {
+//                    self.reportExceptions.report(login: self.user.login, code: .rejectionResult, result: result)
+                    DispatchQueue.main.async { self.view?.updateCartIndicator(count: 0) }
                 }
+            case .failure(let error):
+                logging("[\(self) error: \(error.localizedDescription)]")
+//                self.reportExceptions.report(error: error.localizedDescription)
+                DispatchQueue.main.async { self.view?.showRequestErrorAlert(error: error) }
             }
         }
     }
@@ -135,24 +140,26 @@ extension CatalogViewPresenter {
         request.addProduct(productId: productId, owner: user.id, token: token) { [weak self] response in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                switch response.result {
-                case .success(let result):
-                    logging("[\(self) result message: \(result.message)]")
-                    if result.result == 1 {
-                        if let newCart = result.cart {
-                            self.cart.items = newCart
-                            self.view?.updateCartIndicator(count: self.cart.totalCartCount)
-                        } else {
-                            self.view?.showErrorAlert(message: "Карзина пуста")
-                        }
+            switch response.result {
+            case .success(let result):
+                logging("[\(self) result message: \(result.message)]")
+                if result.result == 1 {
+                    if let newCart = result.cart {
+                        self.cart.items = newCart
+//                        self.analytics.addProductToCart(user: self.user, product: self.catalogSearch(id: productId), cart: self.cart)
+                        DispatchQueue.main.async { self.view?.updateCartIndicator(count: self.cart.totalCartCount) }
                     } else {
-                        self.view?.showErrorAlert(message: result.message)
+//                        self.reportExceptions.report(productID: productId, cart: self.cart, code: .nilDataResult, result: result)
+                        DispatchQueue.main.async { self.view?.showErrorAlert(message: "Карзина пуста") }
                     }
-                case .failure(let error):
-                    logging("[\(self) error: \(error.localizedDescription)]")
-                    self.view?.showRequestErrorAlert(error: error)
+                } else {
+//                    self.reportExceptions.report(productID: productId, cart: self.cart, code: .nilDataResult, result: result)
+                    DispatchQueue.main.async { self.view?.showErrorAlert(message: result.message) }
                 }
+            case .failure(let error):
+                logging("[\(self) error: \(error.localizedDescription)]")
+//                self.reportExceptions.report(error: error.localizedDescription)
+                DispatchQueue.main.async { self.view?.showRequestErrorAlert(error: error) }
             }
         }
     }
@@ -172,14 +179,22 @@ extension CatalogViewPresenter {
     }
     
     public func goToProductView(id: Int) {
-        let productList = catalog.flatMap({ $0.items })
-        if let product = productList.first(where: { $0.id == id }) {
+        if let product = catalogSearch(id: id) {
             router?.pushProductViewController(user: user, token: token, product: product, cart: cart)
         }
     }
     
     public func goToCartView() {
         router?.pushCartViewController(user: user, token: token, cart: cart)
+    }
+    
+    private func catalogSearch(id: Int) -> Product? {
+        var product: Product?
+        for index in 0 ..< catalog.count {
+            product = catalog[index].items.first(where: { $0.id == id })
+            if product != nil { break }
+        }
+        return product
     }
 }
 

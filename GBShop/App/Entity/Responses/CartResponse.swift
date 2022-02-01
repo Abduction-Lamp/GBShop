@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CartResponse: Codable {
+struct CartResponse: AbstructResponse, Codable {
     let result: Int
     let message: String
     let cart: [CartItem]?

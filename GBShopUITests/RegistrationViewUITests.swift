@@ -10,7 +10,6 @@ import Alamofire
 @testable import GBShop
 
 class RegistrationViewUITests: XCTestCase {
-
     let app = XCUIApplication()
     
     var registrationView: XCUIElement!
@@ -42,13 +41,26 @@ class RegistrationViewUITests: XCTestCase {
         XCTAssertTrue(registrationView.waitForExistence(timeout: 1))
         XCTAssert(registrationView.exists)
         
-        firstNameTextField = registrationView.textFields["firstNameTextField"].firstMatch
-        lastNameTextField = registrationView.textFields["lastNameTextField"].firstMatch
-        emailTextField = registrationView.textFields["emailTextField"].firstMatch
-        creditCardTextField = registrationView.textFields["creditCardTextField"].firstMatch
-        loginTextField = registrationView.textFields["RegistrationViewLoginTextField"].firstMatch
-        passwordTextField = registrationView.textFields["RegistrationViewPasswordTextField"].firstMatch
-        registrationButton = registrationView.buttons["RegistrationViewRegistrationButton"].firstMatch
+        var identifier = localizedString(key: "RegistrationView.FirstNameTextField.Placeholder", for: RegistrationViewUITests.self)
+        firstNameTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.LastNameTextField.Placeholder", for: RegistrationViewUITests.self)
+        lastNameTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.EmailTextField.Placeholder", for: RegistrationViewUITests.self)
+        emailTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.CreditCardTextField.Placeholder", for: RegistrationViewUITests.self)
+        creditCardTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.LoginTextField.Placeholder", for: RegistrationViewUITests.self)
+        loginTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.PasswordTextField.Placeholder", for: RegistrationViewUITests.self)
+        passwordTextField = registrationView.textFields[identifier].firstMatch
+        
+        identifier = localizedString(key: "RegistrationView.RegistrationButton.Title", for: RegistrationViewUITests.self)
+        registrationButton = registrationView.buttons[identifier].firstMatch
     }
 
     override func tearDownWithError() throws {
@@ -85,13 +97,13 @@ class RegistrationViewUITests: XCTestCase {
 extension RegistrationViewUITests {
     
     func testRegistrationViewSuccess() throws {
-        XCTAssert(firstNameTextField.exists)
-        XCTAssert(lastNameTextField.exists)
-        XCTAssert(emailTextField.exists)
-        XCTAssert(creditCardTextField.exists)
-        XCTAssert(loginTextField.exists)
-        XCTAssert(passwordTextField.exists)
-        XCTAssert(registrationButton.exists)
+        XCTAssertTrue(firstNameTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(lastNameTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(emailTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(creditCardTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(loginTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(registrationButton.waitForExistence(timeout: 1))
         
         initialStateServer()
         wait(for: [], timeout: 5)
@@ -109,6 +121,7 @@ extension RegistrationViewUITests {
         passwordTextField.tap()
         app.typeText("123456789")
         
+        app.tap()
         registrationButton.tap()
         
         // Проверяем перешли ли в каталог
@@ -120,22 +133,24 @@ extension RegistrationViewUITests {
     }
     
     func testRegistrationViewEmpty() throws {
-        XCTAssert(firstNameTextField.exists)
-        XCTAssert(lastNameTextField.exists)
-        XCTAssert(emailTextField.exists)
-        XCTAssert(creditCardTextField.exists)
-        XCTAssert(loginTextField.exists)
-        XCTAssert(passwordTextField.exists)
-        XCTAssert(registrationButton.exists)
+        XCTAssertTrue(firstNameTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(lastNameTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(emailTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(creditCardTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(loginTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 1))
+        XCTAssertTrue(registrationButton.waitForExistence(timeout: 1))
 
         registrationButton.tap()
                 
         // Проверяем появление Alert с сообщением о ошибках
-        let alert = app.alerts["Ошибка"]
+        let identifierAlert = localizedString(key: "General.Alert.Title", for: RegistrationViewUITests.self)
+        let identifierCloseButton = localizedString(key: "General.Alert.CloseButton", for: RegistrationViewUITests.self)
+        let alert = app.alerts[identifierAlert]
         expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: alert, handler: nil)
         waitForExpectations(timeout: 5) { _ in
             XCTAssert(alert.exists)
-            alert.scrollViews.otherElements.buttons["Закрыть"].tap()
+            alert.scrollViews.otherElements.buttons[identifierCloseButton].tap()
         }
     }
 }

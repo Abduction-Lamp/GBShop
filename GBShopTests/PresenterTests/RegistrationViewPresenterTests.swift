@@ -150,7 +150,8 @@ extension RegistrationViewPresenterTests {
         wait(for: [self.view.expectation], timeout: 2.0)
         
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "Не верный формат E-mail")
+        let message = NSLocalizedString("UserPageView.Alert.WrongEmailFormat", comment: "")
+        XCTAssertEqual(view.message, message)
         
         XCTAssertFalse(view.showFlag)
         XCTAssertFalse(view.hideFlag)

@@ -1,0 +1,87 @@
+/* 
+  Localizable.strings
+  GBShop
+
+  Created by Владимир on 22.01.2022.
+  
+*/
+
+// MARK: - General
+"General.Alert.CloseButton" = "Close";
+"General.Alert.Title" = "Error";
+"General.Alert.EmptyFields" = "All fields must be filled in";
+
+"General.TextField.ClearTextButton" = "Clear text";
+
+// MARK: - LoginView
+"LoginView.HeaderLabel.Text" = "Store";
+
+"LoginView.LoginTextField.Placeholder" = "Login";
+"LoginView.PasswordTextField.Placeholder" = "Password";
+
+"LoginView.LoginButton.Title" = "Sign in";
+"LoginView.RegistrationButton.Title" = "Sign up";
+
+// MARK: - RegistrationView
+"RegistrationView.NavigationBar.Title" = "Sign up";
+"RegistrationView.FirstNameTextField.Placeholder" = "First name";
+"RegistrationView.LastNameTextField.Placeholder" = "Last name";
+"RegistrationView.GenderSegmentControl.Title.0" = "Мale";
+"RegistrationView.GenderSegmentControl.Title.1" = "Female";
+"RegistrationView.EmailTextField.Placeholder" = "E-mail";
+"RegistrationView.CreditCardTextField.Placeholder" = "Credit card";
+"RegistrationView.LoginTextField.Placeholder" = "Login";
+"RegistrationView.PasswordTextField.Placeholder" = "Password";
+
+"RegistrationView.RegistrationButton.Title" = "Sign up";
+
+"RegistrationView.Alert.EmptyFirstNameField" = "First name field is empty";
+"RegistrationView.Alert.EmptyLastNameField" = "Last name field is empty";
+"RegistrationView.Alert.EmptyEmailField" = "E-mail field is empty";
+"RegistrationView.Alert.EmptyCreditCardField" = "Credit card field is empty";
+"RegistrationView.Alert.EmptyLoginField" = "Login field is empty";
+"RegistrationView.Alert.EmptyPasswordField" = "Password field is empty";
+"RegistrationView.Alert.ShortPassword" = "Short Password (less than 7 characters)";
+"RegistrationView.Alert.WrongEmailFormat" = "Wrong E-mail format";
+"RegistrationView.Alert.WrongCreditCardFormat" = "Wrong Credit Card format";
+
+// MARK: - UserPageView
+"UserPageView.NavigationBar.Title" = "Sign up";
+"UserPageView.FirstNameTextField.Placeholder" = "First name";
+"UserPageView.LastNameTextField.Placeholder" = "Last name";
+"UserPageView.GenderSegmentControl.Title.0" = "Мale";
+"UserPageView.GenderSegmentControl.Title.1" = "Female";
+"UserPageView.EmailTextField.Placeholder" = "E-mail";
+"UserPageView.CreditCardTextField.Placeholder" = "Credit card";
+"UserPageView.LoginTextField.Placeholder" = "Login";
+"UserPageView.PasswordTextField.Placeholder" = "Password";
+
+"UserPageView.LogoutButton.Title" = "Sign out";
+
+"UserPageView.Alert.EmptyFirstNameField" = "First name field is empty";
+"UserPageView.Alert.EmptyLastNameField" = "Last name field is empty";
+"UserPageView.Alert.EmptyEmailField" = "E-mail field is empty";
+"UserPageView.Alert.EmptyCreditCardField" = "Credit card field is empty";
+"UserPageView.Alert.EmptyLoginField" = "Login field is empty";
+"UserPageView.Alert.EmptyPasswordField" = "Password field is empty";
+"UserPageView.Alert.ShortPassword" = "Short Password (less than 7 characters)";
+"UserPageView.Alert.WrongEmailFormat" = "Wrong E-mail format";
+"UserPageView.Alert.WrongCreditCardFormat" = "Wrong Credit Card format";
+
+"UserPageView.NavigationBar.ChangeBarButton" = "Change";
+"UserPageView.NavigationBar.SaveBarButton" = "Save";
+"UserPageView.NavigationBar.CancelBarButton" = "Cancel";
+
+// MARK: - ProductView
+"ProductView.AddCommentButton.Title" = "Add review";
+
+// MARK: - CartView
+"CartView.EmptyCart.Text" = "Put the items you want in your cart";
+"CartView.PayButton.Title" = "Pay";
+
+"CartView.Alert.ProductDeleteMesage" = "Are you sure you want to delete ";
+"CartView.Alert.AllItemProductDeleteMesage" = "Are you sure you want to delete all ";
+"CartView.Alert.CancelButton.Title" = "Cancel";
+"CartView.Alert.DeleteButton.Title" = "Delete";
+
+"CartView.Alert.SomethingWenWrong.Text" = "Something wen wrong";

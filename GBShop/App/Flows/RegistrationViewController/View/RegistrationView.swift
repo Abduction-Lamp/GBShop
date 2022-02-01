@@ -27,32 +27,31 @@ final class RegistrationView: UIView {
     }()
     
     private(set) lazy var firstNameTextField: UITextField = {
-        let textField = design.makeTextFildView(placeholder: "Имя")
-        textField.accessibilityIdentifier = "firstNameTextField"
-        return textField
+        let placeholder = NSLocalizedString("RegistrationView.FirstNameTextField.Placeholder", comment: "")
+        return design.makeTextFildView(placeholder: placeholder)
     }()
 
     private(set) lazy var lastNameTextField: UITextField = {
-        let textField = design.makeTextFildView(placeholder: "Фамилия")
-        textField.accessibilityIdentifier = "lastNameTextField"
-        return textField
+        let placeholder = NSLocalizedString("RegistrationView.LastNameTextField.Placeholder", comment: "")
+        return design.makeTextFildView(placeholder: placeholder)
     }()
     
     private(set) var genderSegmentControl: UISegmentedControl = {
         let segment = UISegmentedControl()
         segment.translatesAutoresizingMaskIntoConstraints = false
         segment.backgroundColor = .systemBackground
-        segment.insertSegment(withTitle: "Мужчина", at: 0, animated: false)
-        segment.insertSegment(withTitle: "Женщина", at: 1, animated: false)
+        let maleTitle = NSLocalizedString("RegistrationView.GenderSegmentControl.Title.0", comment: "")
+        let femaleTitle = NSLocalizedString("RegistrationView.GenderSegmentControl.Title.1", comment: "")
+        segment.insertSegment(withTitle: maleTitle, at: 0, animated: false)
+        segment.insertSegment(withTitle: femaleTitle, at: 1, animated: false)
         segment.selectedSegmentIndex = 0
         segment.accessibilityIdentifier = "genderSegmentControl"
         return segment
     }()
     
     private(set) lazy var emailTextField: UITextField = {
-        let textField = design.makeTextFildView(placeholder: "E-mail", keyboardType: .emailAddress)
-        textField.accessibilityIdentifier = "emailTextField"
-        return textField
+        let placeholder = NSLocalizedString("RegistrationView.EmailTextField.Placeholder", comment: "")
+        return design.makeTextFildView(placeholder: placeholder, keyboardType: .emailAddress)
     }()
 
     private(set) lazy var creditCardTextField: CreditCardTextField = {
@@ -67,22 +66,22 @@ final class RegistrationView: UIView {
         textField.backgroundColor = .white
         textField.borderStyle = .roundedRect
         textField.keyboardType = .numberPad
-        textField.placeholder = "Кредитная карта"
-        textField.accessibilityIdentifier = "creditCardTextField"
+        let placeholder = NSLocalizedString("RegistrationView.CreditCardTextField.Placeholder", comment: "")
+        textField.placeholder = placeholder
+        textField.accessibilityIdentifier = placeholder
         return textField
     }()
 
     private(set) lazy var loginTextField: UITextField = {
-        let textField = design.makeTextFildView(placeholder: "Логин")
-        textField.accessibilityIdentifier = "RegistrationViewLoginTextField"
-        return textField
+        let placeholder = NSLocalizedString("RegistrationView.LoginTextField.Placeholder", comment: "")
+        return design.makeTextFildView(placeholder: placeholder)
     }()
 
     private(set) lazy var passwordTextField: UITextField = {
-        let textField = design.makeTextFildView(placeholder: "Пароль")
+        let placeholder = NSLocalizedString("RegistrationView.PasswordTextField.Placeholder", comment: "")
+        let textField = design.makeTextFildView(placeholder: placeholder)
         textField.isSecureTextEntry = false
         textField.textContentType = .init(rawValue: "")
-        textField.accessibilityIdentifier = "RegistrationViewPasswordTextField"
         return textField
     }()
     
@@ -94,8 +93,9 @@ final class RegistrationView: UIView {
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = design.mediumFont
         button.layer.cornerRadius = 5
-        button.setTitle("Зарегистрироваться ", for: .normal)
-        button.accessibilityIdentifier = "RegistrationViewRegistrationButton"
+        let title = NSLocalizedString("RegistrationView.RegistrationButton.Title", comment: "")
+        button.setTitle(title, for: .normal)
+        button.accessibilityIdentifier = title
         return button
     }()
     

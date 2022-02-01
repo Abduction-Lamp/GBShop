@@ -1,0 +1,44 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Description of what the lane does"
+  lane :custom_lane do
+    # ensure_git_status_clean
+    #cocoapods(
+    #  use_bundle_exec: false
+    #)
+
+    full_tests
+    increment_build_number
+  end
+  
+  lane :unit_tests do
+    run_tests(scheme: "GBShop",
+              testplan: "Unit")
+  end
+  
+  lane :ui_tests do
+    run_tests(scheme: "GBShop",
+              testplan: "UI")
+  end
+  
+  lane :full_tests do
+    run_tests(scheme: "GBShop",
+              testplan: "Full")
+  end
+end
