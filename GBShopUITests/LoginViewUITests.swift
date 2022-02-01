@@ -29,7 +29,6 @@ class LoginViewUITests: XCTestCase {
     
     override func setUpWithError() throws {
         continueAfterFailure = false
-        setupSnapshot(app)
         app.launch()
 
         scrollView = app.scrollViews
@@ -62,8 +61,6 @@ extension LoginViewUITests {
         XCTAssert(loginButton.exists)
         XCTAssert(registrationButton.exists)
         
-        snapshot("LoginView")
-        
         let identifierClearTextButton = localizedString(key: "General.TextField.ClearTextButton", for: LoginViewUITests.self)
         loginTextField.tap()
         elementsQuery.buttons[identifierClearTextButton].tap()
@@ -94,7 +91,6 @@ extension LoginViewUITests {
         XCTAssert(registrationButton.exists)
         
         let identifierClearTextButton = localizedString(key: "General.TextField.ClearTextButton", for: LoginViewUITests.self)
-        print("\n\n\n\(identifierClearTextButton)\n\n\n")
         loginTextField.tap()
         elementsQuery.buttons[identifierClearTextButton].tap()
         passwordTextField.tap()
