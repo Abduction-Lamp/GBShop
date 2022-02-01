@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Firebase
+//import Firebase
 
 // MARK: - Protools
 //
@@ -30,8 +30,8 @@ final class LoginViewPresenter: LoginViewPresenterProtocol {
     private weak var view: LoginViewProtocol?
     private let network: AuthRequestFactory
 
-    private let reportExceptions = CrashlyticsReportExceptions()
-    private let analytics = AnalyticsLog()
+//    private let reportExceptions = CrashlyticsReportExceptions()
+//    private let analytics = AnalyticsLog()
     
     required init(router: RouterProtocol, view: LoginViewProtocol, network: AuthRequestFactory) {
         self.router = router
@@ -57,22 +57,22 @@ final class LoginViewPresenter: LoginViewPresenterProtocol {
                 if result.result == 1 {
                     guard let user = result.user,
                           let token = result.token else {
-                              self.reportExceptions.report(login: login, code: .nilDataResult, result: result)
+//                              self.reportExceptions.report(login: login, code: .nilDataResult, result: result)
                               DispatchQueue.main.async {
                                   self.view?.hideLoadingScreen()
                                   self.view?.showErrorAlert(message: result.message)
                               }
                               return
                           }
-                    Crashlytics.crashlytics().setUserID("\(user.id)")
-                    Analytics.setUserID("\(user.id)")
-                    self.analytics.login(user: user)
+//                    Crashlytics.crashlytics().setUserID("\(user.id)")
+//                    Analytics.setUserID("\(user.id)")
+//                    self.analytics.login(user: user)
                     DispatchQueue.main.async {
                         self.view?.hideLoadingScreen()
                         self.router?.pushCatalogViewController(user: user, token: token)
                     }
                 } else {
-                    self.reportExceptions.report(login: login, code: .rejectionResult, result: result)
+//                    self.reportExceptions.report(login: login, code: .rejectionResult, result: result)
                     DispatchQueue.main.async {
                         self.view?.hideLoadingScreen()
                         self.view?.showErrorAlert(message: result.message)
@@ -80,7 +80,7 @@ final class LoginViewPresenter: LoginViewPresenterProtocol {
                 }
             case .failure(let error):
                 logging("[\(self) error: \(error.localizedDescription)]")
-                self.reportExceptions.report(error: error.localizedDescription)
+//                self.reportExceptions.report(error: error.localizedDescription)
                 DispatchQueue.main.async {
                     self.view?.hideLoadingScreen()
                     self.view?.showRequestErrorAlert(error: error)

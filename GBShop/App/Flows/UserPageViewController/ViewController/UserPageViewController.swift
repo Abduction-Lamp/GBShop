@@ -22,24 +22,37 @@ final class UserPageViewController: UIViewController {
     
     private let notifiction = NotificationCenter.default
     private lazy var keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
-    
-    private var isEditingUserData: Bool = false
 
     private lazy var buckBarButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        button.setTitle(" Магазин", for: .normal)
+        let title = NSLocalizedString("LoginView.HeaderLabel.Text", comment: "")
+        button.setTitle(" " + title, for: .normal)
         button.tintColor = .systemBlue
         button.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
         button.addTarget(self, action: #selector(pressedBackButton), for: .touchUpInside)
         button.sizeToFit()
         return button
     }()
+    private lazy var changeBarButtonItem = UIBarButtonItem(
+        title: NSLocalizedString("UserPageView.NavigationBar.ChangeBarButton", comment: ""),
+        style: .plain,
+        target: self,
+        action: #selector(pressedСhangeButton))
+    private lazy var saveBarButtonItem = UIBarButtonItem(
+        title: NSLocalizedString("UserPageView.NavigationBar.SaveBarButton", comment: ""),
+        style: .done,
+        target: self,
+        action: #selector(pressedSaveButton))
+    private lazy var cancelBarButtonItem = UIBarButtonItem(
+        title: NSLocalizedString("UserPageView.NavigationBar.CancelBarButton", comment: ""),
+        style: .plain,
+        target: self,
+        action: #selector(pressedCancelButton))
     private lazy var buckBarButtonItem = UIBarButtonItem(customView: buckBarButton)
-    private lazy var changeBarButtonItem = UIBarButtonItem(title: "Изменить", style: .plain, target: self, action: #selector(pressedСhangeButton))
-    private lazy var saveBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(pressedSaveButton))
-    private lazy var cancelBarButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(pressedCancelButton))
-
+    
+    private var isEditingUserData: Bool = false
+    
     var presenret: UserPageViewPresenterProtocol?
     
     // MARK: - Lifecycle
@@ -209,11 +222,13 @@ extension UserPageViewController {
 extension UserPageViewController: UserPageViewProtocol {
         
     func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: error.localizedDescription, title: title)
     }
     
     func showErrorAlert(message: String) {
-        showAlert(message: message, title: "Ошибка")
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: message, title: title)
     }
     
     func setUserData(firstName: String, lastName: String, gender: Int, email: String, creditCard: String, login: String, password: String) {

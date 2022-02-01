@@ -294,11 +294,13 @@ extension ProductViewController {
 extension ProductViewController: ProductViewProtocol {
 
     func showRequestErrorAlert(error: Error) {
-        showAlert(message: error.localizedDescription, title: "error")
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: error.localizedDescription, title: title)
     }
     
     func showErrorAlert(message: String) {
-        showAlert(message: message)
+        let title = NSLocalizedString("General.Alert.Title", comment: "")
+        showAlert(message: message, title: title)
     }
     
     func setReviews() {

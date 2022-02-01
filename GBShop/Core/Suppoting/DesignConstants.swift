@@ -44,18 +44,19 @@ struct DesignConstants {
     // MARK: - MAKE DESING COMPONENTS
     //
     func makeTextFildView(placeholder: String, keyboardType: UIKeyboardType = .asciiCapable) -> UITextField {
-        let textfield = UITextField()
-        textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.font = mediumFont
-        textfield.autocapitalizationType = .none
-        textfield.autocorrectionType = .no
-        textfield.clearButtonMode = .whileEditing
-        textfield.textAlignment = .left
-        textfield.textColor = .black
-        textfield.backgroundColor = .white
-        textfield.borderStyle = .roundedRect
-        textfield.keyboardType = keyboardType
-        textfield.placeholder = placeholder
-        return textfield
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = mediumFont
+        textField.autocapitalizationType = .none
+        textField.autocorrectionType = .no
+        textField.clearButtonMode = .whileEditing
+        textField.textAlignment = .left
+        textField.textColor = .black
+        textField.backgroundColor = .white
+        textField.borderStyle = .roundedRect
+        textField.keyboardType = keyboardType
+        textField.placeholder = placeholder
+        textField.accessibilityIdentifier = placeholder
+        return textField
     }
 }

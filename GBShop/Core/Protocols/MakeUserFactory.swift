@@ -32,39 +32,48 @@ extension MakeUserFactory {
                   password: String) -> User? {
         
         guard !firstName.isEmpty else {
-            view?.showErrorAlert(message: "Поле Имя не заполнено")
+            let message = NSLocalizedString("RegistrationView.Alert.EmptyFirstNameField", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
         guard !lastName.isEmpty else {
-            view?.showErrorAlert(message: "Поле Фамилия не заполнено")
+            let message = NSLocalizedString("RegistrationView.Alert.EmptyLastNameField", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
         guard !email.isEmpty else {
-            view?.showErrorAlert(message: "Поле E-mail не заполнено")
+            let message = NSLocalizedString("RegistrationView.Alert.EmptyEmailField", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
         guard !creditCard.isEmpty else {
-            view?.showErrorAlert(message: "Поле Кредитная Карта не заполнено")
+            let message = NSLocalizedString("RegistrationView.Alert.EmptyCreditCardField", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
         guard !login.isEmpty else {
-            view?.showErrorAlert(message: "Поле Логин не заполнено")
+            let message = NSLocalizedString("RegistrationView.Alert.EmptyLoginField", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
         guard !password.isEmpty else {
-            view?.showErrorAlert(message: "Поле Пароль не заполнено")
+            let message = NSLocalizedString("RegistrationView.Alert.EmptyPasswordField", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
         guard password.count > 6 else {
-            view?.showErrorAlert(message: "Короткий Пароль (меньше 7 символов)")
+            let message = NSLocalizedString("RegistrationView.Alert.ShortPassword", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
         guard email.isValidEmail() else {
-            view?.showErrorAlert(message: "Не верный формат E-mail")
+            let message = NSLocalizedString("RegistrationView.Alert.WrongEmailFormat", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
         guard creditCard.isValidCreditCard() else {
-            view?.showErrorAlert(message: "Не верный формат Кредитной Карты")
+            let message = NSLocalizedString("RegistrationView.Alert.WrongCreditCardFormat", comment: "")
+            view?.showErrorAlert(message: message)
             return nil
         }
 

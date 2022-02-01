@@ -133,7 +133,8 @@ class CartViewPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.cart, fake.cart)
 
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "Что-то пошло не так")
+        let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertEqual(view.messageUpdataCart, nil)
         XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
 
@@ -157,7 +158,8 @@ class CartViewPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.cart, fake.cart)
 
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "Что-то пошло не так")
+        let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertEqual(view.messageUpdataCart, nil)
         XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
 
@@ -205,7 +207,8 @@ class CartViewPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.cart, fake.cart)
 
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "Что-то пошло не так")
+        let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertEqual(view.messageUpdataCart, nil)
         XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
 
@@ -229,7 +232,8 @@ class CartViewPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.cart, fake.cart)
 
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "Что-то пошло не так")
+        let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertEqual(view.messageUpdataCart, nil)
         XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
 
@@ -277,7 +281,8 @@ class CartViewPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.cart, fake.cart)
 
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "Не удалось удалить товар из карзины")
+        let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertEqual(view.messageUpdataCart, nil)
         XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
 
@@ -301,7 +306,8 @@ class CartViewPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.cart, fake.cart)
 
         XCTAssertEqual(view.error, nil)
-        XCTAssertEqual(view.message, "Не удалось удалить товар из карзины")
+        let message = NSLocalizedString("CartView.Alert.SomethingWenWrong.Text", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertEqual(view.messageUpdataCart, nil)
         XCTAssertEqual(view.messageUpdataCartWithIndex, nil)
 

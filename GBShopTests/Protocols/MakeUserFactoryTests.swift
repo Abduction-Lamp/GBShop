@@ -58,7 +58,8 @@ class MakeUserFactoryTests: XCTestCase {
                                        email: "email@email.ru", creditCard: "1111-2222-3333-4444",
                                        login: "login", password: "password")
         XCTAssertNil(newUser)
-        XCTAssertEqual(view.message, "Поле Имя не заполнено")
+        var message = NSLocalizedString("UserPageView.Alert.EmptyFirstNameField", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertNil(view.error)
         
         newUser = factory.makeUser(view: view,
@@ -66,7 +67,8 @@ class MakeUserFactoryTests: XCTestCase {
                                    email: "email@email.ru", creditCard: "1111-2222-3333-4444",
                                    login: "login", password: "password")
         XCTAssertNil(newUser)
-        XCTAssertEqual(view.message, "Поле Фамилия не заполнено")
+        message = NSLocalizedString("UserPageView.Alert.EmptyLastNameField", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertNil(view.error)
         
         newUser = factory.makeUser(view: view,
@@ -74,7 +76,8 @@ class MakeUserFactoryTests: XCTestCase {
                                    email: "", creditCard: "1111-2222-3333-4444",
                                    login: "login", password: "password")
         XCTAssertNil(newUser)
-        XCTAssertEqual(view.message, "Поле E-mail не заполнено")
+        message = NSLocalizedString("UserPageView.Alert.EmptyEmailField", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertNil(view.error)
         
         newUser = factory.makeUser(view: view,
@@ -82,7 +85,8 @@ class MakeUserFactoryTests: XCTestCase {
                                    email: "email@email.ru", creditCard: "",
                                    login: "login", password: "password")
         XCTAssertNil(newUser)
-        XCTAssertEqual(view.message, "Поле Кредитная Карта не заполнено")
+        message = NSLocalizedString("UserPageView.Alert.EmptyCreditCardField", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertNil(view.error)
         
         newUser = factory.makeUser(view: view,
@@ -90,7 +94,8 @@ class MakeUserFactoryTests: XCTestCase {
                                    email: "email@email.ru", creditCard: "1111-2222-3333-4444",
                                    login: "", password: "password")
         XCTAssertNil(newUser)
-        XCTAssertEqual(view.message, "Поле Логин не заполнено")
+        message = NSLocalizedString("UserPageView.Alert.EmptyLoginField", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertNil(view.error)
         
         newUser = factory.makeUser(view: view,
@@ -98,7 +103,8 @@ class MakeUserFactoryTests: XCTestCase {
                                    email: "email@email.ru", creditCard: "1111-2222-3333-4444",
                                    login: "login", password: "")
         XCTAssertNil(newUser)
-        XCTAssertEqual(view.message, "Поле Пароль не заполнено")
+        message = NSLocalizedString("UserPageView.Alert.EmptyPasswordField", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertNil(view.error)
         
         newUser = factory.makeUser(view: view,
@@ -106,7 +112,8 @@ class MakeUserFactoryTests: XCTestCase {
                                    email: "email@emailru", creditCard: "1111-2222-3333-4444",
                                    login: "login", password: "password")
         XCTAssertNil(newUser)
-        XCTAssertEqual(view.message, "Не верный формат E-mail")
+        message = NSLocalizedString("UserPageView.Alert.WrongEmailFormat", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertNil(view.error)
         
         newUser = factory.makeUser(view: view,
@@ -114,7 +121,8 @@ class MakeUserFactoryTests: XCTestCase {
                                    email: "email@email.ru", creditCard: "1111222233334444",
                                    login: "login", password: "password")
         XCTAssertNil(newUser)
-        XCTAssertEqual(view.message, "Не верный формат Кредитной Карты")
+        message = NSLocalizedString("UserPageView.Alert.WrongCreditCardFormat", comment: "")
+        XCTAssertEqual(view.message, message)
         XCTAssertNil(view.error)
     }
 }

@@ -16,7 +16,7 @@ final class EmptyCartViewCell: UITableViewHeaderFooterView {
         label.textColor = .black
         label.textAlignment = .center
         label.font = DesignConstants.shared.largeFont
-        label.text = "Сложите в корзину нужные товары"
+        label.text = NSLocalizedString("CartView.EmptyCart.Text", comment: "")
         return label
     }()
     
